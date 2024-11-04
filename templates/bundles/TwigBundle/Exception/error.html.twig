@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chyba{% endblock %}
+
+{% block full_content %}
+    <div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-4 col-lg-5">
+                    <div class="card">
+
+                        <div class="card-body p-4">
+
+                            <div class="text-center">
+                                <h4 class="text-uppercase text-danger mt-3">Něco se pokazilo ... :-(</h4>
+
+                                <a class="btn btn-info mt-3" href="{{ path('homepage') }}"><i class="mdi mdi-reply"></i> Zpět na úvod</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

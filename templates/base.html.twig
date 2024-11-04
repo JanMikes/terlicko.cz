@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% apply spaceless %}{% block title %}{% endblock %}{% endapply %} | Obec Těrlicko</title>
+
+        {% block meta_viewport %}
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        {% endblock %}
+
+        <meta name="turbo-prefetch" content="false">
+        <meta name="turbo-refresh-method" content="morph">
+
+        <meta name="description" content="{% apply spaceless %}{% block meta_description %}{% endblock %}{% endapply %}">
+        <meta name="keywords" content="{% apply spaceless %}{% block meta_keywords %}{% endblock %}{% endapply %}">
+
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="theme-color" content="#ffffff">
+
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="theme-color" content="#ffffff">
+
+        <link type="text/plain" rel="author" href="{{ asset('humans.txt') }}">
+
+        {% block importmap %}
+            {{ importmap('app') }}
+        {% endblock %}
+
+        {% block custom_styles %}{% endblock %}
+    </head>
+    <body class="{% block body_class %}{% endblock %}">
+
+    {% block full_content %}
+
+        <div class="container-fluid py-4">
+            {{ include('_flashes.html.twig') }}
+
+            {% block content %}{% endblock %}
+        </div>
+    {% endblock %}
+
+    </body>
+</html>
