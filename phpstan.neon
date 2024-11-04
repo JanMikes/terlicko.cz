@@ -26,8 +26,3 @@ parameters:
     doctrine:
         objectManagerLoader: tests/object-manager.php
     checkUninitializedProperties: true
-    ignoreErrors:
-        - "#^Call to an undefined method Symfony\\\\Config\\\\Framework\\\\Messenger#"
-        -
-            message: '#has no return type specified#'
-            path: src/Components/*
