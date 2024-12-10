@@ -1,0 +1,146 @@
+{
+  "kind": "collectionType",
+  "collectionName": "uredni_deskas",
+  "info": {
+    "singularName": "uredni-deska",
+    "pluralName": "uredni-deskas",
+    "displayName": "01 > Úřední deska",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Datum_zverejneni": {
+      "type": "date",
+      "required": true
+    },
+    "Datum_stazeni": {
+      "type": "date"
+    },
+    "Soubory": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "Popis": {
+      "type": "richtext"
+    },
+    "Zodpovedna_osoba": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::lide.lide"
+    },
+    "Zobrazit_v_rozpocty": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "Zobrazit_v_formulare": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Zobrazit_v_navody": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "Zobrazit_v_vyhlasky": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Zobrazit_v_uzemni_studie": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Zobrazit_v_uzemni_plan": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Zobrazit_v_vyrocni_zpravy": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "Zobrazit_v_verejnopravni_smlouvy": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "Zobrazit_v_odpady": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "Zobrazit_v_strategicke_dokumenty": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Zobrazit_v_zivotni_situace": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "Zobrazit_v_zapisy_z_jednani_zastupitelstva": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Zobrazit_v_usneseni_rady": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "Zobrazit_v_financni_vybor": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Zobrazit_v_kulturni_komise": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Zobrazit_v_volby": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Zobrazit_v_poskytnute_informace": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Zobrazit_v_projekty": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Zobrazovat": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "Nadpis",
+      "required": true
+    }
+  }
+}

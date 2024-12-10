@@ -1,0 +1,22 @@
+{
+  "kind": "singleType",
+  "collectionName": "obec_histories",
+  "info": {
+    "singularName": "obec-historie",
+    "pluralName": "obec-histories",
+    "displayName": "03 > O > Historie",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Graficke_pasy": {
+      "displayName": "Grafický pás",
+      "type": "component",
+      "repeatable": true,
+      "component": "komponenty.graficky-pas"
+    }
+  }
+}

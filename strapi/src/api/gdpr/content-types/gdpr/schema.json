@@ -1,0 +1,24 @@
+{
+  "kind": "singleType",
+  "collectionName": "gdprs",
+  "info": {
+    "singularName": "gdpr",
+    "pluralName": "gdprs",
+    "displayName": "05 > GDPR",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Obsah": {
+      "type": "richtext",
+      "required": true
+    }
+  }
+}

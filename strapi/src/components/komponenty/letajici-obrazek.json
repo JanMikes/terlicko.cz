@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_komponenty_letajici_obrazeks",
+  "info": {
+    "displayName": "Létající obrázek",
+    "icon": "ankh",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Obrazek": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Left": {
+      "type": "integer"
+    },
+    "Right": {
+      "type": "integer"
+    },
+    "Top": {
+      "type": "integer"
+    },
+    "Bottom": {
+      "type": "integer"
+    },
+    "Velikost_procent": {
+      "type": "integer",
+      "default": 100,
+      "required": false,
+      "max": 100,
+      "min": 1
+    }
+  }
+}

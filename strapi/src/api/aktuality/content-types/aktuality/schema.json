@@ -1,0 +1,77 @@
+{
+  "kind": "collectionType",
+  "collectionName": "aktualities",
+  "info": {
+    "singularName": "aktuality",
+    "pluralName": "aktualities",
+    "displayName": "02 > Aktuality",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Datum_zverejneni": {
+      "type": "date",
+      "required": true
+    },
+    "Obrazek": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Galerie": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Video_youtube": {
+      "type": "string"
+    },
+    "Popis": {
+      "type": "richtext"
+    },
+    "Zverejnil": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::lide.lide"
+    },
+    "Zobrazovat": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "Tagy": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tagy.tagy",
+      "inversedBy": "Aktuality"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "Nadpis",
+      "required": true
+    },
+    "Soubory": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    }
+  }
+}

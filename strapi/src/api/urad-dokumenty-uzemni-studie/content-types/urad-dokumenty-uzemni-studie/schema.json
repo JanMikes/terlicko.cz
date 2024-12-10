@@ -1,0 +1,30 @@
+{
+  "kind": "singleType",
+  "collectionName": "urad_dokumenty_uzemni_studies",
+  "info": {
+    "singularName": "urad-dokumenty-uzemni-studie",
+    "pluralName": "urad-dokumenty-uzemni-studies",
+    "displayName": "04 > Ú > d > Dok > Územní studie",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Zobrazovat_komponentu_uredni_desky": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "Kategorie": {
+      "type": "component",
+      "repeatable": true,
+      "component": "komponenty.kategorie-plany"
+    }
+  }
+}

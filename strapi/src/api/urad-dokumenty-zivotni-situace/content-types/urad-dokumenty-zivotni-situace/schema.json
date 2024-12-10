@@ -1,0 +1,28 @@
+{
+  "kind": "singleType",
+  "collectionName": "urad_dokumenty_zivotni_situaces",
+  "info": {
+    "singularName": "urad-dokumenty-zivotni-situace",
+    "pluralName": "urad-dokumenty-zivotni-situaces",
+    "displayName": "04 > Ú > d > Dok > Životní situace",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Obsah": {
+      "type": "richtext"
+    },
+    "Zobrazovat_komponentu_uredni_desky": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}

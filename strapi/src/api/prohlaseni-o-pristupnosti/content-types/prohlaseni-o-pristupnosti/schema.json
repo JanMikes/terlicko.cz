@@ -1,0 +1,24 @@
+{
+  "kind": "singleType",
+  "collectionName": "prohlaseni_o_pristupnostis",
+  "info": {
+    "singularName": "prohlaseni-o-pristupnosti",
+    "pluralName": "prohlaseni-o-pristupnostis",
+    "displayName": "06 > Přístupnost",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Obsah": {
+      "type": "richtext",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_samosprava_clovek_samospravies",
+  "info": {
+    "displayName": "Člověk samosprávy",
+    "icon": "arrow-up"
+  },
+  "options": {},
+  "attributes": {
+    "Clovek": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::lide.lide"
+    },
+    "Funkce": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

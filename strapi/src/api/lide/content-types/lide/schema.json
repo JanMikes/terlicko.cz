@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "lides",
+  "info": {
+    "singularName": "lide",
+    "pluralName": "lides",
+    "displayName": "10 > Lidé",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Jmeno": {
+      "type": "string",
+      "required": true
+    },
+    "Email": {
+      "type": "email"
+    },
+    "Telefon": {
+      "type": "string"
+    },
+    "Fotka": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Pohlavi": {
+      "type": "enumeration",
+      "enum": [
+        "zena",
+        "muz"
+      ],
+      "required": true
+    },
+    "Funkce": {
+      "type": "string"
+    }
+  }
+}

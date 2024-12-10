@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_dlazdice_sekce_s_dlazdicemas",
+  "info": {
+    "displayName": "Sekce s dlaždicema",
+    "icon": "align-justify",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Popis": {
+      "type": "richtext"
+    },
+    "Dlazdice": {
+      "type": "component",
+      "repeatable": true,
+      "component": "dlazdice.dlazdice",
+      "required": true
+    }
+  }
+}

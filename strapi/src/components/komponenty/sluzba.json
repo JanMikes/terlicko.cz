@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_komponenty_sluzbas",
+  "info": {
+    "displayName": "Služba",
+    "icon": "car-alt"
+  },
+  "options": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Telefon": {
+      "type": "string",
+      "required": false
+    },
+    "Obsah": {
+      "type": "richtext"
+    }
+  }
+}

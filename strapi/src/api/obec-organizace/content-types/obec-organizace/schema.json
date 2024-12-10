@@ -1,0 +1,21 @@
+{
+  "kind": "singleType",
+  "collectionName": "obec_organizaces",
+  "info": {
+    "singularName": "obec-organizace",
+    "pluralName": "obec-organizaces",
+    "displayName": "03 > O > Organizace",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Graficke_pasy": {
+      "type": "component",
+      "repeatable": true,
+      "component": "komponenty.graficky-pas"
+    }
+  }
+}

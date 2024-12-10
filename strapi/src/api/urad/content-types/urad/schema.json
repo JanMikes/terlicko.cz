@@ -1,0 +1,28 @@
+{
+  "kind": "singleType",
+  "collectionName": "urads",
+  "info": {
+    "singularName": "urad",
+    "pluralName": "urads",
+    "displayName": "04 > Ú > a > Úřad",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Banner": {
+      "type": "component",
+      "repeatable": false,
+      "component": "header.banner-s-textem",
+      "required": true
+    },
+    "Sekce_s_dlazdicema": {
+      "type": "component",
+      "repeatable": false,
+      "component": "dlazdice.sekce-s-dlazdicema",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "kind": "singleType",
+  "collectionName": "urad_struktura_uradus",
+  "info": {
+    "singularName": "urad-struktura-uradu",
+    "pluralName": "urad-struktura-uradus",
+    "displayName": "04 > Ú > a > Struktura úřadu",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Banner": {
+      "type": "component",
+      "repeatable": false,
+      "component": "header.banner-s-textem"
+    },
+    "Obsah": {
+      "type": "richtext"
+    },
+    "Struktura_uradu": {
+      "type": "component",
+      "repeatable": true,
+      "component": "komponenty.clovek-samospravy"
+    },
+    "Struktura_stavebniho_uradu": {
+      "type": "component",
+      "repeatable": true,
+      "component": "komponenty.clovek-samospravy"
+    }
+  }
+}

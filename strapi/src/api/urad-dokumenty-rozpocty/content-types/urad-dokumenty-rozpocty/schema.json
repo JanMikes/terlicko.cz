@@ -1,0 +1,28 @@
+{
+  "kind": "singleType",
+  "collectionName": "urad_dokumenty_rozpocties",
+  "info": {
+    "singularName": "urad-dokumenty-rozpocty",
+    "pluralName": "urad-dokumenty-rozpocties",
+    "displayName": "04 > Ú > d > Dok > Rozpočty",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Obsah": {
+      "type": "richtext"
+    },
+    "Zobrazovat_komponentu_uredni_desky": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}

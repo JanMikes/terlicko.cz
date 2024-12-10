@@ -1,0 +1,28 @@
+{
+  "kind": "singleType",
+  "collectionName": "urad_dokumenty_projektys",
+  "info": {
+    "singularName": "urad-dokumenty-projekty",
+    "pluralName": "urad-dokumenty-projektys",
+    "displayName": "04 > Ú > d > Dok > Projekty",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Obsah": {
+      "type": "richtext"
+    },
+    "Zobrazovat_komponentu_uredni_desky": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}

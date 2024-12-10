@@ -1,0 +1,53 @@
+{
+  "collectionName": "components_komponenty_graficky_pas",
+  "info": {
+    "displayName": "Grafický pás",
+    "icon": "archway",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Umisteni": {
+      "type": "enumeration",
+      "enum": [
+        "Vlevo",
+        "Vpravo"
+      ],
+      "required": true
+    },
+    "Barva_gradientu_1": {
+      "type": "string",
+      "required": true
+    },
+    "Barva_gradientu_2": {
+      "type": "string",
+      "required": true
+    },
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Obsah": {
+      "type": "richtext",
+      "required": true
+    },
+    "Tlacitko": {
+      "type": "component",
+      "repeatable": false,
+      "component": "komponenty.tlacitko"
+    },
+    "Obrazek": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Letajici_obrazky": {
+      "type": "component",
+      "repeatable": true,
+      "component": "komponenty.letajici-obrazek"
+    }
+  }
+}

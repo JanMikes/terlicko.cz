@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_komponenty_karta_restauraces",
+  "info": {
+    "displayName": "Karta objektu",
+    "icon": "arrows-alt-v",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Obrazek": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Nazev": {
+      "type": "string",
+      "required": true
+    },
+    "Telefon": {
+      "type": "string"
+    },
+    "Email": {
+      "type": "email"
+    },
+    "Odkaz_web": {
+      "type": "string"
+    },
+    "Odkaz_mapa": {
+      "type": "string"
+    },
+    "Adresa": {
+      "type": "string"
+    }
+  }
+}

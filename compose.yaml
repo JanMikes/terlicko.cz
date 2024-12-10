@@ -2,27 +2,46 @@ volumes:
     caddy_data:
     caddy_config:
     postgres_data:
-    mailpit_data:
 
 services:
-    web:
+    frontend:
         image: ghcr.io/thedevs-cz/php:8.3
         restart: unless-stopped
         tty: true
         volumes:
-            - .:/app
-            - ./.docker/docker-entrypoint.sh:/usr/local/bin/docker-php-entrypoint
+            - ./frontend:/app
+            - ./frontend/docker-entrypoint.sh:/usr/local/bin/docker-php-entrypoint
+            - ./strapi/public/uploads:/www/public/uploads
             - caddy_data:/data
             - caddy_config:/config
-        depends_on:
-            - postgres
         ports:
             - "8080:80"
+        depends_on:
+            - postgres
         environment:
             XDEBUG_CONFIG: "client_host=host.docker.internal"
             XDEBUG_MODE: debug
             PHP_IDE_CONFIG: "serverName=localhost"
             SERVER_NAME: :80
+
+    strapi:
+        image: terlicko-strapi
+        build:
+            context: ./strapi
+            target: dev
+        environment:
+            DATABASE_CLIENT: postgres
+            DATABASE_NAME: terlicko
+            DATABASE_HOST: postgres
+            DATABASE_PORT: 5432
+            DATABASE_USERNAME: postgres
+            DATABASE_PASSWORD: postgres
+        volumes:
+            - ./strapi:/app
+        ports:
+            - '1337:1337'
+        depends_on:
+            - postgres
 
     postgres:
         image: postgres:17.0

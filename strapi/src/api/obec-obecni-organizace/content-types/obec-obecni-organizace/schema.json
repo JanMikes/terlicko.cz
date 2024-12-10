@@ -1,0 +1,20 @@
+{
+  "kind": "singleType",
+  "collectionName": "obec_obecni_organizaces",
+  "info": {
+    "singularName": "obec-obecni-organizace",
+    "pluralName": "obec-obecni-organizaces",
+    "displayName": "03 > O > Obecní organizace"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Graficke_pasy": {
+      "type": "component",
+      "repeatable": true,
+      "component": "komponenty.graficky-pas"
+    }
+  }
+}

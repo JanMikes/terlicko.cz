@@ -1,0 +1,21 @@
+{
+  "kind": "singleType",
+  "collectionName": "obec_aktivities",
+  "info": {
+    "singularName": "obec-aktivity",
+    "pluralName": "obec-aktivities",
+    "displayName": "03 > O > Aktivity",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Graficke_pasy": {
+      "type": "component",
+      "repeatable": true,
+      "component": "komponenty.graficky-pas"
+    }
+  }
+}

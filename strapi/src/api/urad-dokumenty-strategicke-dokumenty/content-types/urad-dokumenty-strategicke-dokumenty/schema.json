@@ -1,0 +1,28 @@
+{
+  "kind": "singleType",
+  "collectionName": "urad_dokumenty_strategicke_dokumenties",
+  "info": {
+    "singularName": "urad-dokumenty-strategicke-dokumenty",
+    "pluralName": "urad-dokumenty-strategicke-dokumenties",
+    "displayName": "04 > Ú > d > Dok > Strategické dokumenty",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Obsah": {
+      "type": "richtext"
+    },
+    "Zobrazovat_komponentu_uredni_desky": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}

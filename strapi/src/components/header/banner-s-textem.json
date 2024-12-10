@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_header_banner_s_textems",
+  "info": {
+    "displayName": "Banner s textem",
+    "icon": "window-maximize"
+  },
+  "options": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Obrazek": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "Text_pod_nadpisem": {
+      "type": "richtext",
+      "required": true,
+      "maxLength": 300
+    }
+  }
+}

@@ -1,0 +1,69 @@
+# https://github.com/docker/build-push-action/blob/master/docs/advanced/tags-labels.md
+
+name: Strapi
+
+permissions:
+    contents: read
+    deployments: write
+    packages: write
+
+on:
+    push:
+        branches:
+            - 'main'
+        paths:
+            - 'strapi/**'
+
+jobs:
+    docker-image:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+
+            -   name: Docker meta
+                id: meta
+                uses: docker/metadata-action@v5
+                with:
+                    # list of Docker images to use as base name for tags
+                    images: |
+                        ghcr.io/janmikes/terlicko.cz-strapi
+                    # generate Docker tags based on the following events/attributes
+                    tags: |
+                        type=ref,event=branch
+                        type=ref,event=pr
+
+            -   name: Set up Docker Buildx
+                uses: docker/setup-buildx-action@v3
+
+            -   name: Login to GHCR
+                if: github.event_name != 'pull_request'
+                uses: docker/login-action@v3
+                with:
+                    registry: ghcr.io
+                    username: ${{ github.repository_owner }}
+                    password: ${{ secrets.GITHUB_TOKEN }}
+
+            -   name: Build and push Strapi
+                uses: docker/build-push-action@v5
+                with:
+                    context: ./strapi
+                    push: ${{ github.event_name != 'pull_request' }}
+                    tags: ${{ steps.meta.outputs.tags }}
+                    labels: ${{ steps.meta.outputs.labels }}
+                    cache-from: type=gha, scope=${{ github.workflow }}
+                    cache-to: type=gha, scope=${{ github.workflow }}
+
+    deploy:
+        runs-on: ubuntu-latest
+        needs:
+            - docker-image
+        steps:
+            - name: executing remote ssh commands using ssh key
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.DEPLOY_HOST }}
+                username: ${{ secrets.DEPLOY_USERNAME }}
+                key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+                port: ${{ secrets.DEPLOY_PORT }}
+                script: cd /deployment/terlicko && ./deploy.sh

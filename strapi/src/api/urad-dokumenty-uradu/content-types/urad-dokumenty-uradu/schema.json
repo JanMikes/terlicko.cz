@@ -1,0 +1,22 @@
+{
+  "kind": "singleType",
+  "collectionName": "urad_dokumenty_uradus",
+  "info": {
+    "singularName": "urad-dokumenty-uradu",
+    "pluralName": "urad-dokumenty-uradus",
+    "displayName": "04 > Ú > c > Dokumenty úřadu",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Sekce_s_dlazdicema": {
+      "type": "component",
+      "repeatable": false,
+      "component": "dlazdice.sekce-s-dlazdicema",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tagies",
+  "info": {
+    "singularName": "tagy",
+    "pluralName": "tagies",
+    "displayName": "10 > Tagy",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Tag": {
+      "type": "string",
+      "required": true
+    },
+    "Aktuality": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::aktuality.aktuality",
+      "mappedBy": "Tagy"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "Tag",
+      "required": true
+    }
+  }
+}
