@@ -1,0 +1,172 @@
+body {
+    /* --bs-body-font-family: var(--bs-font-monospace); */
+    --bs-primary: #32416C;
+    --bs-primary-rgb: rgb(50, 65, 108);
+    --bs-secondary: #F49833;
+    --bs-secondary-rgb: 244,152,51;
+    --bs-secondary-color-rgb: 244,152,51;
+    --bs-heading-color: var(--bs-primary);
+    --bs-primary-text-emphasis: #8CADD5;
+    padding-top: 113px;
+}
+
+header {
+    border-bottom: 8px solid #8CADD5;
+}
+
+.nav-link-instagram,
+.nav-link-facebook{
+    display: inline-block;
+    text-indent: -9999px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.nav-item a {
+    color: var(--bs-primary);
+}
+
+.nav-link-instagram {
+    background-image: url('../images/instagram.svg');
+    width: 26px;
+    height: 26px;
+}
+
+.nav-link-facebook {
+    background-image: url('../images/facebook.svg');
+    width: 15px;
+    height: 26px;
+}
+
+.home-hero {
+    background: url('../images/terlicko-1.png') center top no-repeat #1E2648;
+    height: 963px;
+}
+
+.home-hero-gradient {
+    background: url('../images/home-hero-gradient.png') center top no-repeat;
+    height: 781px;
+}
+
+.home-quick-links {
+    background: #21294C linear-gradient(to bottom, #2B355A, #21294C);
+    padding-top: 10px;
+}
+
+.home-footer {
+    background: #32416C;
+    color: #fff;
+}
+
+.home-quick-link {
+    position: relative;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    width: 216px;
+    height: 242px;
+    background: url('../images/home-radial-gradient.png') center bottom no-repeat;
+}
+
+.home-quick-links-wrapper {
+    margin-top: -183px;
+}
+
+.home-quick-link span {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 15px;
+}
+
+.home-quick-link::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.quick-link-sport::before {
+    background: url('../images/home-sport.png') left top no-repeat;
+    width: 216px;
+    height: 211px;
+}
+
+.quick-link-volny-cas::before {
+    background: url('../images/home-volny-cas.png') left top no-repeat;
+    width: 215px;
+    height: 171px;
+    top: 3px;
+}
+
+.quick-link-akce::before {
+    background: url('../images/home-akce.png') left top no-repeat;
+    width: 236px;
+    height: 149px;
+    top: 27px;
+}
+
+.quick-link-koupani::before {
+    background: url('../images/home-koupani.png') left top no-repeat;
+    width: 215px;
+    height: 188px;
+    top: -1px;
+}
+
+.quick-link-restaurace::before {
+    background: url('../images/home-restaurace.png') left top no-repeat;
+    width: 188px;
+    height: 189px;
+    top: -10px;
+}
+
+.home-tip {
+    text-decoration: none;
+    height: 640px;
+    width: 280px;
+    background: linear-gradient(180deg, #1D274B 31.78%, #25335C 50.5%, #1D274B 100%);
+    margin: 1px;
+}
+
+.home-tip .number {
+    color: #8CADD5;
+    font-weight: bold;
+    font-size: 46px;
+    display: block;
+}
+.home-tip .title {
+    font-size: 24px;
+    color: #fff;
+    font-weight: bold;
+    display: block;
+}
+.home-tip .description {
+    color: #fff;
+    font-size: 13px;
+    display: block;
+}
+.home-tip .background {
+    height: 100%;
+    width: 100%;
+    padding: 34px;
+}
+
+.home-tip.tip-1 .background {
+    background: url('../images/home-tip-1.png') center bottom no-repeat;
+}
+.home-tip.tip-2 .background {
+    background: url('../images/home-tip-2.png') center bottom no-repeat;
+}
+.home-tip.tip-3 .background {
+    background: url('../images/home-tip-3.png') center bottom no-repeat;
+}
+.home-tip.tip-4 .background {
+    background: url('../images/home-tip-4.png') center bottom no-repeat;
+}
+.home-tip.tip-5 .background {
+    background: url('../images/home-tip-5.png') center bottom no-repeat;
+}

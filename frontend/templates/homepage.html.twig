@@ -3,4 +3,124 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
+    <section class="home-hero">
+        <div class="home-hero-gradient">
+
+        </div>
+    </section>
+
+    <section class="home-quick-links pb-4">
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-around home-quick-links-wrapper">
+                <a href="#" class="home-quick-link quick-link-sport">
+                    <span>Sport</span>
+                </a>
+                <a href="#" class="home-quick-link quick-link-volny-cas">
+                    <span>Volný čas</span>
+                </a>
+                <a href="#" class="home-quick-link quick-link-akce">
+                    <span>Akce</span>
+                </a>
+                <a href="#" class="home-quick-link quick-link-koupani">
+                    <span>Koupání</span>
+                </a>
+                <a href="#" class="home-quick-link quick-link-restaurace">
+                    <span>Restaurace</span>
+                </a>
+            </div>
+
+            <h2 class="mt-5 mb-4 text-white"><span class="text-secondary">Tipy</span> a <span class="text-secondary">aktivity</span> v obci</h2>
+
+            <div class="d-flex flex-wrap flex-lg-nowrap justify-content-center">
+                <a href="#" class="home-tip tip-1">
+                    <div class="background">
+                        <span class="number">01</span>
+                        <span class="title">Cyklotrasy a cykloakce</span>
+                        <span class="description">Lorem ipsum</span>
+                    </div>
+                </a>
+
+                <a href="#" class="home-tip tip-2">
+                    <div class="background">
+                        <span class="number">02</span>
+                        <span class="title">Těrlická přehrada</span>
+                        <span class="description">Lorem ipsum</span>
+                    </div>
+                </a>
+
+                <a href="#" class="home-tip tip-3">
+                    <div class="background">
+                        <span class="number">03</span>
+                        <span class="title">Sportovní hala</span>
+                        <span class="description">Lorem ipsum</span>
+                    </div>
+                </a>
+
+                <a href="#" class="home-tip tip-4">
+                    <div class="background">
+                        <span class="number">04</span>
+                        <span class="title">Knihovna v Těrlicku</span>
+                        <span class="description">Lorem ipsum</span>
+                    </div>
+                </a>
+
+                <a href="#" class="home-tip tip-5">
+                    <div class="background">
+                        <span class="number">05</span>
+                        <span class="title">Těrlický filmový festival</span>
+                        <span class="description">Lorem ipsum</span>
+                    </div>
+                </a>
+            </div>
+
+            <p class="text-end mt-4">
+                <a href="#" class="text-white text-decoration-none">
+                    <span class="text-secondary">Všechny tipy</span> a <span class="text-secondary">aktivity</span>
+                </a>
+            </p>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="mb-4"><span class="text-secondary">Příspěvky</span> <span class="fw-lighter">obce</span></h2>
+
+            <div class="row">
+                {% for post in [1, 2, 3, 4] %}
+                    <div class="col-sm-6 col-md-4 col-lg-3 my-2">
+                        <a href="#" class="text-decoration-none">
+                            <img class="img-fluid mb-2" src="{{ asset('images/post-placeholder.png') }}" alt="Pozvánka na ochotnické divadlo - Úvodní fotka">
+                            <span class="d-block text-secondary">Obecní akce</span>
+                            <h3 class="h5 border-top mt-2 pt-2">Pozvánka na ochotnické divadlo</h3>
+                            <span class="small text-primary-emphasis">Pondělí 2.11.2024 od 18:00</span>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="home-footer py-5">
+        <div class="container">
+            <h2><span class="text-secondary">Otevírací doba</span></h2>
+
+            <div class="row">
+                <div class="col-4">
+                    Obecní úřad Těrlicko<br>
+                    <strong>Májová 474/16, 735  42 Těrlicko-Horní Těrlicko</strong>
+                </div>
+                <div class="col-4">
+                    <p>
+                        <strong class="text-secondary">Pondělí:</strong><br>
+                        8:00–11:00, 12:00–17:00
+                    </p>
+
+                    <p>
+                        <strong class="text-secondary">Středa:</strong><br>
+                        8:00–11:00, 12:00–17:00
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
