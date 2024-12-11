@@ -13,6 +13,7 @@ on:
             - 'main'
         paths:
             - 'strapi/**'
+            - '.github/workflows/strapi-*'
 
 jobs:
     docker-image:
@@ -62,8 +63,7 @@ jobs:
             - name: executing remote ssh commands using ssh key
               uses: appleboy/ssh-action@master
               with:
-                host: ${{ secrets.DEPLOY_HOST }}
+                host: terlicko.thedevs.cz
                 username: ${{ secrets.DEPLOY_USERNAME }}
                 key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
-                port: ${{ secrets.DEPLOY_PORT }}
-                script: cd /deployment/terlicko && ./deploy.sh
+                script: cd /deployment/terlicko && ./deploy-strapi.sh
