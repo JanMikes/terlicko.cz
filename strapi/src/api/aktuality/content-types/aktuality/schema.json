@@ -4,7 +4,7 @@
   "info": {
     "singularName": "aktuality",
     "pluralName": "aktualities",
-    "displayName": "02 > Aktuality",
+    "displayName": "Aktuality",
     "description": ""
   },
   "options": {
@@ -64,14 +64,19 @@
       "required": true
     },
     "Soubory": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
+    },
+    "Zobrazovat_na_uredni_desce": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

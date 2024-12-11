@@ -4,7 +4,7 @@
   "info": {
     "singularName": "tagy",
     "pluralName": "tagies",
-    "displayName": "10 > Tagy",
+    "displayName": "Tagy",
     "description": ""
   },
   "options": {
@@ -26,6 +26,12 @@
       "type": "uid",
       "targetField": "Tag",
       "required": true
+    },
+    "Uredni_Desky": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::uredni-deska.uredni-deska",
+      "inversedBy": "Tagy"
     }
   }
 }

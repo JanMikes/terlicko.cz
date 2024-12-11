@@ -4,7 +4,7 @@
   "info": {
     "singularName": "uredni-deska",
     "pluralName": "uredni-deskas",
-    "displayName": "01 > Úřední deska",
+    "displayName": "Úřední deska",
     "description": ""
   },
   "options": {
@@ -141,6 +141,24 @@
       "type": "uid",
       "targetField": "Nadpis",
       "required": true
+    },
+    "Uvodni_obrazek": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Zobrazit_v_aktualitach": {
+      "type": "boolean",
+      "default": false
+    },
+    "Tagy": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tagy.tagy",
+      "inversedBy": "Uredni_Desky"
     }
   }
 }
