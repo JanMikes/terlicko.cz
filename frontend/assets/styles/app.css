@@ -1,5 +1,132 @@
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Thin.otf") format("opentype");
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Thin Italic.otf") format("opentype");
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Extralight.otf") format("opentype");
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Extralight Italic.otf") format("opentype");
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Light Italic.otf") format("opentype");
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Italic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Medium Italic.otf") format("opentype");
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Semibold.otf") format("opentype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Semibold Italic.otf") format("opentype");
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Bold Italic.otf") format("opentype");
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Extrabold.otf") format("opentype");
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Extrabold Italic.otf") format("opentype");
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Black.otf") format("opentype");
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Biotic";
+    src: url("../fonts/Biotic Black Italic.otf") format("opentype");
+    font-weight: 900;
+    font-style: italic;
+}
+
 body {
-    /* --bs-body-font-family: var(--bs-font-monospace); */
+    --bs-font-sans-serif: "Biotic", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --bs-body-font-family: var(--bs-font-sans-serif);
     --bs-primary: #32416C;
     --bs-primary-rgb: rgb(50, 65, 108);
     --bs-secondary: #F49833;
@@ -137,22 +264,47 @@ header {
     font-weight: bold;
     font-size: 46px;
     display: block;
+    line-height: 120%;
+    position: relative;
+    z-index: 3;
 }
 .home-tip .title {
     font-size: 24px;
     color: #fff;
     font-weight: bold;
     display: block;
+    line-height: 120%;
+    position: relative;
+    z-index: 3;
 }
 .home-tip .description {
     color: #fff;
     font-size: 13px;
     display: block;
+    position: relative;
+    z-index: 3;
 }
 .home-tip .background {
     height: 100%;
     width: 100%;
     padding: 34px;
+    position: relative;
+}
+
+.home-tip:hover .background::after {
+    opacity: 1;
+}
+
+.home-tip .background::after {
+    content: '';
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity .33s ease-in-out;
 }
 
 .home-tip.tip-1 .background {
@@ -169,4 +321,20 @@ header {
 }
 .home-tip.tip-5 .background {
     background: url('../images/home-tip-5.png') center bottom no-repeat;
+}
+
+.home-tip.tip-1 .background::after {
+    background: url('../images/home-tip-1-hover.png') center bottom no-repeat;
+}
+.home-tip.tip-2 .background::after {
+    background: url('../images/home-tip-2-hover.png') center bottom no-repeat;
+}
+.home-tip.tip-3 .background::after {
+    background: url('../images/home-tip-3-hover.png') center bottom no-repeat;
+}
+.home-tip.tip-4 .background::after {
+    background: url('../images/home-tip-4-hover.png') center bottom no-repeat;
+}
+.home-tip.tip-5 .background::after {
+    background: url('../images/home-tip-5-hover.png') center bottom no-repeat;
 }

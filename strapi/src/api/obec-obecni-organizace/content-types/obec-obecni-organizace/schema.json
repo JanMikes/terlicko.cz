@@ -4,7 +4,8 @@
   "info": {
     "singularName": "obec-obecni-organizace",
     "pluralName": "obec-obecni-organizaces",
-    "displayName": "03 > O > Obecní organizace"
+    "displayName": "03 > Obec > Obecní organizace",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
