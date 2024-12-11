@@ -13,7 +13,7 @@ on:
             - 'main'
         paths:
             - 'strapi/**'
-            - '.github/workflows/strapi-*'
+            - '.github/workflows/strapi.yml'
 
 jobs:
     docker-image:
