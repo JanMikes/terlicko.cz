@@ -4,6 +4,7 @@ on:
     push:
         paths:
             - 'frontend/**'
+            - '.github/workflows/frontend-*'
 
 env:
     DATABASE_URL: postgresql://postgres:postgres@postgres:5432/terlicko_test?serverVersion=17.0&charset=utf8
@@ -26,15 +27,22 @@ jobs:
       -   uses: actions/checkout@v4
       -   uses: actions/cache@v4
           with:
-              path: vendor
+              path: ./frontend/vendor
               key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
               restore-keys: |
                   ${{ runner.os }}-composer-
 
       -   run: composer install --no-scripts --no-progress
+          working-directory: ./frontend
+
       -   run: bin/console importmap:install
+          working-directory: ./frontend
+
       -   run: bin/console asset-map:compile
+          working-directory: ./frontend
+
       -   run: vendor/bin/phpunit
+          working-directory: ./frontend
 
 
   phpstan:
@@ -44,14 +52,19 @@ jobs:
         -   uses: actions/checkout@v4
         -   uses: actions/cache@v4
             with:
-                path: vendor
+                path: ./frontend/vendor
                 key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
                 restore-keys: |
                     ${{ runner.os }}-composer-
 
         -   run: composer install --no-scripts --no-progress
+            working-directory: ./frontend
+
         -   run: bin/console cache:warmup --env=dev
+            working-directory: ./frontend
+
         -   run: composer run-script phpstan
+            working-directory: ./frontend
 
 
   migrations-up-to-date:
@@ -71,13 +84,19 @@ jobs:
           -   uses: actions/checkout@v4
           -   uses: actions/cache@v4
               with:
-                  path: vendor
+                  path: ./frontend/vendor
                   key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
                   restore-keys: |
                       ${{ runner.os }}-composer-
 
           -   run: composer install --no-scripts --no-progress
+              working-directory: ./frontend
 
           -   run: bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+              working-directory: ./frontend
+
           -   run: bin/console doctrine:schema:update --dump-sql
+              working-directory: ./frontend
+
           -   run: bin/console doctrine:schema:validate
+              working-directory: ./frontend
