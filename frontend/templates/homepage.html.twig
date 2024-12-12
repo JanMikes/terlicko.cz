@@ -81,13 +81,13 @@
         </div>
     </section>
 
-    <section class="py-5">
-        <div class="container">
+    <div class="container">
+        <section class="py-5">
             <h2 class="mb-4"><span class="text-secondary">Příspěvky</span> <span class="fw-lighter">obce</span></h2>
 
             <div class="row">
                 {% for post in [1, 2, 3, 4] %}
-                    <div class="col-sm-6 col-md-4 col-lg-3 my-2">
+                    <div class="col-sm-6 col-md-4 col-lg-3 my-3">
                         <a href="#" class="text-decoration-none">
                             <img class="img-fluid mb-2" src="{{ asset('images/post-placeholder.png') }}" alt="Pozvánka na ochotnické divadlo - Úvodní fotka">
                             <span class="d-block text-secondary">Obecní akce</span>
@@ -101,8 +101,34 @@
             <p class="text-end mt-3">
                 <a href="#" class="text-secondary text-decoration-none">Všechny příspěvky &raquo;</a>
             </p>
-        </div>
-    </section>
+        </section>
+    </div>
+
+    <div class="container pt-3 pb-5">
+        <section class="row">
+            <h2 class="mb-4"><span class="text-secondary">Úřední</span> <span class="fw-lighter">deska</span></h2>
+
+            {% for post in [1, 2, 3, 4, 5, 6] %}
+                <article class="col-sm-6 col-md-4 my-4">
+                    <div class="d-flex">
+                        <span class="article-icon me-3"></span>
+                        <div>
+                            <a href="#" class="text-decoration-none">
+                                <time class="text-secondary fw-bold">22.11.24 – 25.11.24</time>
+                                <h2 class="h5 mt-1 fw-bold">Návrh rozpočtu obce Těrlicko na rok 2025</h2>
+                            </a>
+                            <a href="#" class="custom-badge small">rozpočet</a>
+                            <a href="#" class="custom-badge small">další tag</a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+
+        <p class="text-end mt-3">
+            <a href="{{ path('uredni_deska') }}" class="text-secondary text-decoration-none">Všechny příspěvky &raquo;</a>
+        </p>
+    </div>
 
     <section class="home-footer py-5">
         <div class="container">
