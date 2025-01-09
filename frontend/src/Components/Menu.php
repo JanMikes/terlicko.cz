@@ -6,9 +6,10 @@ namespace Terlicko\Web\Components;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Terlicko\Web\Services\Strapi\StrapiContent;
+use Terlicko\Web\Value\Content\Data\MenuData;
 
 #[AsTwigComponent]
-final class Menu
+readonly final class Menu
 {
     public function __construct(
         private StrapiContent $content,
@@ -16,7 +17,7 @@ final class Menu
     }
 
     /**
-     * @return array<string, string>
+     * @return array<MenuData>
      */
     public function getItems(): array
     {
