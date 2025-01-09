@@ -31,7 +31,7 @@ services:
             target: dev
         environment:
             DATABASE_CLIENT: postgres
-            DATABASE_NAME: terlicko
+            DATABASE_NAME: terlicko_strapi
             DATABASE_HOST: postgres
             DATABASE_PORT: 5432
             DATABASE_USERNAME: postgres
