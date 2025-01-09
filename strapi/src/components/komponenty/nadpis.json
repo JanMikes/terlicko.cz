@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_komponenty_nadpis",
+  "info": {
+    "displayName": "Nadpis",
+    "icon": "font"
+  },
+  "options": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Typ": {
+      "type": "enumeration",
+      "enum": [
+        "h2",
+        "h3",
+        "h4",
+        "h5"
+      ],
+      "default": "h2",
+      "required": true
+    }
+  }
+}

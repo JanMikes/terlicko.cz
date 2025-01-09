@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_komponenty_formular",
+  "info": {
+    "displayName": "Formulář",
+    "icon": "align-justify"
+  },
+  "options": {},
+  "attributes": {
+    "formular": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::formular.formular"
+    }
+  }
+}

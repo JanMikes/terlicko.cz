@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_dlazdice_sekce_s_dlazdicemas",
+  "info": {
+    "displayName": "Dlaždice",
+    "icon": "th",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Dlazdice": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elementy.dlazdice",
+      "required": true
+    }
+  }
+}

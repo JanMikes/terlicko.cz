@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_elementy_soubors",
+  "info": {
+    "displayName": "Soubor",
+    "icon": "file"
+  },
+  "options": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string",
+      "required": true
+    },
+    "Soubor": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}

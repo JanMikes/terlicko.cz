@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_komponenty_soubory_ke_stazeni",
+  "info": {
+    "displayName": "Soubory ke stažení",
+    "icon": "file-alt"
+  },
+  "options": {},
+  "attributes": {
+    "Pocet_sloupcu": {
+      "type": "enumeration",
+      "enum": [
+        "Jeden",
+        "Dva"
+      ],
+      "required": true,
+      "default": "Jeden"
+    },
+    "Soubor": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elementy.soubor",
+      "required": true,
+      "min": 1
+    }
+  }
+}

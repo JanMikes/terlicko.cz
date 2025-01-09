@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_komponenty_tlacitkos",
+  "info": {
+    "displayName": "Tlačítko",
+    "icon": "angle-right",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Text": {
+      "type": "string",
+      "required": true
+    },
+    "Odkaz": {
+      "type": "string",
+      "required": true
+    },
+    "Styl": {
+      "type": "enumeration",
+      "enum": [
+        "Styl 1",
+        "Styl 2"
+      ],
+      "default": "Styl 1",
+      "required": true
+    }
+  }
+}

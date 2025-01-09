@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_dlazdice_dlazdices",
+  "info": {
+    "displayName": "Dlazdice",
+    "icon": "clone",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Ikona": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Nadpis_dlazdice": {
+      "type": "string",
+      "required": true
+    },
+    "Odkaz": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

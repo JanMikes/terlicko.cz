@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_komponenty_galeries",
+  "info": {
+    "displayName": "Galerie",
+    "icon": "images"
+  },
+  "options": {},
+  "attributes": {
+    "Obrazek": {
+      "displayName": "Obrázek galerie",
+      "type": "component",
+      "repeatable": true,
+      "component": "elementy.obrazek-galerie",
+      "required": true,
+      "min": 1
+    },
+    "Pocet_zobrazenych": {
+      "type": "integer",
+      "required": true,
+      "default": 6,
+      "min": 1
+    }
+  }
+}

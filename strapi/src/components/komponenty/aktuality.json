@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_komponenty_aktualities",
+  "info": {
+    "displayName": "Aktuality",
+    "icon": "paper-plane"
+  },
+  "options": {},
+  "attributes": {
+    "kategories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tagy.tagy"
+    },
+    "Pocet": {
+      "type": "integer",
+      "default": 3,
+      "required": true,
+      "min": 1
+    }
+  }
+}

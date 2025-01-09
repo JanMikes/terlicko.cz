@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_samosprava_samospravas",
+  "info": {
+    "displayName": "Lidé",
+    "icon": "address-card",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "lides": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::lide.lide"
+    }
+  }
+}

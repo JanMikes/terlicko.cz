@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sekces",
+  "info": {
+    "singularName": "sekce",
+    "pluralName": "sekces",
+    "displayName": "Sekce",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nazev": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 80
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "Nazev",
+      "required": true
+    },
+    "Meta_description": {
+      "type": "string"
+    },
+    "Komponenty": {
+      "type": "dynamiczone",
+      "components": [
+        "komponenty.aktuality",
+        "komponenty.formular",
+        "komponenty.galerie",
+        "komponenty.nadpis",
+        "komponenty.obrazek",
+        "komponenty.rozdelovnik",
+        "komponenty.samosprava",
+        "komponenty.sekce-s-dlazdicema",
+        "komponenty.soubory-ke-stazeni",
+        "komponenty.textove-pole",
+        "komponenty.tlacitka",
+        "komponenty.uredni-deska"
+      ],
+      "required": true,
+      "min": 1
+    }
+  }
+}

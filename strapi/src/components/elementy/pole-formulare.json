@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_elementy_pole_formulares",
+  "info": {
+    "displayName": "Pole formuláře",
+    "icon": "terminal"
+  },
+  "options": {},
+  "attributes": {
+    "Povinne": {
+      "type": "boolean"
+    },
+    "Typ": {
+      "type": "enumeration",
+      "enum": [
+        "Text",
+        "Textové pole",
+        "Email",
+        "Telefon",
+        "Foto",
+        "Soubor",
+        "Datum",
+        "Datum_od_do",
+        "Checkbox"
+      ],
+      "required": true,
+      "default": "Text"
+    }
+  }
+}

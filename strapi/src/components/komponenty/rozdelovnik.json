@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_komponenty_rozdelovniks",
+  "info": {
+    "displayName": "Rozdělovník",
+    "icon": "minus"
+  },
+  "options": {},
+  "attributes": {
+    "Tloustka_cary": {
+      "type": "enumeration",
+      "enum": [
+        "Normální",
+        "Tenká"
+      ],
+      "default": "Normální",
+      "required": true
+    },
+    "Typ": {
+      "type": "enumeration",
+      "enum": [
+        "Plná",
+        "Tečkovaná"
+      ],
+      "default": "Plná",
+      "required": true
+    }
+  }
+}

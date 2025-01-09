@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "formulars",
+  "info": {
+    "singularName": "formular",
+    "pluralName": "formulars",
+    "displayName": "Formulář",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nazev": {
+      "type": "string",
+      "required": true
+    },
+    "Email_prijemce": {
+      "type": "string",
+      "required": true
+    },
+    "Email_predmet": {
+      "type": "string",
+      "required": true
+    },
+    "Pole": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elementy.pole-formulare",
+      "required": true,
+      "min": 1
+    }
+  }
+}
