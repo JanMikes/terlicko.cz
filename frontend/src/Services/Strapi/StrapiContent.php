@@ -176,7 +176,8 @@ readonly final class StrapiContent
 
         $tags = [];
 
-        foreach ($strapiResponse ?? [] as $tagData) {
+        foreach ($strapiResponse['data'] as $tagData) {
+            /** @var array{slug: null|string, Tag: string} $tagData */
             if ($tagData['slug'] === null) {
                 continue;
             }

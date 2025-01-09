@@ -19,11 +19,13 @@ final class FileData
 
     public static function createFromStrapiResponse(array $data, int|null $id = null): self
     {
+        /** @var numeric-string $size */
+        $size = $data['size'];
         return new self(
             $data['name'],
             $data['caption'],
             $data['url'],
-            (int) $data['size'],
+            (int) $size,
             trim($data['ext'], '.'),
         );
     }

@@ -45,6 +45,7 @@ final class AktualitaData
         $tags = [];
 
         foreach ($data['Tagy'] ?? [] as $tagData) {
+            /** @var array{slug: null|string, Tag: string} $tagData */
             if ($tagData['slug'] === null) {
                 continue;
             }
@@ -54,14 +55,20 @@ final class AktualitaData
 
         $datumZverejneni = DateTimeImmutable::createFromFormat('Y-m-d', $data['Datum_zverejneni']);
 
+        /** @var array<array{url: string}> $galerieData */
+        $galerieData = $data['Galerie'];
+        $galerie = $galerieData ? array_map(fn(array $item): string => $item['url'], $galerieData) : [];
+
+        $zverejnil = $data['Zverejnil'] ? ClovekData::createFromStrapiResponse($data['Zverejnil']) : null;
+
         return new self(
             $id,
             $data['Nadpis'],
             $datumZverejneni,
             $data['Obrazek']['url'] ?? null,
             $data['Video_youtube'],
-            $data['Galerie'] ? array_map(fn(array $galerieData) => $galerieData['url'], $data['Galerie']) : [],
-            $data['Zverejnil'] ? ClovekData::createFromStrapiResponse($data['Zverejnil']) : null,
+            $galerie,
+            $zverejnil,
             $tags,
             $data['Popis'],
             $data['slug'],

@@ -18,6 +18,7 @@ final class SekceData
     public static function createFromStrapiResponse(array $data): self
     {
         // TODO: Upravit
+        /** @var array<mixed> $komponenty */
         $komponenty = $data['Komponenty'];
 
         return new self(

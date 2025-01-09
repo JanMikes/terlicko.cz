@@ -17,7 +17,10 @@ trait CanCreateManyFromStrapiResponse
         $objects = [];
 
         foreach ($data as $singleObjectData) {
-            $objects[] = self::createFromStrapiResponse($singleObjectData, $singleObjectData['id'] ?? null);
+            /** @var int|null $id */
+            $id = $singleObjectData['id'] ?? null;
+
+            $objects[] = self::createFromStrapiResponse($singleObjectData, $id);
         }
 
         return $objects;
