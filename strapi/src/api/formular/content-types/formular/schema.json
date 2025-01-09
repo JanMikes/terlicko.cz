@@ -25,10 +25,11 @@
       "required": true
     },
     "Pole": {
-      "type": "component",
-      "repeatable": true,
-      "component": "elementy.pole-formulare",
-      "required": true
+      "type": "dynamiczone",
+      "components": [
+        "elementy.pole-formulare",
+        "elementy.pole-formulare-s-moznostmi"
+      ]
     }
   }
 }

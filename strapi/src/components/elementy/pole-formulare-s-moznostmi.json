@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_elementy_pole_formulare_s_moznostmis",
+  "info": {
+    "displayName": "Pole formuláře s možnostmi",
+    "icon": "grip-lines",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Povinne": {
+      "type": "boolean",
+      "required": false
+    },
+    "Typ": {
+      "type": "enumeration",
+      "enum": [
+        "Select",
+        "Checkbox list",
+        "Radio"
+      ],
+      "required": true
+    },
+    "Nadpis_pole": {
+      "type": "string",
+      "required": true
+    },
+    "Moznosti": {
+      "displayName": "Výběr z možností",
+      "type": "component",
+      "repeatable": true,
+      "component": "elementy.vyber-z-moznosti",
+      "required": true
+    }
+  }
+}
