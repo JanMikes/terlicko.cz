@@ -579,7 +579,7 @@ final class StrapiContent
     }
 
     /**
-     * @return array<string, string>
+     * @return array<MenuData>
      */
     public function getMenu(): array
     {
