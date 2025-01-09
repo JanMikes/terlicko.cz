@@ -14,7 +14,7 @@ final class AktualitaData
         public readonly int|null $id,
         public readonly string $Nadpis,
         public readonly DateTimeImmutable $DatumZverejneni,
-        public readonly string $Obrazek,
+        public readonly null|string $Obrazek,
         public readonly string|null $Video_youtube,
 
         /**
@@ -56,7 +56,7 @@ final class AktualitaData
             $id,
             $data['Nadpis'],
             DateTimeImmutable::createFromFormat('Y-m-d', $data['Datum_zverejneni']),
-            $data['Obrazek']['data']['attributes']['url'],
+            $data['Obrazek']['data']['attributes']['url'] ?? null,
             $data['Video_youtube'],
             $data['Galerie']['data'] ? array_map(fn(array $galerieData) => $galerieData['attributes']['url'], $data['Galerie']['data']) : [],
             $data['Zverejnil']['data'] ? ClovekData::createFromStrapiResponse($data['Zverejnil']['data']['attributes']) : null,
