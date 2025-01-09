@@ -1,25 +1,27 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Terlicko\Web\Controller;
 
+use Terlicko\Web\Services\Strapi\StrapiContent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Terlicko\Web\Services\Strapi\StrapiContent;
 
-final class HomepageController extends AbstractController
+final class AktualityController extends AbstractController
 {
     public function __construct(
         readonly private StrapiContent $content
     ) {}
 
-    #[Route(path: '/', name: 'homepage')]
+    #[Route('/aktuality', name: 'aktuality')]
     public function __invoke(): Response
     {
-        return $this->render('homepage.html.twig', [
-            'aktuality' => $this->content->getAktualityData(limit: 4),
-            'uredni_deska' => $this->content->getUredniDeskyData(limit: 5, shouldHideIfExpired: true),
+        return $this->render('aktuality.html.twig', [
+            'tagy' => $this->content->getTagy(),
+            'active_tag' => null,
+            'aktuality' => $this->content->getAktualityData(),
         ]);
     }
 }
