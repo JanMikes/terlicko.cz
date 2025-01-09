@@ -26,9 +26,9 @@ if [ "$1" = "strapi" ]; then
 
     echo "Node modules not installed. Installing..."
 
-    if [ -f "yarn.lock" ]; then
+    if [ -f "package-lock.json" ]; then
 
-      yarn install
+      npm ci
 
     else
 

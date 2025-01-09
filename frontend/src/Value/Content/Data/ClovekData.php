@@ -31,7 +31,7 @@ final class ClovekData
         // Special type, data is wrapped and 'Funkce' will overwrite
         if (isset($data['Clovek'], $data['Funkce'])) {
             $funkce = $data['Funkce'];
-            $data = $data['Clovek']['data']['attributes'];
+            $data = $data['Clovek'];
             $data['Funkce'] = $funkce;
         }
 
@@ -41,7 +41,7 @@ final class ClovekData
             $data['Email'],
             $data['Telefon'],
             $data['Pohlavi'],
-            $data['Fotka']['data'] ? $data['Fotka']['data']['attributes']['url'] : null
+            $data['Fotka'] ? $data['Fotka']['url'] : null
         );
     }
 }

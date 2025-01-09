@@ -10,7 +10,7 @@ final class FileData
 
     public function __construct(
         public readonly string $name,
-        public readonly string $caption,
+        public readonly null|string $caption,
         public readonly string $url,
         public readonly int $kbytes,
         public readonly string $ext,
@@ -19,8 +19,6 @@ final class FileData
 
     public static function createFromStrapiResponse(array $data, int|null $id = null): self
     {
-        $data = $data['data']['attributes'] ?? $data;
-
         return new self(
             $data['name'],
             $data['caption'],

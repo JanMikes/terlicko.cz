@@ -158,7 +158,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::tagy.tagy",
-      "inversedBy": "Uredni_Desky"
+      "mappedBy": "Uredni_Desky"
     }
   }
 }

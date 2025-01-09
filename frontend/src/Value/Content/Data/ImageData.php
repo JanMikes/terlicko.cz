@@ -10,7 +10,7 @@ final class ImageData
 
     public function __construct(
         public readonly string $name,
-        public readonly string $caption,
+        public readonly null|string $caption,
         public readonly string $url,
         public readonly float $size,
         public readonly string $ext,

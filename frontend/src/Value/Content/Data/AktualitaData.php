@@ -44,26 +44,28 @@ final class AktualitaData
     {
         $tags = [];
 
-        foreach ($data['Tagy']['data'] ?? [] as $tagData) {
-            if ($tagData['attributes']['slug'] === null) {
+        foreach ($data['Tagy'] ?? [] as $tagData) {
+            if ($tagData['slug'] === null) {
                 continue;
             }
 
-            $tags[$tagData['attributes']['slug']] = $tagData['attributes']['Tag'];
+            $tags[$tagData['slug']] = $tagData['Tag'];
         }
+
+        $datumZverejneni = DateTimeImmutable::createFromFormat('Y-m-d', $data['Datum_zverejneni']);
 
         return new self(
             $id,
             $data['Nadpis'],
-            DateTimeImmutable::createFromFormat('Y-m-d', $data['Datum_zverejneni']),
-            $data['Obrazek']['data']['attributes']['url'] ?? null,
+            $datumZverejneni,
+            $data['Obrazek']['url'] ?? null,
             $data['Video_youtube'],
-            $data['Galerie']['data'] ? array_map(fn(array $galerieData) => $galerieData['attributes']['url'], $data['Galerie']['data']) : [],
-            $data['Zverejnil']['data'] ? ClovekData::createFromStrapiResponse($data['Zverejnil']['data']['attributes']) : null,
+            $data['Galerie'] ? array_map(fn(array $galerieData) => $galerieData['url'], $data['Galerie']) : [],
+            $data['Zverejnil'] ? ClovekData::createFromStrapiResponse($data['Zverejnil']) : null,
             $tags,
             $data['Popis'],
             $data['slug'],
-            isset($data['Soubory']['data']) ? FileData::createManyFromStrapiResponse($data['Soubory']) : [],
+            isset($data['Soubory']) ? FileData::createManyFromStrapiResponse($data['Soubory']) : [],
         );
     }
 }

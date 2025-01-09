@@ -67,7 +67,7 @@ readonly final class StrapiContent
         ]);
 
         return AktualitaData::createFromStrapiResponse(
-            $strapiResponse['data'][0]['attributes'] ?? throw new NotFound
+            $strapiResponse['data'][0] ?? throw new NotFound
         );
     }
 
@@ -108,7 +108,7 @@ readonly final class StrapiContent
             'Zodpovedna_osoba.Fotka',
         ], filters: $filters, pagination: $pagination, sort: ['Datum_zverejneni:desc', 'Nadpis']);
 
-        return UredniDeskaData::createManyFromStrapiResponse($strapiResponse);
+        return UredniDeskaData::createManyFromStrapiResponse($strapiResponse['data']);
     }
 
     public function getUredniDeskaData(string $slug): UredniDeskaData
@@ -121,7 +121,7 @@ readonly final class StrapiContent
         ]);
 
         return UredniDeskaData::createFromStrapiResponse(
-            $strapiResponse['data'][0]['attributes'] ?? throw new NotFound
+            $strapiResponse['data'][0] ?? throw new NotFound
         );
     }
 
@@ -176,12 +176,12 @@ readonly final class StrapiContent
 
         $tags = [];
 
-        foreach ($strapiResponse['data'] ?? [] as $tagData) {
-            if ($tagData['attributes']['slug'] === null) {
+        foreach ($strapiResponse ?? [] as $tagData) {
+            if ($tagData['slug'] === null) {
                 continue;
             }
 
-            $tags[$tagData['attributes']['slug']] = $tagData['attributes']['Tag'];
+            $tags[$tagData['slug']] = $tagData['Tag'];
         }
 
         return $tags;
@@ -194,7 +194,7 @@ readonly final class StrapiContent
     {
         $strapiResponse = $this->strapiClient->getApiResource('menus', [], [], sort: ['Poradi']);
 
-        return MenuData::createManyFromStrapiResponse($strapiResponse);
+        return MenuData::createManyFromStrapiResponse($strapiResponse['data']);
     }
 
     public function getSekceData(string $slug): SekceData
@@ -204,7 +204,7 @@ readonly final class StrapiContent
         ]);
 
         return SekceData::createFromStrapiResponse(
-            $strapiResponse['data'][0]['attributes'] ?? throw new NotFound
+            $strapiResponse['data'][0] ?? throw new NotFound
         );
     }
 }

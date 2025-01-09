@@ -48,9 +48,9 @@ final class UredniDeskaData
             $data['Nadpis'],
             DateTimeImmutable::createFromFormat('Y-m-d', $data['Datum_zverejneni']),
             $data['Datum_stazeni'] ? DateTimeImmutable::createFromFormat('Y-m-d', $data['Datum_stazeni']) : null,
-            $data['Soubory']['data'] ? FileData::createManyFromStrapiResponse($data['Soubory']) : [],
+            $data['Soubory'] ? FileData::createManyFromStrapiResponse($data['Soubory']) : [],
             $data['Popis'],
-            $data['Zodpovedna_osoba']['data'] ? ClovekData::createFromStrapiResponse($data['Zodpovedna_osoba']['data']['attributes']) : null,
+            $data['Zodpovedna_osoba'] ? ClovekData::createFromStrapiResponse($data['Zodpovedna_osoba']) : null,
             $kategorie,
             $data['slug'],
         );
