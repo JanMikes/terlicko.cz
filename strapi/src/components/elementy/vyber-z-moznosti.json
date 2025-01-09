@@ -2,8 +2,13 @@
   "collectionName": "components_elementy_vyber_z_moznosti",
   "info": {
     "displayName": "Výběr z možností",
-    "icon": "align-left"
+    "icon": "align-left",
+    "description": ""
   },
   "options": {},
-  "attributes": {}
+  "attributes": {
+    "Text": {
+      "type": "string"
+    }
+  }
 }
