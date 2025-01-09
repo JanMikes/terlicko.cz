@@ -15,6 +15,7 @@ use Terlicko\Web\Value\Content\Data\GrafickyPasData;
 use Terlicko\Web\Value\Content\Data\KartaObjektuData;
 use Terlicko\Web\Value\Content\Data\KategorieUredniDesky;
 use Terlicko\Web\Value\Content\Data\KontaktyData;
+use Terlicko\Web\Value\Content\Data\MenuData;
 use Terlicko\Web\Value\Content\Data\ObecData;
 use Terlicko\Web\Value\Content\Data\PristupnostData;
 use Terlicko\Web\Value\Content\Data\RestauraceData;
@@ -30,7 +31,6 @@ use Terlicko\Web\Value\Content\Data\UredniDeskaData;
 use Terlicko\Web\Value\Content\Data\UzemniData;
 use Terlicko\Web\Value\Content\Exception\InvalidKategorie;
 use Terlicko\Web\Value\Content\Exception\NotFound;
-use Nette\Utils\Strings;
 use Symfony\Component\HttpClient\Exception\ClientException;
 
 final class StrapiContent
@@ -576,5 +576,15 @@ final class StrapiContent
         }
 
         return $tags;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getMenu(): array
+    {
+        $strapiResponse = $this->strapiClient->getApiResource('menus', [], [], sort: ['Poradi']);
+
+        return MenuData::createManyFromStrapiResponse($strapiResponse);
     }
 }

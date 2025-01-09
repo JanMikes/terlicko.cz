@@ -18,6 +18,9 @@ return static function(ContainerConfigurator $configurator): void
 
     $parameters->set('doctrine.orm.enable_lazy_ghost_objects', true);
 
+    $parameters->set('strapi.api_uri', env('STRAPI_API_URL'));
+    $parameters->set('strapi.api_key', env('STRAPI_API_KEY'));
+
     $services = $configurator->services();
 
     $services->defaults()

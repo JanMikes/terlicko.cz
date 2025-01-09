@@ -19,6 +19,12 @@
     "Odkaz": {
       "type": "string",
       "required": true
+    },
+    "Poradi": {
+      "type": "integer",
+      "required": true,
+      "default": 1,
+      "min": 1
     }
   }
 }
