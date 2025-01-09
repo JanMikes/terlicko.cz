@@ -19,7 +19,7 @@ final class HomepageController extends AbstractController
     {
         return $this->render('homepage.html.twig', [
             'aktuality' => $this->content->getAktualityData(limit: 4),
-            'uredni_deska' => $this->content->getUredniDeskyData(limit: 5, shouldHideIfExpired: true),
+            'uredni_deska' => $this->content->getUredniDeskyData(limit: 6, shouldHideIfExpired: true),
         ]);
     }
 }

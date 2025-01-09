@@ -2,7 +2,8 @@
   "collectionName": "components_komponenty_tlacitkas",
   "info": {
     "displayName": "Tlačítka",
-    "icon": "window-restore"
+    "icon": "window-restore",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -10,8 +11,7 @@
       "type": "component",
       "repeatable": true,
       "component": "elementy.tlacitko",
-      "required": true,
-      "min": 1
+      "required": true
     }
   }
 }

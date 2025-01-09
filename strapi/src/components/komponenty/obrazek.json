@@ -2,7 +2,8 @@
   "collectionName": "components_komponenty_obrazeks",
   "info": {
     "displayName": "Obrázek",
-    "icon": "image"
+    "icon": "image",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -11,7 +12,6 @@
       "repeatable": true,
       "component": "elementy.banner",
       "required": true,
-      "min": 1,
       "max": 3
     }
   }

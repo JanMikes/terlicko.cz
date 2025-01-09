@@ -2,7 +2,8 @@
   "collectionName": "components_komponenty_soubory_ke_stazeni",
   "info": {
     "displayName": "Soubory ke stažení",
-    "icon": "file-alt"
+    "icon": "file-alt",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -19,8 +20,7 @@
       "type": "component",
       "repeatable": true,
       "component": "elementy.soubor",
-      "required": true,
-      "min": 1
+      "required": true
     }
   }
 }
