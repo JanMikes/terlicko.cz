@@ -14,8 +14,10 @@ final class TlacitkoData
         public string $Odkaz,
     ) {}
 
-
-    public static function createFromStrapiResponse(array $data, int|null $id = null): self
+    /**
+     * @param array{Text: string, Odkaz: string} $data
+     */
+    public static function createFromStrapiResponse(array $data): self
     {
         return new self($data['Text'], $data['Odkaz']);
     }

@@ -6,7 +6,7 @@ namespace Terlicko\Web\Value\Content\Data;
 
 trait CanCreateManyFromStrapiResponse
 {
-    abstract public static function createFromStrapiResponse(array $data, int|null $id = null): self;
+    abstract public static function createFromStrapiResponse(array $data): self;
 
 
     /**

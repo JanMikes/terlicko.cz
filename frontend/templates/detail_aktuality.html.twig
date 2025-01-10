@@ -23,7 +23,7 @@
         #}
 
         <article>
-            <h2 id="aktualita-{{ aktualita.id }}">{{ aktualita.Nadpis }}</h2>
+            <h2 id="aktualita-{{ aktualita.slug }}">{{ aktualita.Nadpis }}</h2>
 
             <p>
                 {% if aktualita.Zverejnil %}
@@ -44,7 +44,7 @@
 
             {% if aktualita.Obrazek %}
                 <div class="img-wrapper">
-                    <img src="{{ aktualita.Obrazek }}" alt="" aria-labelledby="aktualita-{{ aktualita.id }}">
+                    <img src="{{ aktualita.Obrazek }}" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
                 </div>
             {% endif %}
 

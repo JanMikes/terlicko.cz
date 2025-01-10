@@ -14,7 +14,13 @@ readonly final class MenuData
     ) {
     }
 
-    public static function createFromStrapiResponse(array $data, int|null $id = null): self
+    /**
+     * @param array{
+     *     Nadpis: string,
+     *     Odkaz: string,
+     * } $data
+     */
+    public static function createFromStrapiResponse(array $data): self
     {
         $link = ltrim($data['Odkaz'], '/');
 
@@ -23,8 +29,8 @@ readonly final class MenuData
         }
 
         return new self(
-            $data['Nadpis'],
-            $link,
+            Nadpis: $data['Nadpis'],
+            Odkaz: $link,
         );
     }
 }

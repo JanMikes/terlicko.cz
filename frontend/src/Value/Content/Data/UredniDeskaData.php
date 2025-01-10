@@ -29,10 +29,12 @@ final class UredniDeskaData
         public readonly array $Kategorie,
 
         public readonly null|string $slug,
-    )
-    {
+    ) {
     }
 
+    /**
+     * @param array{} $data
+     */
     public static function createFromStrapiResponse(array $data, int|null $id = null): self
     {
         $kategorie = [];

@@ -30,12 +30,12 @@
                     <div class="actuality-inner">
                         {% if aktualita.Obrazek %}
                             <div class="image-wrapper">
-                                <img src="{{ aktualita.Obrazek }}" alt="" aria-labelledby="aktualita-{{ aktualita.id }}">
+                                <img src="{{ aktualita.Obrazek }}" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
                             </div>
                         {% endif %}
 
                         <div class="actuality-content">
-                            <h3 id="aktualita-{{ aktualita.id }}">
+                            <h3 id="aktualita-{{ aktualita.slug }}">
                                 {% if aktualita.slug %}
                                     <a href="{{ path('detail_aktuality', {'slug': aktualita.slug}) }}">
                                         {{ aktualita.Nadpis }}
@@ -49,9 +49,9 @@
 
                             {% if aktualita.Tagy %}
                                 <p class="tags">
-                                    {% for TagSlug, Tag in aktualita.Tagy %}
-                                        <a href="{{ path('aktuality_tag_filter', {'tag': TagSlug}) }}" class="tag-link">
-                                            {{ Tag }}
+                                    {% for Tag in aktualita.Tagy %}
+                                        <a href="{{ path('aktuality_tag_filter', {'tag': Tag.slug}) }}" class="tag-link">
+                                            {{ Tag.Tag }}
                                         </a>
                                     {% endfor %}
                                 </p>

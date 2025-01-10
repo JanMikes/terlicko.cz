@@ -4,21 +4,39 @@ declare(strict_types=1);
 
 namespace Terlicko\Web\Value\Content\Data;
 
-final class ImageData
+/**
+ * @phpstan-type ImageDataArray array{
+ *     name: string,
+ *     caption: null|string,
+ *     size: float,
+ *     url: string,
+ *     ext: string,
+ *     formats: array<array{
+ *      name: string,
+ *      caption: null|string,
+ *      size: float,
+ *      url: string,
+ *      ext: string,
+ *     }>,
+ *   }
+ */
+readonly final class ImageData
 {
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(
-        public readonly string $name,
-        public readonly null|string $caption,
-        public readonly string $url,
-        public readonly float $size,
-        public readonly string $ext,
-    )
-    {
+        public string $name,
+        public null|string $caption,
+        public string $url,
+        public float $size,
+        public string $ext,
+    ) {
     }
 
 
+    /**
+     * @param ImageDataArray $data
+     */
     public static function createFromStrapiResponse(array $data, int|null $id = null): self
     {
         /** @var numeric-string $size */

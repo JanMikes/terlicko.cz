@@ -4,6 +4,17 @@ declare(strict_types=1);
 
 namespace Terlicko\Web\Value\Content\Data;
 
+/**
+ * @phpstan-import-type ImageDataArray from ImageData
+ * @phpstan-type ClovekDataArray array{
+ *     Jmeno: string,
+ *     Email: string,
+ *     Telefon: string,
+ *     Pohlavi: string,
+ *     Funkce: string,
+ *     Fotka: ImageDataArray,
+ *  }
+ */
 final class ClovekData
 {
     use CanCreateManyFromStrapiResponse;
@@ -14,7 +25,7 @@ final class ClovekData
         public string|null $Email,
         public string|null $Telefon,
         public string $Pohlavi,
-        public string|null $Fotka,
+        public ImageData $Fotka,
     )
     {
     }
@@ -26,22 +37,18 @@ final class ClovekData
     }
 
 
-    public static function createFromStrapiResponse(array $data, int|null $id = null): self
+    /**
+     * @param ClovekDataArray $data
+     */
+    public static function createFromStrapiResponse(array $data,): self
     {
-        // Special type, data is wrapped and 'Funkce' will overwrite
-        if (isset($data['Clovek'], $data['Funkce'])) {
-            $funkce = $data['Funkce'];
-            $data = $data['Clovek'];
-            $data['Funkce'] = $funkce;
-        }
-
         return new self(
             $data['Jmeno'],
             $data['Funkce'],
             $data['Email'],
             $data['Telefon'],
             $data['Pohlavi'],
-            $data['Fotka'] ? $data['Fotka']['url'] : null
+            ImageData::createFromStrapiResponse($data['Fotka']),
         );
     }
 }
