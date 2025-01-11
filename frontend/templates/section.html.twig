@@ -15,11 +15,7 @@
         <h1 class="fw-bolder">{{ sekce.Nazev }}</h1>
 
         {% for komponenta in sekce.Komponenty %}
-
-            {% if komponenta.type == 'nadpis' %}
-                <twig:Nadpis data="{{ komponenta.data }}" />
-            {% endif %}
-
+            {{ component(komponenta.type, { data: komponenta.data }) }}
         {% endfor %}
 
 

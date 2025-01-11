@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Terlicko\Web\Value\Content\Data;
 
 use Terlicko\Web\Value\Content\Data\Component\NadpisComponentData;
+use Terlicko\Web\Value\Content\Data\Component\TextovePoleComponentData;
+use Terlicko\Web\Value\Content\Data\Component\TlacitkaComponentData;
 
 /**
  * @phpstan-type SekceDataArray array{
@@ -33,26 +35,21 @@ readonly final class SekceData
         $components = [];
 
         foreach ($data['Komponenty'] as $component) {
-            if ($component['__component'] === 'komponenty.nadpis') {
-                $components[] = new Component('nadpis', NadpisComponentData::createFromStrapiResponse($component));
-            }
-
-            /*
             $components[] = match($component['__component']) {
-                'komponenty.aktuality' => '',
-                'komponenty.formular' => '',
-                'komponenty.galerie' => '',
-                'komponenty.obrazek' => '',
-                'komponenty.rozdelovnik' => '',
-                'komponenty.samosprava' => '',
-                'komponenty.sekce-s-dlazdicema' => '',
-                'komponenty.soubory-ke-stazeni' => '',
-                'komponenty.textove-pole' => '',
-                'komponenty.tlacitka' => '',
-                'komponenty.uredni-deska' => '',
-                default => throw new \Exception('Unknown component'),
+                'komponenty.nadpis' => new Component('Nadpis', NadpisComponentData::createFromStrapiResponse($component)),
+                'komponenty.textove-pole' => new Component('TextovePole', TextovePoleComponentData::createFromStrapiResponse($component)),
+                'komponenty.aktuality' => new Component('Aktuality', new \stdClass()),
+                'komponenty.formular' => new Component('Formular', new \stdClass()),
+                'komponenty.galerie' => new Component('Galerie', new \stdClass()),
+                'komponenty.obrazek' => new Component('Obrazek', new \stdClass()),
+                'komponenty.rozdelovnik' => new Component('Rozdelovnik', new \stdClass()),
+                'komponenty.samosprava' => new Component('Samosprava', new \stdClass()),
+                'komponenty.sekce-s-dlazdicema' => new Component('SekceSDlazdicema', new \stdClass()),
+                'komponenty.soubory-ke-stazeni' => new Component('SouboryKeStazeni', new \stdClass()),
+                'komponenty.tlacitka' => new Component('Tlacitka', TlacitkaComponentData::createFromStrapiResponse($component)),
+                'komponenty.uredni-deska' => new Component('UredniDeska', new \stdClass()),
+                default => throw new \Exception('Unknown component ' . $component['__component']),
             };
-            */
         }
 
         return new self(
