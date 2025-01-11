@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Terlicko\Web\Value\Content\Data;
 
+/** @template T of array */
 trait CanCreateManyFromStrapiResponse
 {
+    /**
+     * @param mixed<T> $data
+     */
     abstract public static function createFromStrapiResponse(array $data): self;
 
 
     /**
+     * @param array<T> $data
      * @return array<self>
      */
     public static function createManyFromStrapiResponse(array $data): array
@@ -17,10 +22,7 @@ trait CanCreateManyFromStrapiResponse
         $objects = [];
 
         foreach ($data as $singleObjectData) {
-            /** @var int|null $id */
-            $id = $singleObjectData['id'] ?? null;
-
-            $objects[] = self::createFromStrapiResponse($singleObjectData, $id);
+            $objects[] = self::createFromStrapiResponse($singleObjectData);
         }
 
         return $objects;

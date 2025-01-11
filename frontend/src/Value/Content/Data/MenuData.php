@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace Terlicko\Web\Value\Content\Data;
 
+/**
+ * @phpstan-type MenuDataArray array{
+ *     Nadpis: string,
+ *     Odkaz: string,
+ * }
+ */
 readonly final class MenuData
 {
+    /** @use CanCreateManyFromStrapiResponse<MenuDataArray> */
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(
@@ -15,10 +22,7 @@ readonly final class MenuData
     }
 
     /**
-     * @param array{
-     *     Nadpis: string,
-     *     Odkaz: string,
-     * } $data
+     * @param MenuDataArray $data
      */
     public static function createFromStrapiResponse(array $data): self
     {

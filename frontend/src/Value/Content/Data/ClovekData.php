@@ -15,8 +15,9 @@ namespace Terlicko\Web\Value\Content\Data;
  *     Fotka: ImageDataArray,
  *  }
  */
-final class ClovekData
+readonly final class ClovekData
 {
+    /** @use CanCreateManyFromStrapiResponse<ClovekDataArray> */
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(
@@ -26,8 +27,7 @@ final class ClovekData
         public string|null $Telefon,
         public string $Pohlavi,
         public ImageData $Fotka,
-    )
-    {
+    ) {
     }
 
 
@@ -40,7 +40,7 @@ final class ClovekData
     /**
      * @param ClovekDataArray $data
      */
-    public static function createFromStrapiResponse(array $data,): self
+    public static function createFromStrapiResponse(array $data): self
     {
         return new self(
             $data['Jmeno'],

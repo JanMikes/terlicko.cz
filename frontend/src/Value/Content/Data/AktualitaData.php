@@ -11,71 +11,60 @@ use DateTimeImmutable;
  * @phpstan-import-type FileDataArray from FileData
  * @phpstan-import-type TagDataArray from TagData
  * @phpstan-import-type ClovekDataArray from ClovekData
+ * @phpstan-type AktualitaDataArray array{
+ *      Nadpis: string,
+ *      Datum_zverejneni: string,
+ *      Video_youtube: string,
+ *      Popis: string,
+ *      Zobrazovat: bool,
+ *      slug: string,
+ *      Zobrazovat_na_uredni_desce: bool,
+ *      Obrazek: ImageDataArray,
+ *      Galerie: array<ImageDataArray>,
+ *      Zverejnil: ClovekDataArray,
+ *      Tagy: array<TagDataArray>,
+ *      Soubory: array<FileDataArray>,
+ *  }
  */
-final class AktualitaData
+readonly final class AktualitaData
 {
+    /** @use CanCreateManyFromStrapiResponse<AktualitaDataArray> */
     use CanCreateManyFromStrapiResponse;
 
+    /**
+     * @param array<ImageData> $Galerie
+     * @param array<TagData> $Tagy
+     * @param array<FileData> $Soubory
+     */
     public function __construct(
-        public readonly string $Nadpis,
-        public readonly DateTimeImmutable $DatumZverejneni,
-        public readonly null|string $Obrazek,
-        public readonly string|null $Video_youtube,
-
-        /** @var array<string> $Galerie */
-        public readonly array $Galerie,
-
-        public readonly ClovekData|null $Zverejnil,
-
-        /** @var array<string, TagData> $Tagy*/
-        public readonly array $Tagy,
-
-        public readonly string $Popis,
-
-        public readonly null|string $slug,
-
-        /** @var array<FileData> $Soubory */
-        public readonly array $Soubory,
+        public string $Nadpis,
+        public DateTimeImmutable $DatumZverejneni,
+        public null|ImageData $Obrazek,
+        public string|null $Video_youtube,
+        public array $Galerie,
+        public ClovekData|null $Zverejnil,
+        public array $Tagy,
+        public string $Popis,
+        public null|string $slug,
+        public array $Soubory,
     ) {}
 
-
     /**
-     * @param array{
-     *     Nadpis: string,
-     *     Datum_zverejneni: string,
-     *     Video_youtube: string,
-     *     Popis: string,
-     *     Zobrazovat: bool,
-     *     slug: string,
-     *     Zobrazovat_na_uredni_desce: bool,
-     *     Obrazek: ImageDataArray,
-     *     Galerie: array<ImageDataArray>,
-     *     Zverejnil: ClovekDataArray,
-     *     Tagy: array<TagDataArray>,
-     *     Soubory: array<FileDataArray>,
-     * } $data
+     * @param AktualitaDataArray $data
      */
     public static function createFromStrapiResponse(array $data): self
     {
-        $tags = [];
-        foreach ($data['Tagy'] as $tagData) {
-            $tags[$tagData['slug']] = TagData::createFromStrapiResponse($tagData);
-        }
-
         $datumZverejneni = new DateTimeImmutable($data['Datum_zverejneni']);
-        $zverejnil = $data['Zverejnil'] ? ClovekData::createFromStrapiResponse($data['Zverejnil']) : null;
-
-        $galerie = array_map(
-            callback: fn(array $item): string => $item['url'],
-            array: $data['Galerie'],
-        );
-
-        $soubory = isset($data['Soubory']) ? FileData::createManyFromStrapiResponse($data['Soubory']) : [];
+        $tags = TagData::createManyFromStrapiResponse($data['Tagy']);
+        $zverejnil = ClovekData::createFromStrapiResponse($data['Zverejnil']);
+        $soubory = FileData::createManyFromStrapiResponse($data['Soubory']);
+        $galerie = ImageData::createManyFromStrapiResponse($data['Galerie']);
+        $obrazek = ImageData::createFromStrapiResponse($data['Obrazek']);
 
         return new self(
             $data['Nadpis'],
             $datumZverejneni,
-            $data['Obrazek']['url'] ?? null,
+            $obrazek,
             $data['Video_youtube'],
             $galerie,
             $zverejnil,

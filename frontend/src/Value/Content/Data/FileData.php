@@ -13,16 +13,17 @@ namespace Terlicko\Web\Value\Content\Data;
  *     ext: string,
  *   }
  */
-final class FileData
+readonly final class FileData
 {
+    /** @use CanCreateManyFromStrapiResponse<FileDataArray> */
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(
-        public readonly string $name,
-        public readonly null|string $caption,
-        public readonly string $url,
-        public readonly int $size,
-        public readonly string $ext,
+        public string $name,
+        public null|string $caption,
+        public string $url,
+        public int $size,
+        public string $ext,
     ) {}
 
     /**

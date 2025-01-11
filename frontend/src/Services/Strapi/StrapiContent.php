@@ -11,7 +11,25 @@ use Terlicko\Web\Value\Content\Data\SekceData;
 use Terlicko\Web\Value\Content\Data\UredniDeskaData;
 use Terlicko\Web\Value\Content\Exception\InvalidKategorie;
 use Terlicko\Web\Value\Content\Exception\NotFound;
+use Terlicko\Web\Value\Content\Data\ClovekData;
+use Terlicko\Web\Value\Content\Data\DlazdiceData;
+use Terlicko\Web\Value\Content\Data\FileData;
+use Terlicko\Web\Value\Content\Data\ImageData;
+use Terlicko\Web\Value\Content\Data\TagData;
+use Terlicko\Web\Value\Content\Data\TlacitkoData;
 
+/**
+ * @phpstan-import-type AktualitaDataArray from AktualitaData
+ * @phpstan-import-type ClovekDataArray from ClovekData
+ * @phpstan-import-type DlazdiceDataArray from DlazdiceData
+ * @phpstan-import-type FileDataArray from FileData
+ * @phpstan-import-type ImageDataArray from ImageData
+ * @phpstan-import-type MenuDataArray from MenuData
+ * @phpstan-import-type SekceDataArray from SekceData
+ * @phpstan-import-type TagDataArray from TagData
+ * @phpstan-import-type TlacitkoDataArray from TlacitkoData
+ * @phpstan-import-type UredniDeskaDataArray from UredniDeskaData
+ */
 readonly final class StrapiContent
 {
     public function __construct(
@@ -32,17 +50,22 @@ readonly final class StrapiContent
             ];
         }
 
-        $filters = ['Zobrazovat' => ['$eq' => true]];
+        $filters = [
+            'Zobrazovat' => ['$eq' => true],
+            'Tagy' => ['slug' => ['$eq' => $tag]],
+        ];
 
-        if ($tag !== null) {
-            $filters['Tagy']['slug']['$eq'] = $tag;
+        if ($tag == null) {
+            unset($filters['Tagy']);
         }
 
+        /** @var array{data: array<AktualitaDataArray>} $strapiResponse */
         $strapiResponse = $this->strapiClient->getApiResource('aktualities', [
             'Obrazek',
             'Galerie',
             'Zverejnil.Fotka',
             'Tagy',
+            'Soubory',
         ],
         filters: $filters,
         pagination: $pagination,
@@ -55,6 +78,7 @@ readonly final class StrapiContent
 
     public function getAktualitaData(string $slug): AktualitaData
     {
+        /** @var array{data: array<AktualitaDataArray>} $strapiResponse */
         $strapiResponse = $this->strapiClient->getApiResource('aktualities', [
             'Obrazek',
             'Galerie',
@@ -103,16 +127,22 @@ readonly final class StrapiContent
             ];
         }
 
+        /** @var array{data: array<UredniDeskaDataArray>} $strapiResponse */
         $strapiResponse = $this->strapiClient->getApiResource('uredni-deskas', [
-            'Soubory',
-            'Zodpovedna_osoba.Fotka',
-        ], filters: $filters, pagination: $pagination, sort: ['Datum_zverejneni:desc', 'Nadpis']);
+                'Soubory',
+                'Zodpovedna_osoba.Fotka',
+            ],
+            filters: $filters,
+            pagination: $pagination,
+            sort: ['Datum_zverejneni:desc', 'Nadpis'],
+        );
 
         return UredniDeskaData::createManyFromStrapiResponse($strapiResponse['data']);
     }
 
     public function getUredniDeskaData(string $slug): UredniDeskaData
     {
+        /** @var array{data: array<UredniDeskaDataArray>} $strapiResponse */
         $strapiResponse = $this->strapiClient->getApiResource('uredni-deskas', [
             'Soubory',
             'Zodpovedna_osoba.Fotka',
@@ -168,24 +198,14 @@ readonly final class StrapiContent
 
 
     /**
-     * @return array<string, string>
+     * @return array<TagData>
      */
     public function getTagy(): array
     {
+        /** @var array{data: array<TagDataArray>} $strapiResponse */
         $strapiResponse = $this->strapiClient->getApiResource('tagies', [], []);
 
-        $tags = [];
-
-        foreach ($strapiResponse['data'] as $tagData) {
-            /** @var array{slug: null|string, Tag: string} $tagData */
-            if ($tagData['slug'] === null) {
-                continue;
-            }
-
-            $tags[$tagData['slug']] = $tagData['Tag'];
-        }
-
-        return $tags;
+        return TagData::createManyFromStrapiResponse($strapiResponse['data']);
     }
 
     /**
@@ -193,6 +213,7 @@ readonly final class StrapiContent
      */
     public function getMenu(): array
     {
+        /** @var array{data: array<MenuDataArray>} $strapiResponse */
         $strapiResponse = $this->strapiClient->getApiResource('menus', [], [], sort: ['Poradi']);
 
         return MenuData::createManyFromStrapiResponse($strapiResponse['data']);
@@ -200,6 +221,7 @@ readonly final class StrapiContent
 
     public function getSekceData(string $slug): SekceData
     {
+        /** @var array{data: array<SekceDataArray>} $strapiResponse */
         $strapiResponse = $this->strapiClient->getApiResource('sekces', filters: [
             'slug' => ['$eq' => $slug]
         ]);

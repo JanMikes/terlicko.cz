@@ -5,10 +5,16 @@ declare(strict_types=1);
 namespace Terlicko\Web\Value\Content\Data;
 
 /**
- * @phpstan-type TagDataArray array{slug: string, Tag: string}
+ * @phpstan-type TagDataArray array{
+ *     slug: string,
+ *     Tag: string,
+ * }
  */
 readonly final class TagData
 {
+    /** @use CanCreateManyFromStrapiResponse<TagDataArray> */
+    use CanCreateManyFromStrapiResponse;
+
     public function __construct(
         public string $slug,
         public string $Tag,

@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace Terlicko\Web\Value\Content\Data;
 
-final class TlacitkoData
+/**
+ * @phpstan-type TlacitkoDataArray array{
+ *     Text: string,
+ *     Odkaz: string
+ * }
+ */
+readonly final class TlacitkoData
 {
+    /** @use CanCreateManyFromStrapiResponse<TlacitkoDataArray> */
     use CanCreateManyFromStrapiResponse;
-
 
     public function __construct(
         public string $Text,
@@ -15,7 +21,7 @@ final class TlacitkoData
     ) {}
 
     /**
-     * @param array{Text: string, Odkaz: string} $data
+     * @param TlacitkoDataArray $data
      */
     public static function createFromStrapiResponse(array $data): self
     {

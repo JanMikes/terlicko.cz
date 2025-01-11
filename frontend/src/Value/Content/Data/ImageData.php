@@ -22,6 +22,7 @@ namespace Terlicko\Web\Value\Content\Data;
  */
 readonly final class ImageData
 {
+    /** @use CanCreateManyFromStrapiResponse<ImageDataArray> */
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(
@@ -37,7 +38,7 @@ readonly final class ImageData
     /**
      * @param ImageDataArray $data
      */
-    public static function createFromStrapiResponse(array $data, int|null $id = null): self
+    public static function createFromStrapiResponse(array $data): self
     {
         /** @var numeric-string $size */
         $size = $data['size'];

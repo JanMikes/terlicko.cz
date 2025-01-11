@@ -16,9 +16,9 @@
 
         {% if tagy %}
             <p class="tags">
-                {% for TagSlug, Tag in tagy %}
-                    <a href="{{ path('aktuality_tag_filter', {'tag': TagSlug}) }}" class="tag-link {% if TagSlug is same as active_tag %}active_tag{% endif %}">
-                        {{ Tag }}
+                {% for Tag in tagy %}
+                    <a href="{{ path('aktuality_tag_filter', {'tag': Tag.slug}) }}" class="tag-link {% if Tag.slug == active_tag %}active_tag{% endif %}">
+                        {{ Tag.Tag }}
                     </a>
                 {% endfor %}
             </p>
@@ -30,7 +30,7 @@
                     <div class="actuality-inner">
                         {% if aktualita.Obrazek %}
                             <div class="image-wrapper">
-                                <img src="{{ aktualita.Obrazek }}" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
+                                <img src="{{ aktualita.Obrazek.url }}" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
                             </div>
                         {% endif %}
 

@@ -6,7 +6,7 @@ namespace Terlicko\Web\Services\Strapi;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class StrapiApiClient
+readonly final class StrapiApiClient
 {
     public function __construct(
         private HttpClientInterface $strapiClient,
@@ -14,6 +14,12 @@ final class StrapiApiClient
 
 
     /**
+     * @param null|array<string> $populate
+     * @param null|array<string> $fields
+     * @param null|array<string, mixed> $filters
+     * @param null|array{limit: int, start: int} $pagination
+     * @param null|array<string> $sort
+     *
      * @return array<mixed>
      */
     public function getApiResource(

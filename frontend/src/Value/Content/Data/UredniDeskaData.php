@@ -6,53 +6,77 @@ namespace Terlicko\Web\Value\Content\Data;
 
 use DateTimeImmutable;
 
-final class UredniDeskaData
+/**
+ * @phpstan-import-type FileDataArray from FileData
+ * @phpstan-import-type ClovekDataArray from ClovekData
+ * @phpstan-type UredniDeskaDataArray array{
+ *      Zobrazit_v_formulare: bool,
+ *      Zobrazit_v_navody: bool,
+ *      Zobrazit_v_odpady: bool,
+ *      Zobrazit_v_rozpocty: bool,
+ *      Zobrazit_v_strategicke_dokumenty: bool,
+ *      Zobrazit_v_uzemni_plan: bool,
+ *      Zobrazit_v_uzemni_studie: bool,
+ *      Zobrazit_v_vyhlasky: bool,
+ *      Zobrazit_v_vyrocni_zpravy: bool,
+ *      Zobrazit_v_zivotni_situace: bool,
+ *      Zobrazit_v_poskytnute_informace: bool,
+ *      Zobrazit_v_verejnopravni_smlouvy: bool,
+ *      Zobrazit_v_usneseni_rady: bool,
+ *      Zobrazit_v_financni_vybor: bool,
+ *      Zobrazit_v_kulturni_komise: bool,
+ *      Zobrazit_v_volby: bool,
+ *      Zobrazit_v_projekty: bool,
+ *      Nadpis: string,
+ *      Datum_zverejneni: string,
+ *      Datum_stazeni: null|string,
+ *      Popis: string,
+ *      Zodpovedna_osoba: ClovekDataArray,
+ *      Soubory: array<FileDataArray>,
+ *      slug: string,
+ *  }
+ */
+readonly final class UredniDeskaData
 {
+    /** @use CanCreateManyFromStrapiResponse<UredniDeskaDataArray> */
     use CanCreateManyFromStrapiResponse;
 
+    /**
+     * @param array<FileData> $Soubory
+     * @param array<KategorieUredniDesky> $Kategorie
+     */
     public function __construct(
-        public readonly int|null $id,
-        public readonly string $Nadpis,
-        public readonly DateTimeImmutable $Datum_zverejneni,
-        public readonly DateTimeImmutable|null $Datum_stazeni,
-
-        /**
-         * @var array<FileData> $Soubory
-         */
-        public readonly array $Soubory,
-        public readonly string|null $Popis,
-        public readonly ClovekData|null $Zodpovedna_osoba,
-
-        /**
-         * @var array<KategorieUredniDesky> $Kategorie
-         */
-        public readonly array $Kategorie,
-
-        public readonly null|string $slug,
+        public string $Nadpis,
+        public DateTimeImmutable $Datum_zverejneni,
+        public DateTimeImmutable|null $Datum_stazeni,
+        public array $Soubory,
+        public string $Popis,
+        public ClovekData $Zodpovedna_osoba,
+        public array $Kategorie,
+        public null|string $slug,
     ) {
     }
 
     /**
-     * @param array{} $data
+     * @param UredniDeskaDataArray $data
      */
-    public static function createFromStrapiResponse(array $data, int|null $id = null): self
+    public static function createFromStrapiResponse(array $data): self
     {
         $kategorie = [];
 
         foreach (UredniDeskaKategorieField::cases() as $uredniDeskaField) {
-            if (isset($data[$uredniDeskaField->name]) && $data[$uredniDeskaField->name] === true) {
+            if ($data[$uredniDeskaField->name] === true) {
                 $kategorie[] = $uredniDeskaField->toKategorie();
             }
         }
 
         return new self(
-            $id,
             $data['Nadpis'],
-            DateTimeImmutable::createFromFormat('Y-m-d', $data['Datum_zverejneni']),
-            $data['Datum_stazeni'] ? DateTimeImmutable::createFromFormat('Y-m-d', $data['Datum_stazeni']) : null,
-            $data['Soubory'] ? FileData::createManyFromStrapiResponse($data['Soubory']) : [],
+            new DateTimeImmutable($data['Datum_zverejneni']),
+            $data['Datum_stazeni'] ? new DateTimeImmutable($data['Datum_stazeni']) : null,
+            FileData::createManyFromStrapiResponse($data['Soubory']),
             $data['Popis'],
-            $data['Zodpovedna_osoba'] ? ClovekData::createFromStrapiResponse($data['Zodpovedna_osoba']) : null,
+            ClovekData::createFromStrapiResponse($data['Zodpovedna_osoba']),
             $kategorie,
             $data['slug'],
         );

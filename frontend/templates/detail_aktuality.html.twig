@@ -37,14 +37,14 @@
                 <p class="tags">
                     {% for Tag in aktualita.Tagy %}
                         {#  <a href="{{ Kategorie.name }}" class="tag-link">{{ Kategorie.value }}</a> #}
-                        <span class="tag-link">{{ Tag }}</span>
+                        <span class="tag-link">{{ Tag.Tag }}</span>
                     {% endfor %}
                 </p>
             {% endif %}
 
             {% if aktualita.Obrazek %}
                 <div class="img-wrapper">
-                    <img src="{{ aktualita.Obrazek }}" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
+                    <img src="{{ aktualita.Obrazek.url }}" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
                 </div>
             {% endif %}
 
@@ -56,7 +56,7 @@
                         <li>
                             <a class="file-link" href="{{ file.url }}">
                                 <span class="file-caption">{{ file.caption}}</span>
-                                <span class="file-info">({{ file.kbytes }}kb)</span>
+                                <span class="file-info">({{ file.size }}kb)</span>
                                 <span class="icon-download"></span>
                             </a>
                         </li>
