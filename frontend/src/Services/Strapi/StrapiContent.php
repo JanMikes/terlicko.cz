@@ -221,8 +221,35 @@ readonly final class StrapiContent
 
     public function getSekceData(string $slug): SekceData
     {
+        $populate = [
+            'Komponenty' => [
+                'on' => [
+                    'komponenty.formular' => [
+                        'populate' => [
+                            'formular' => [
+                                'populate' => '*',
+                            ],
+                        ],
+                    ],
+                    'komponenty.aktuality' => ['populate' => '*'],
+                    'komponenty.galerie' => ['populate' => '*'],
+                    'komponenty.nadpis' => ['populate' => '*'],
+                    'komponenty.obrazek' => ['populate' => '*'],
+                    'komponenty.rozdelovnik' => ['populate' => '*'],
+                    'komponenty.samosprava' => ['populate' => '*'],
+                    'komponenty.sekce-s-dlazdicema' => ['populate' => '*'],
+                    'komponenty.soubory-ke-stazeni' => ['populate' => '*'],
+                    'komponenty.textove-pole' => ['populate' => '*'],
+                    'komponenty.tlacitka' => ['populate' => '*'],
+                    'komponenty.uredni-deska' => ['populate' => '*'],
+                ],
+            ],
+        ];
+
         /** @var array{data: array<SekceDataArray>} $strapiResponse */
-        $strapiResponse = $this->strapiClient->getApiResource('sekces', filters: [
+        $strapiResponse = $this->strapiClient->getApiResource('sekces',
+            populate: $populate,
+            filters: [
             'slug' => ['$eq' => $slug]
         ]);
 

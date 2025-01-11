@@ -14,7 +14,7 @@ readonly final class StrapiApiClient
 
 
     /**
-     * @param null|array<string> $populate
+     * @param null|array<int|string, mixed> $populate
      * @param null|array<string> $fields
      * @param null|array<string, mixed> $filters
      * @param null|array{limit: int, start: int} $pagination
