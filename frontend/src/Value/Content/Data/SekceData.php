@@ -38,7 +38,7 @@ readonly final class SekceData
                 'komponenty.formular' => new Component('Formular', FormularComponentData::createFromStrapiResponse($component)),
                 'komponenty.galerie' => new Component('Galerie', new \stdClass()),
                 'komponenty.obrazek' => new Component('Obrazek', new \stdClass()),
-                'komponenty.rozdelovnik' => new Component('Rozdelovnik', new \stdClass()),
+                'komponenty.rozdelovnik' => new Component('Rozdelovnik', RozdelovnikComponentData::createFromStrapiResponse($component)),
                 'komponenty.samosprava' => new Component('Samosprava', new \stdClass()),
                 'komponenty.sekce-s-dlazdicema' => new Component('SekceSDlazdicema', new \stdClass()),
                 'komponenty.soubory-ke-stazeni' => new Component('SouboryKeStazeni', new \stdClass()),

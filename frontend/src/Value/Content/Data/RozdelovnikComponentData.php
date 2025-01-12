@@ -5,25 +5,25 @@ declare(strict_types=1);
 namespace Terlicko\Web\Value\Content\Data;
 
 /**
- * @phpstan-type NadpisComponentDataArray array{
- *     Nadpis: string,
+ * @phpstan-type RozdelovnikComponentDataArray array{
+ *     Tloustka_cary: string,
  *     Typ: string,
  * }
  */
-readonly final class NadpisComponentData
+readonly final class RozdelovnikComponentData
 {
     public function __construct(
-        public string $Nadpis,
+        public string $Tloustka_cary,
         public string $Typ,
     ) {}
 
     /**
-     * @param NadpisComponentDataArray $data
+     * @param RozdelovnikComponentDataArray $data
      */
     public static function createFromStrapiResponse(array $data): self
     {
         return new self(
-            $data['Nadpis'],
+            $data['Tloustka_cary'],
             $data['Typ'],
         );
     }
