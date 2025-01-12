@@ -10,10 +10,10 @@ namespace Terlicko\Web\Value\Content\Data;
 readonly final class TlacitkaComponentData
 {
     /**
-     * @param array<TlacitkoData> $Tlaticka
+     * @param array<TlacitkoData> $Tlacitka
      */
     public function __construct(
-        public array $Tlaticka,
+        public array $Tlacitka,
     ) {}
 
     /**
