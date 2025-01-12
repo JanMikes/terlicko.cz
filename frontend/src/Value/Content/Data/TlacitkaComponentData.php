@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Terlicko\Web\Value\Content\Data\Component;
-
-use Terlicko\Web\Value\Content\Data\TlacitkoData;
+namespace Terlicko\Web\Value\Content\Data;
 
 /**
  * @phpstan-import-type TlacitkoDataArray from TlacitkoData

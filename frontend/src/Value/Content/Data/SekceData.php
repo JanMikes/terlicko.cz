@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Terlicko\Web\Value\Content\Data;
 
-use Terlicko\Web\Value\Content\Data\Component\NadpisComponentData;
-use Terlicko\Web\Value\Content\Data\Component\TextovePoleComponentData;
-use Terlicko\Web\Value\Content\Data\Component\TlacitkaComponentData;
-
 /**
  * @phpstan-type SekceDataArray array{
  *      Nazev: string,
@@ -39,7 +35,7 @@ readonly final class SekceData
                 'komponenty.nadpis' => new Component('Nadpis', NadpisComponentData::createFromStrapiResponse($component)),
                 'komponenty.textove-pole' => new Component('TextovePole', TextovePoleComponentData::createFromStrapiResponse($component)),
                 'komponenty.aktuality' => new Component('Aktuality', new \stdClass()),
-                'komponenty.formular' => new Component('Formular', new \stdClass()),
+                'komponenty.formular' => new Component('Formular', FormularComponentData::createFromStrapiResponse($component)),
                 'komponenty.galerie' => new Component('Galerie', new \stdClass()),
                 'komponenty.obrazek' => new Component('Obrazek', new \stdClass()),
                 'komponenty.rozdelovnik' => new Component('Rozdelovnik', new \stdClass()),

@@ -14,7 +14,6 @@ readonly final class StrapiApiClient
 
 
     /**
-     * @param null|array<int|string, mixed> $populate
      * @param null|array<string> $fields
      * @param null|array<string, mixed> $filters
      * @param null|array{limit: int, start: int} $pagination
@@ -24,7 +23,7 @@ readonly final class StrapiApiClient
      */
     public function getApiResource(
         string $resourceName,
-        array|null $populate = null,
+        int $populateLevel = 3,
         array|null $fields = null,
         array|null $filters = null,
         array|null $pagination = null,
@@ -32,7 +31,7 @@ readonly final class StrapiApiClient
     ): array
     {
         $query = [
-            'populate' => $populate === null ? '*' : $populate,
+            'pLevel' => $populateLevel,
             'fields' => $fields === null ? '*' : $fields,
         ];
 

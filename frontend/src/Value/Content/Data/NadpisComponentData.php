@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Terlicko\Web\Value\Content\Data\Component;
+namespace Terlicko\Web\Value\Content\Data;
 
 readonly final class NadpisComponentData
 {
