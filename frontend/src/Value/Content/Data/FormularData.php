@@ -34,7 +34,7 @@ readonly final class FormularData
         $inputs = [];
 
         foreach ($data['Pole'] as $inputData) {
-            if ($inputData['__component'] ?? null === 'elementy.pole-formulare-s-moznostmi') {
+            if (($inputData['__component'] ?? null) === 'elementy.pole-formulare-s-moznostmi') {
                 $inputs[] = PoleFormulareSMoznostmiData::createFromStrapiResponse($inputData);
             } else {
                 $inputs[] = PoleFormulareData::createFromStrapiResponse($inputData);

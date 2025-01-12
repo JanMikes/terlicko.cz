@@ -9,7 +9,6 @@
     "build": "strapi build",
     "strapi": "strapi"
   },
-  "devDependencies": {},
   "dependencies": {
     "@strapi/plugin-users-permissions": "^5.7.0",
     "@strapi/strapi": "^5.7.0",
@@ -17,6 +16,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
+    "strapi-v5-plugin-populate-deep": "^4.0.4",
     "styled-components": "^6.0.0"
   },
   "author": {

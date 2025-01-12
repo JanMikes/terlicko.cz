@@ -9,7 +9,7 @@
   "attributes": {
     "Povinne": {
       "type": "boolean",
-      "required": false
+      "required": true
     },
     "Typ": {
       "type": "enumeration",

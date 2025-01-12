@@ -1,0 +1,13 @@
+{{ data.formular.Nazev_formulare }}
+
+{% for pole in data.formular.Pole %}
+    {{ pole.Povinne }}
+    {{ pole.Typ }}
+    {{ pole.Nadpis_pole }}
+
+    {% if pole.Typ in ['Select', 'Radio', 'Checkbox list'] %}
+        {% for moznost in pole.Moznosti %}
+            {{ moznost }}
+        {% endfor %}
+    {% endif %}
+{% endfor %}

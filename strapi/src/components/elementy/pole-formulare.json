@@ -8,7 +8,8 @@
   "options": {},
   "attributes": {
     "Povinne": {
-      "type": "boolean"
+      "type": "boolean",
+      "required": true
     },
     "Typ": {
       "type": "enumeration",

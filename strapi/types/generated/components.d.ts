@@ -50,7 +50,7 @@ export interface ElementyPoleFormulare extends Struct.ComponentSchema {
   };
   attributes: {
     Nadpis_pole: Schema.Attribute.String & Schema.Attribute.Required;
-    Povinne: Schema.Attribute.Boolean;
+    Povinne: Schema.Attribute.Boolean & Schema.Attribute.Required;
     Typ: Schema.Attribute.Enumeration<
       [
         'Text',
@@ -81,7 +81,7 @@ export interface ElementyPoleFormulareSMoznostmi
     Moznosti: Schema.Attribute.Component<'elementy.vyber-z-moznosti', true> &
       Schema.Attribute.Required;
     Nadpis_pole: Schema.Attribute.String & Schema.Attribute.Required;
-    Povinne: Schema.Attribute.Boolean;
+    Povinne: Schema.Attribute.Boolean & Schema.Attribute.Required;
     Typ: Schema.Attribute.Enumeration<['Select', 'Checkbox list', 'Radio']> &
       Schema.Attribute.Required;
   };
@@ -124,7 +124,7 @@ export interface ElementyVyberZMoznosti extends Struct.ComponentSchema {
     icon: 'align-left';
   };
   attributes: {
-    Text: Schema.Attribute.String;
+    Text: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
