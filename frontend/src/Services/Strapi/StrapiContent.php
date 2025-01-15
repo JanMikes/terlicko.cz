@@ -52,11 +52,11 @@ readonly final class StrapiContent
 
         $filters = [
             'Zobrazovat' => ['$eq' => true],
-            'Tagy' => ['slug' => ['$eq' => $tag]],
+            'tags' => ['slug' => ['$eq' => $tag]],
         ];
 
         if ($tag == null) {
-            unset($filters['Tagy']);
+            unset($filters['tags']);
         }
 
         /** @var array{data: array<AktualitaDataArray>} $strapiResponse */

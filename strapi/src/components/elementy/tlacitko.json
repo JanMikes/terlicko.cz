@@ -11,10 +11,6 @@
       "type": "string",
       "required": true
     },
-    "Odkaz": {
-      "type": "string",
-      "required": true
-    },
     "Styl": {
       "type": "enumeration",
       "enum": [
@@ -23,6 +19,11 @@
       ],
       "default": "Styl 1",
       "required": true
+    },
+    "Odkaz": {
+      "type": "component",
+      "repeatable": false,
+      "component": "elementy.odkaz"
     }
   }
 }

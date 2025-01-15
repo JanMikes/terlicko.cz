@@ -16,8 +16,9 @@
       ]
     },
     "Odkaz": {
-      "type": "string",
-      "required": false
+      "type": "component",
+      "repeatable": false,
+      "component": "elementy.odkaz"
     }
   }
 }

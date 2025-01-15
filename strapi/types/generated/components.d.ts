@@ -9,7 +9,7 @@ export interface ElementyBanner extends Struct.ComponentSchema {
   };
   attributes: {
     Obrazek: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
-    Odkaz: Schema.Attribute.String;
+    Odkaz: Schema.Attribute.Component<'elementy.odkaz', false>;
   };
 }
 
@@ -23,7 +23,7 @@ export interface ElementyDlazdice extends Struct.ComponentSchema {
   attributes: {
     Ikona: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     Nadpis_dlazdice: Schema.Attribute.String & Schema.Attribute.Required;
-    Odkaz: Schema.Attribute.String & Schema.Attribute.Required;
+    Odkaz: Schema.Attribute.Component<'elementy.odkaz', false>;
   };
 }
 
@@ -35,9 +35,21 @@ export interface ElementyObrazekGalerie extends Struct.ComponentSchema {
     icon: 'file-image';
   };
   attributes: {
-    Nahled_obrazku: Schema.Attribute.Media<'images'>;
     Obrazek: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     Popis: Schema.Attribute.String;
+  };
+}
+
+export interface ElementyOdkaz extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_odkazs';
+  info: {
+    description: '';
+    displayName: 'Odkaz';
+    icon: 'code';
+  };
+  attributes: {
+    sekce: Schema.Attribute.Relation<'oneToOne', 'api::sekce.sekce'>;
+    URL: Schema.Attribute.String;
   };
 }
 
@@ -50,6 +62,7 @@ export interface ElementyPoleFormulare extends Struct.ComponentSchema {
   };
   attributes: {
     Nadpis_pole: Schema.Attribute.String & Schema.Attribute.Required;
+    Napoveda: Schema.Attribute.String;
     Povinne: Schema.Attribute.Boolean & Schema.Attribute.Required;
     Typ: Schema.Attribute.Enumeration<
       [
@@ -81,6 +94,7 @@ export interface ElementyPoleFormulareSMoznostmi
     Moznosti: Schema.Attribute.Component<'elementy.vyber-z-moznosti', true> &
       Schema.Attribute.Required;
     Nadpis_pole: Schema.Attribute.String & Schema.Attribute.Required;
+    Napoveda: Schema.Attribute.String;
     Povinne: Schema.Attribute.Boolean & Schema.Attribute.Required;
     Typ: Schema.Attribute.Enumeration<['Select', 'Checkbox list', 'Radio']> &
       Schema.Attribute.Required;
@@ -108,7 +122,7 @@ export interface ElementyTlacitko extends Struct.ComponentSchema {
     icon: 'angle-right';
   };
   attributes: {
-    Odkaz: Schema.Attribute.String & Schema.Attribute.Required;
+    Odkaz: Schema.Attribute.Component<'elementy.odkaz', false>;
     Styl: Schema.Attribute.Enumeration<['Styl 1', 'Styl 2']> &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'Styl 1'>;
@@ -346,6 +360,7 @@ declare module '@strapi/strapi' {
       'elementy.banner': ElementyBanner;
       'elementy.dlazdice': ElementyDlazdice;
       'elementy.obrazek-galerie': ElementyObrazekGalerie;
+      'elementy.odkaz': ElementyOdkaz;
       'elementy.pole-formulare': ElementyPoleFormulare;
       'elementy.pole-formulare-s-moznostmi': ElementyPoleFormulareSMoznostmi;
       'elementy.soubor': ElementySoubor;

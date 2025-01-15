@@ -20,8 +20,9 @@
       "required": true
     },
     "Odkaz": {
-      "type": "string",
-      "required": true
+      "type": "component",
+      "repeatable": false,
+      "component": "elementy.odkaz"
     }
   }
 }

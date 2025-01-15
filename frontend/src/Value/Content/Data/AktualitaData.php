@@ -55,7 +55,7 @@ readonly final class AktualitaData
     public static function createFromStrapiResponse(array $data): self
     {
         $datumZverejneni = new DateTimeImmutable($data['Datum_zverejneni']);
-        $tags = TagData::createManyFromStrapiResponse($data['Tagy']);
+        $tags = TagData::createManyFromStrapiResponse($data['tags']);
         $zverejnil = ClovekData::createFromStrapiResponse($data['Zverejnil']);
         $soubory = FileData::createManyFromStrapiResponse($data['Soubory']);
         $galerie = ImageData::createManyFromStrapiResponse($data['Galerie']);

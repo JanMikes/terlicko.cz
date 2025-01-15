@@ -16,22 +16,10 @@
       "type": "string",
       "required": true
     },
-    "Aktuality": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::aktuality.aktuality",
-      "mappedBy": "Tagy"
-    },
     "slug": {
       "type": "uid",
       "targetField": "Tag",
       "required": true
-    },
-    "Uredni_Desky": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::uredni-deska.uredni-deska",
-      "inversedBy": "Tagy"
     }
   }
 }

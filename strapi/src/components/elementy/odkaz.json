@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_elementy_odkazs",
+  "info": {
+    "displayName": "Odkaz",
+    "icon": "code",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "sekce": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::sekce.sekce"
+    },
+    "URL": {
+      "type": "string"
+    }
+  }
+}

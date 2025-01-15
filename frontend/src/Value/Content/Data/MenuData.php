@@ -26,7 +26,7 @@ readonly final class MenuData
      */
     public static function createFromStrapiResponse(array $data): self
     {
-        $link = ltrim($data['Odkaz'], '/');
+            $link = ltrim($data['Odkaz'], '/');
 
         if (str_starts_with($link, 'http') !== true) {
             $link = '/' . $link;

@@ -17,13 +17,6 @@
     },
     "Popis": {
       "type": "string"
-    },
-    "Nahled_obrazku": {
-      "allowedTypes": [
-        "images"
-      ],
-      "type": "media",
-      "multiple": false
     }
   }
 }

@@ -52,11 +52,10 @@
       "default": true,
       "required": true
     },
-    "Tagy": {
+    "tags": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::tagy.tagy",
-      "inversedBy": "Aktuality"
+      "relation": "oneToMany",
+      "target": "api::tagy.tagy"
     },
     "slug": {
       "type": "uid",

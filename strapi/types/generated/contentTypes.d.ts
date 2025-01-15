@@ -401,7 +401,7 @@ export interface ApiAktualityAktuality extends Struct.CollectionTypeSchema {
       'images' | 'files' | 'videos' | 'audios',
       true
     >;
-    Tagy: Schema.Attribute.Relation<'manyToMany', 'api::tagy.tagy'>;
+    tags: Schema.Attribute.Relation<'oneToMany', 'api::tagy.tagy'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -500,7 +500,8 @@ export interface ApiMenuMenu extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::menu.menu'> &
       Schema.Attribute.Private;
     Nadpis: Schema.Attribute.String & Schema.Attribute.Required;
-    Odkaz: Schema.Attribute.String & Schema.Attribute.Required;
+    Odkaz: Schema.Attribute.Component<'elementy.odkaz', false> &
+      Schema.Attribute.Required;
     Poradi: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
@@ -565,6 +566,7 @@ export interface ApiSekceSekce extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 80;
       }>;
+    parent: Schema.Attribute.Relation<'oneToOne', 'api::sekce.sekce'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'Nazev'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
@@ -585,10 +587,6 @@ export interface ApiTagyTagy extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    Aktuality: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::aktuality.aktuality'
-    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -601,10 +599,6 @@ export interface ApiTagyTagy extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Uredni_Desky: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::uredni-deska.uredni-deska'
-    >;
   };
 }
 
@@ -639,7 +633,7 @@ export interface ApiUredniDeskaUredniDeska extends Struct.CollectionTypeSchema {
       'images' | 'files' | 'videos' | 'audios',
       true
     >;
-    Tagy: Schema.Attribute.Relation<'manyToMany', 'api::tagy.tagy'>;
+    tags: Schema.Attribute.Relation<'oneToMany', 'api::tagy.tagy'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

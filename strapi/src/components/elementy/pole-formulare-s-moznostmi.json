@@ -30,6 +30,9 @@
       "repeatable": true,
       "component": "elementy.vyber-z-moznosti",
       "required": true
+    },
+    "Napoveda": {
+      "type": "string"
     }
   }
 }

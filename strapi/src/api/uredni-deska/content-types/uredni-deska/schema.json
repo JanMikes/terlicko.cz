@@ -154,11 +154,10 @@
       "type": "boolean",
       "default": false
     },
-    "Tagy": {
+    "tags": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::tagy.tagy",
-      "mappedBy": "Uredni_Desky"
+      "relation": "oneToMany",
+      "target": "api::tagy.tagy"
     }
   }
 }

@@ -44,6 +44,11 @@
       ],
       "required": true,
       "min": 1
+    },
+    "parent": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::sekce.sekce"
     }
   }
 }

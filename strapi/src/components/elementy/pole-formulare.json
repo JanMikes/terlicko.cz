@@ -30,6 +30,9 @@
     "Nadpis_pole": {
       "type": "string",
       "required": true
+    },
+    "Napoveda": {
+      "type": "string"
     }
   }
 }

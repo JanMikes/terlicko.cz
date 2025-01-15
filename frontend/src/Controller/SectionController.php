@@ -16,12 +16,17 @@ final class SectionController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/sekce/{slug}', name: 'section')]
-    public function __invoke(string $slug): Response
+    #[Route(path: '/{path}', name: 'section', requirements: ['path' => '.*'], priority: -10)]
+    public function __invoke(string $path): Response
     {
+        $sections = explode('/', $path);
+        $currentSectionSlug = array_pop($sections);
+
+        // TODO: breadcrumb
+
         try {
             return $this->render('section.html.twig',[
-                'sekce' => $this->content->getSekceData($slug),
+                'sekce' => $this->content->getSekceData($currentSectionSlug),
             ]);
         } catch (ClientException) {
             throw $this->createNotFoundException();
