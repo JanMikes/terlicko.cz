@@ -8,7 +8,7 @@ namespace Terlicko\Web\Value\Content\Data;
  * @phpstan-import-type ImageDataArray from ImageData
  * @phpstan-type ObrazekGalerieDataArray array{
  *     Obrazek: ImageDataArray,
- *     Popis: string,
+ *     Popis: null|string,
  * }
  */
 readonly final class ObrazekGalerieData
@@ -18,7 +18,7 @@ readonly final class ObrazekGalerieData
 
     public function __construct(
         public ImageData $Obrazek,
-        public string $Popis,
+        public null|string $Popis,
     ) {
     }
 

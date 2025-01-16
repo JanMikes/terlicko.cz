@@ -1,4 +1,13 @@
-{{ data.Pocet_zobrazenych }}
-{% for obrazek in data.Obrazek %}
-    {{ obrazek.Popis }}
-{% endfor %}
+<div data-controller="gallery" class="my-4">
+    <div class="row g-3">
+        {% for obrazek in data.Obrazek %}
+            <div class="col-6 col-md-2 {{ loop.index > data.Pocet_zobrazenych ? 'd-none' }}" data-gallery-target="item">
+                <img class="img-fluid" src="{{ obrazek.Obrazek.url }}" alt="{{ obrazek.Popis }}" title="{{ obrazek.Popis }}">
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if data.Obrazek|length > data.Pocet_zobrazenych %}
+        <button class="btn btn-primary mt-3" data-gallery-target="button" data-action="click->gallery#showMore">Zobrazit více</button>
+    {% endif %}
+</div>
