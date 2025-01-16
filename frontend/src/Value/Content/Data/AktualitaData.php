@@ -14,16 +14,16 @@ use DateTimeImmutable;
  * @phpstan-type AktualitaDataArray array{
  *      Nadpis: string,
  *      Datum_zverejneni: string,
- *      Video_youtube: string,
- *      Popis: string,
+ *      Video_youtube: null|string,
+ *      Popis: null|string,
  *      Zobrazovat: bool,
  *      slug: string,
  *      Zobrazovat_na_uredni_desce: bool,
- *      Obrazek: ImageDataArray,
- *      Galerie: array<ImageDataArray>,
- *      Zverejnil: ClovekDataArray,
- *      Tagy: array<TagDataArray>,
- *      Soubory: array<FileDataArray>,
+ *      Obrazek: null|ImageDataArray,
+ *      Galerie: null|array<ImageDataArray>,
+ *      Zverejnil: null|ClovekDataArray,
+ *      tags: array<TagDataArray>,
+ *      Soubory: null|array<FileDataArray>,
  *  }
  */
 readonly final class AktualitaData
@@ -56,10 +56,10 @@ readonly final class AktualitaData
     {
         $datumZverejneni = new DateTimeImmutable($data['Datum_zverejneni']);
         $tags = TagData::createManyFromStrapiResponse($data['tags']);
-        $zverejnil = ClovekData::createFromStrapiResponse($data['Zverejnil']);
-        $soubory = FileData::createManyFromStrapiResponse($data['Soubory']);
-        $galerie = ImageData::createManyFromStrapiResponse($data['Galerie']);
-        $obrazek = ImageData::createFromStrapiResponse($data['Obrazek']);
+        $zverejnil = $data['Zverejnil'] !== null ? ClovekData::createFromStrapiResponse($data['Zverejnil']) : null;
+        $soubory = FileData::createManyFromStrapiResponse($data['Soubory'] ?? []);
+        $galerie = ImageData::createManyFromStrapiResponse($data['Galerie'] ?? []);
+        $obrazek = $data['Obrazek'] !== null ? ImageData::createFromStrapiResponse($data['Obrazek']) : null;
 
         return new self(
             $data['Nadpis'],
@@ -69,7 +69,7 @@ readonly final class AktualitaData
             $galerie,
             $zverejnil,
             $tags,
-            $data['Popis'],
+            $data['Popis'] ?? '',
             $data['slug'],
             $soubory,
         );

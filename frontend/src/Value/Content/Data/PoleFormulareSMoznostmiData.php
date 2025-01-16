@@ -9,7 +9,8 @@ namespace Terlicko\Web\Value\Content\Data;
  *     Povinne: bool,
  *     Typ: string,
  *     Nadpis_pole: string,
- *     Moznosti: array<array{Text: string}>
+ *     Moznosti: array<array{Text: string}>,
+ *     __component: string,
  *  }
  */
 readonly final class PoleFormulareSMoznostmiData

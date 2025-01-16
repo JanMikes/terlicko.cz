@@ -31,8 +31,8 @@ use DateTimeImmutable;
  *      Datum_zverejneni: string,
  *      Datum_stazeni: null|string,
  *      Popis: string,
- *      Zodpovedna_osoba: ClovekDataArray,
- *      Soubory: array<FileDataArray>,
+ *      Zodpovedna_osoba: null|ClovekDataArray,
+ *      Soubory: null|array<FileDataArray>,
  *      slug: string,
  *  }
  */
@@ -51,7 +51,7 @@ readonly final class UredniDeskaData
         public DateTimeImmutable|null $Datum_stazeni,
         public array $Soubory,
         public string $Popis,
-        public ClovekData $Zodpovedna_osoba,
+        public null|ClovekData $Zodpovedna_osoba,
         public array $Kategorie,
         public null|string $slug,
     ) {
@@ -74,9 +74,9 @@ readonly final class UredniDeskaData
             $data['Nadpis'],
             new DateTimeImmutable($data['Datum_zverejneni']),
             $data['Datum_stazeni'] ? new DateTimeImmutable($data['Datum_stazeni']) : null,
-            FileData::createManyFromStrapiResponse($data['Soubory']),
+            FileData::createManyFromStrapiResponse($data['Soubory'] ?? []),
             $data['Popis'],
-            ClovekData::createFromStrapiResponse($data['Zodpovedna_osoba']),
+            $data['Zodpovedna_osoba'] !== null ? ClovekData::createFromStrapiResponse($data['Zodpovedna_osoba']) : null,
             $kategorie,
             $data['slug'],
         );

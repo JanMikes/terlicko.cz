@@ -6,8 +6,8 @@ namespace Terlicko\Web\Value\Content\Data;
 
 /**
  * @phpstan-type OdkazDataArray array{
- *     sekce: null|array{id: int, slug: string},
- *     URL: string,
+ *     sekce: null|array{slug: string},
+ *     URL: null|string,
  * }
  */
 readonly final class OdkazData

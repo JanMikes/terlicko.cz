@@ -13,7 +13,7 @@ namespace Terlicko\Web\Value\Content\Data;
  */
 readonly final class ObrazekGalerieData
 {
-    /** @use CanCreateManyFromStrapiResponse<ObrazeGaleriekDataArray> */
+    /** @use CanCreateManyFromStrapiResponse<ObrazekGalerieDataArray> */
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terlicko\Web\Services\Strapi;
 
+use Psr\Clock\ClockInterface;
 use Terlicko\Web\Value\Content\Data\AktualitaData;
 use Terlicko\Web\Value\Content\Data\KategorieUredniDesky;
 use Terlicko\Web\Value\Content\Data\MenuData;
@@ -16,7 +17,6 @@ use Terlicko\Web\Value\Content\Data\DlazdiceData;
 use Terlicko\Web\Value\Content\Data\FileData;
 use Terlicko\Web\Value\Content\Data\ImageData;
 use Terlicko\Web\Value\Content\Data\TagData;
-use Terlicko\Web\Value\Content\Data\TlacitkoData;
 
 /**
  * @phpstan-import-type AktualitaDataArray from AktualitaData
@@ -27,14 +27,31 @@ use Terlicko\Web\Value\Content\Data\TlacitkoData;
  * @phpstan-import-type MenuDataArray from MenuData
  * @phpstan-import-type SekceDataArray from SekceData
  * @phpstan-import-type TagDataArray from TagData
- * @phpstan-import-type TlacitkoDataArray from TlacitkoData
  * @phpstan-import-type UredniDeskaDataArray from UredniDeskaData
  */
 readonly final class StrapiContent
 {
     public function __construct(
         private StrapiApiClient $strapiClient,
+        private ClockInterface $clock,
     ) {}
+
+    /**
+     * @return array<int, string>
+     */
+    public function get(): array
+    {
+        /** @var array{data: array<SekceDataArray>} $strapiResponse */
+        $strapiResponse = $this->strapiClient->getApiResource('sekce', populateLevel: 1);
+
+        $data = [];
+
+        foreach ($strapiResponse['data'] as $sekceData) {
+            $data[$sekceData['id']] = $sekceData['slug'];
+        }
+
+        return $data;
+    }
 
     /**
      * @return array<AktualitaData>
@@ -89,8 +106,7 @@ readonly final class StrapiContent
      */
     public function getUredniDeskyData(string|null $categoryField = null, int|null $limit = null, bool $shouldHideIfExpired = false): array
     {
-        $now = new \DateTimeImmutable();
-
+        $now = $this->clock->now();
         $filters = [];
 
         if ($shouldHideIfExpired === true) {

@@ -15,6 +15,7 @@
 
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam neque. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus.</p>
 
+        {#
         <p class="my-4">
             <span class="fw-bold me-3">Zobrazit rok:</span>
 
@@ -24,19 +25,27 @@
 
             <a href="#">Zrušit filtrování</a>
         </p>
+        #}
 
         <section class="row">
-            {% for post in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] %}
+            {% for uredni_deska in uredni_desky %}
                 <article class="col-sm-6 col-md-4 my-4">
                     <div class="d-flex">
                         <span class="article-icon me-3"></span>
                         <div>
-                            <a href="#" class="text-decoration-none">
-                                <time class="text-secondary fw-bold">22.11.24 – 25.11.24</time>
-                                <h2 class="h5 mt-1 fw-bold">Návrh rozpočtu obce Těrlicko na rok 2025</h2>
+                            <a href="{{ path('detail_uredni_desky', {'slug': uredni_deska.slug}) }}" class="text-decoration-none">
+                                <time class="text-secondary fw-bold">
+                                    {{ uredni_deska.Datum_zverejneni|date('d.m.Y') }}
+                                    {% if uredni_deska.Datum_stazeni %}
+                                        - {{ uredni_deska.Datum_stazeni|date('d.m.Y') }}
+                                    {% endif %}
+                                </time>
+                                <h2 class="h5 mt-1 fw-bold">{{ uredni_deska.Nadpis }}</h2>
                             </a>
-                            <a href="#" class="custom-badge small">rozpočet</a>
-                            <a href="#" class="custom-badge small">další tag</a>
+
+                            {% for Kategorie in uredni_deska.Kategorie %}
+                                <a class="custom-badge small" href="{{ path('uredni_deska_kategorie_filter', {'kategorie': Kategorie.slug}) }}">{{ Kategorie.value }}</a>
+                            {% endfor %}
                         </div>
                     </div>
                 </article>

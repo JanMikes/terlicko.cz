@@ -17,7 +17,7 @@ readonly final class TlacitkaComponentData
     ) {}
 
     /**
-     * @param array<TlacitkoDataArray> $data
+     * @param array{Tlacitka: array<TlacitkoDataArray>} $data
      */
     public static function createFromStrapiResponse(array $data): self
     {

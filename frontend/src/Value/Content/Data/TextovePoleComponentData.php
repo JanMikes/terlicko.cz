@@ -10,6 +10,9 @@ readonly final class TextovePoleComponentData
         public string $Text,
     ) {}
 
+    /**
+     * @param array{Text: string} $data
+     */
     public static function createFromStrapiResponse(array $data): self
     {
         return new self(

@@ -6,9 +6,11 @@ namespace Terlicko\Web\Value\Content\Data;
 
 /**
  * @phpstan-type SekceDataArray array{
+ *      id: int,
  *      Nazev: string,
+ *      slug: string,
  *      Meta_description: string,
- *      Komponenty: array<mixed>,
+ *      Komponenty: array<array{__component: string}>,
  *  }
  */
 readonly final class SekceData
@@ -18,6 +20,7 @@ readonly final class SekceData
      */
     public function __construct(
         public string $Nazev,
+        public string $slug,
         public string|null $Meta_description,
         public array $Komponenty,
     ) {
@@ -50,6 +53,7 @@ readonly final class SekceData
 
         return new self(
             $data['Nazev'],
+            $data['slug'],
             $data['Meta_description'],
             $components,
         );

@@ -6,12 +6,12 @@ namespace Terlicko\Web\Value\Content\Data;
 
 /**
  * @phpstan-import-type PoleFormulareDataArray from PoleFormulareData
- * @phpstan-import-type PoleFormulareSMoznostmiDataDataArray from PoleFormulareSMoznostmiDataData
+ * @phpstan-import-type PoleFormulareSMoznostmiDataArray from PoleFormulareSMoznostmiData
  * @phpstan-type FormularDataArray array{
  *      Email_prijemce: string,
  *      Email_predmet: string,
  *      Nazev_formulare: string,
- *      Pole: array<PoleFormulareDataArray|PoleFormulareSMoznostmiDataDataArray>,
+ *      Pole: array<PoleFormulareDataArray|PoleFormulareSMoznostmiDataArray>,
  *  }
  */
 readonly final class FormularData
@@ -34,9 +34,11 @@ readonly final class FormularData
         $inputs = [];
 
         foreach ($data['Pole'] as $inputData) {
-            if (($inputData['__component'] ?? null) === 'elementy.pole-formulare-s-moznostmi') {
+            if ($inputData['__component'] === 'elementy.pole-formulare-s-moznostmi') {
+                /** @var PoleFormulareSMoznostmiDataArray $inputData */
                 $inputs[] = PoleFormulareSMoznostmiData::createFromStrapiResponse($inputData);
             } else {
+                /** @var PoleFormulareDataArray $inputData */
                 $inputs[] = PoleFormulareData::createFromStrapiResponse($inputData);
             }
         }

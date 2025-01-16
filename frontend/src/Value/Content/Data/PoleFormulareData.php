@@ -6,9 +6,10 @@ namespace Terlicko\Web\Value\Content\Data;
 
 /**
  * @phpstan-type PoleFormulareDataArray array{
- *      Povinne: bool,
- *      Typ: string,
- *      Nadpis_pole: string,
+ *     Povinne: bool,
+ *     Typ: string,
+ *     Nadpis_pole: string,
+ *     __component: string,
  *  }
  */
 readonly final class PoleFormulareData
