@@ -1,0 +1,11 @@
+{% for clovek in data.lide %}
+    {{ clovek.Jmeno }}
+    {{ clovek.Funkce }}
+    {{ clovek.Email }}
+    {{ clovek.Telefon }}
+    {{ clovek.Pohlavi }}
+
+    {% if clovek.Fotka %}
+        {{ clovek.Fotka.url }}
+    {% endif %}
+{% endfor %}

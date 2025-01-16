@@ -8,11 +8,11 @@ namespace Terlicko\Web\Value\Content\Data;
  * @phpstan-import-type ImageDataArray from ImageData
  * @phpstan-type ClovekDataArray array{
  *     Jmeno: string,
- *     Email: string,
- *     Telefon: string,
+ *     Email: null|string,
+ *     Telefon: null|string,
  *     Pohlavi: string,
- *     Funkce: string,
- *     Fotka: ImageDataArray,
+ *     Funkce: null|string,
+ *     Fotka: null|ImageDataArray,
  *  }
  */
 readonly final class ClovekData
@@ -22,11 +22,11 @@ readonly final class ClovekData
 
     public function __construct(
         public string $Jmeno,
-        public string $Funkce,
-        public string|null $Email,
-        public string|null $Telefon,
+        public null|string $Funkce,
+        public null|string $Email,
+        public null|string $Telefon,
         public string $Pohlavi,
-        public ImageData $Fotka,
+        public null|ImageData $Fotka,
     ) {
     }
 
@@ -48,7 +48,7 @@ readonly final class ClovekData
             $data['Email'],
             $data['Telefon'],
             $data['Pohlavi'],
-            ImageData::createFromStrapiResponse($data['Fotka']),
+            $data['Fotka'] !== null ? ImageData::createFromStrapiResponse($data['Fotka']) : null,
         );
     }
 }
