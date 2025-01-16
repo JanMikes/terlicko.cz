@@ -23,7 +23,8 @@ export interface ElementyDlazdice extends Struct.ComponentSchema {
   attributes: {
     Ikona: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     Nadpis_dlazdice: Schema.Attribute.String & Schema.Attribute.Required;
-    Odkaz: Schema.Attribute.Component<'elementy.odkaz', false>;
+    Odkaz: Schema.Attribute.Component<'elementy.odkaz', false> &
+      Schema.Attribute.Required;
   };
 }
 

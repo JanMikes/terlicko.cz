@@ -1,5 +1,6 @@
 {% for tlacitko in data.Tlacitka %}
     {{ tlacitko.Text }}
-    {{ tlacitko.Odkaz }}
     {{ tlacitko.Styl }}
+
+    <twig:Odkaz data="{{ tlacitko.Odkaz }}" />
 {% endfor %}

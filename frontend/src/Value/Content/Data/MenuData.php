@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Terlicko\Web\Value\Content\Data;
 
 /**
+ * @phpstan-import-type OdkazDataArray from OdkazData
  * @phpstan-type MenuDataArray array{
  *     Nadpis: string,
- *     Odkaz: string,
+ *     Odkaz: OdkazDataArray,
  * }
  */
 readonly final class MenuData
@@ -17,7 +18,7 @@ readonly final class MenuData
 
     public function __construct(
         public string $Nadpis,
-        public string $Odkaz,
+        public OdkazData $Odkaz,
     ) {
     }
 
@@ -26,15 +27,9 @@ readonly final class MenuData
      */
     public static function createFromStrapiResponse(array $data): self
     {
-            $link = ltrim($data['Odkaz'], '/');
-
-        if (str_starts_with($link, 'http') !== true) {
-            $link = '/' . $link;
-        }
-
         return new self(
             Nadpis: $data['Nadpis'],
-            Odkaz: $link,
+            Odkaz: OdkazData::createFromStrapiResponse($data['Odkaz']),
         );
     }
 }

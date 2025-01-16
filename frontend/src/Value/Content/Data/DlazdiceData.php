@@ -6,10 +6,11 @@ namespace Terlicko\Web\Value\Content\Data;
 
 /**
  * @phpstan-import-type ImageDataArray from ImageData
+ * @phpstan-import-type OdkazDataArray from OdkazData
  * @phpstan-type DlazdiceDataArray array{
  *     Ikona: ImageDataArray,
  *     Nadpis_dlazdice: string,
- *     Odkaz: string,
+ *     Odkaz: OdkazDataArray,
  * }
  */
 readonly final class DlazdiceData
@@ -20,7 +21,7 @@ readonly final class DlazdiceData
     public function __construct(
         public ImageData $Ikona,
         public string $Nadpis_dlazdice,
-        public string $Odkaz,
+        public OdkazData $Odkaz,
     ) {
     }
 
@@ -32,7 +33,7 @@ readonly final class DlazdiceData
         return new self(
             ImageData::createFromStrapiResponse($data['Ikona']),
             $data['Nadpis_dlazdice'],
-            $data['Odkaz'],
+            OdkazData::createFromStrapiResponse($data['Odkaz']),
         );
     }
 }

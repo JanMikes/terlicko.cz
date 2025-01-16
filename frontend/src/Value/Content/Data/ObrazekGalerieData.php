@@ -6,31 +6,30 @@ namespace Terlicko\Web\Value\Content\Data;
 
 /**
  * @phpstan-import-type ImageDataArray from ImageData
- * @phpstan-import-type OdkazDataArray from OdkazData
- * @phpstan-type ObrazekDataArray array{
+ * @phpstan-type ObrazekGalerieDataArray array{
  *     Obrazek: ImageDataArray,
- *     Odkaz: null|OdkazDataArray,
+ *     Popis: string,
  * }
  */
-readonly final class ObrazekData
+readonly final class ObrazekGalerieData
 {
-    /** @use CanCreateManyFromStrapiResponse<ObrazekDataArray> */
+    /** @use CanCreateManyFromStrapiResponse<ObrazeGaleriekDataArray> */
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(
         public ImageData $Obrazek,
-        public null|OdkazData $Odkaz,
+        public string $Popis,
     ) {
     }
 
     /**
-     * @param ObrazekDataArray $data
+     * @param ObrazekGalerieDataArray $data
      */
     public static function createFromStrapiResponse(array $data): self
     {
         return new self(
             ImageData::createFromStrapiResponse($data['Obrazek']),
-            $data['Odkaz'] !== null ? OdkazData::createFromStrapiResponse($data['Odkaz']) : null,
+            $data['Popis'],
         );
     }
 }

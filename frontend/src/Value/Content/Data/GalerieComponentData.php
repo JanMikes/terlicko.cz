@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Terlicko\Web\Value\Content\Data;
 
 /**
- * @phpstan-import-type ObrazekDataArray from ObrazekData
+ * @phpstan-import-type ObrazekGalerieDataArray from ObrazekGalerieData
  */
 readonly final class GalerieComponentData
 {
     /**
-     * @param array<ObrazekData> $Obrazek
+     * @param array<ObrazekGalerieData> $Obrazek
      */
     public function __construct(
         public array $Obrazek,
@@ -19,14 +19,14 @@ readonly final class GalerieComponentData
 
     /**
      * @param array{
-     *     Obrazek: array<ObrazekDataArray>,
+     *     Obrazek: array<ObrazekGalerieDataArray>,
      *     Pocet_zobrazenych: int,
      *  } $data
      */
     public static function createFromStrapiResponse(array $data): self
     {
         return new self(
-            ObrazekData::createManyFromStrapiResponse($data['Obrazek']),
+            ObrazekGalerieData::createManyFromStrapiResponse($data['Obrazek']),
             $data['Pocet_zobrazenych'],
         );
     }
