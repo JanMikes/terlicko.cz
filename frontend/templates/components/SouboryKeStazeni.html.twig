@@ -1,0 +1,5 @@
+{{ data.Pocet_sloupcu }}
+{% for soubor in data.Soubor %}
+    {{ soubor.Nadpis }}
+    {{ soubor.Soubor.url }}
+{% endfor %}

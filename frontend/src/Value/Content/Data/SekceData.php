@@ -44,7 +44,7 @@ readonly final class SekceData
                 'komponenty.rozdelovnik' => new Component('Rozdelovnik', RozdelovnikComponentData::createFromStrapiResponse($component)),
                 'komponenty.samosprava' => new Component('Samosprava', SamospravaComponentData::createFromStrapiResponse($component)),
                 'komponenty.sekce-s-dlazdicema' => new Component('SekceSDlazdicema', SekceSDlazdicemaComponentData::createFromStrapiResponse($component)),
-                'komponenty.soubory-ke-stazeni' => new Component('SouboryKeStazeni', new \stdClass()),
+                'komponenty.soubory-ke-stazeni' => new Component('SouboryKeStazeni', SouboryKeStazeniComponentData::createFromStrapiResponse($component)),
                 'komponenty.tlacitka' => new Component('Tlacitka', TlacitkaComponentData::createFromStrapiResponse($component)),
                 'komponenty.uredni-deska' => new Component('UredniDeska', new \stdClass()),
                 default => throw new \Exception('Unknown component ' . $component['__component']),
