@@ -359,3 +359,16 @@ header {
     border-radius: 40px;
     flex: 0 0 80px;
 }
+
+hr.hr {
+    border-color: #000;
+    opacity: 1;
+}
+
+.hr-normal {
+    border-width: 2px !important;
+}
+
+.hr-dotted {
+    border-style: dashed !important;
+}
