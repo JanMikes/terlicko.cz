@@ -382,5 +382,23 @@ hr.hr {
 }
 
 .button-style-2 a {
-    color: #f49833;
+    color: var(--bs-secondary);
+}
+
+.column-dlazdice {
+    width: 246px;
+    border: 2.5px solid var(--bs-primary);
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--bs-primary);
+}
+
+.column-dlazdice .divider {
+    display: block;
+    margin: 10px auto;
+    width: 30px;
+    height: 4px;
+    background: var(--bs-secondary);
 }
