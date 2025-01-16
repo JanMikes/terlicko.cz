@@ -1,0 +1,7 @@
+{% for obrazek in data.Obrazek %}
+    {% if obrazek.Odkaz %}
+        <twig:Odkaz data="{{ obrazek.Odkaz }}" />
+    {% endif %}
+
+    {{ obrazek.Obrazek.url }}
+{% endfor %}
