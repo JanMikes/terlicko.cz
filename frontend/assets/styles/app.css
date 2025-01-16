@@ -372,3 +372,15 @@ hr.hr {
 .hr-dotted {
     border-style: dashed !important;
 }
+
+.button-style-1 a {
+    text-decoration: none;
+    background: #1D5EFF;
+    padding: 9px 27px;
+    border-radius: 6px;
+    color: #fff;
+}
+
+.button-style-2 a {
+    color: #f49833;
+}

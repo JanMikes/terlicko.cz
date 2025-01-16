@@ -23,7 +23,8 @@
     "Odkaz": {
       "type": "component",
       "repeatable": false,
-      "component": "elementy.odkaz"
+      "component": "elementy.odkaz",
+      "required": true
     }
   }
 }

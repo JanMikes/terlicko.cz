@@ -123,7 +123,8 @@ export interface ElementyTlacitko extends Struct.ComponentSchema {
     icon: 'angle-right';
   };
   attributes: {
-    Odkaz: Schema.Attribute.Component<'elementy.odkaz', false>;
+    Odkaz: Schema.Attribute.Component<'elementy.odkaz', false> &
+      Schema.Attribute.Required;
     Styl: Schema.Attribute.Enumeration<['Styl 1', 'Styl 2']> &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'Styl 1'>;
