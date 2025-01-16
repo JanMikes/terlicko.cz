@@ -1,7 +1,13 @@
-{% for obrazek in data.Obrazek %}
-    {% if obrazek.Odkaz %}
-        <twig:Odkaz data="{{ obrazek.Odkaz }}" />
-    {% endif %}
-
-    {{ obrazek.Obrazek.url }}
-{% endfor %}
+<div class="row gx-3 my-4">
+    {% for obrazek in data.Obrazek %}
+        <div class="col d-flex justify-content-center align-items-center">
+            {% if obrazek.Odkaz %}
+                <twig:Odkaz data="{{ obrazek.Odkaz }}">
+                    <img class="img-fluid" src="{{ obrazek.Obrazek.url }}">
+                </twig:Odkaz>
+            {% else %}
+                <img class="img-fluid" src="{{ obrazek.Obrazek.url }}">
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>

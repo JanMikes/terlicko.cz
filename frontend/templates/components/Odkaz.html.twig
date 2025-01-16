@@ -1,5 +1,3 @@
-{% if data.url %}
-    {{ data.url }}
-{% elseif data.sekceSlug %}
-    {{ data.sekceSlug }}
-{% endif %}
+<a href="{% if data.url %}{{ data.url }}{% elseif data.sekceSlug %}{{ data.sekceSlug }}{% endif %}">
+    {% block content %}{% endblock %}
+</a>
