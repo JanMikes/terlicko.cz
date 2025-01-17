@@ -1,5 +1,7 @@
 {% for menuItem in this.items %}
     <li class="nav-item">
-        <a href="{{ menuItem.Odkaz.url ?? menuItem.Odkaz.sekceSlug  }}" class="nav-link px-2">{{ menuItem.Nadpis }}</a>
+        <twig:Odkaz class="nav-link px-2" data="{{ menuItem.Odkaz }}">
+            {{ menuItem.Nadpis }}
+        </twig:Odkaz>
     </li>
 {% endfor %}

@@ -29,7 +29,7 @@ readonly final class OdkazData
         if ($data['URL'] !== null) {
             $url = ltrim($data['URL'], '/');
 
-            if (str_starts_with($url, 'http') !== true) {
+            if (str_starts_with($url, 'http') === false) {
                 $url = '/' . $url;
             }
         }

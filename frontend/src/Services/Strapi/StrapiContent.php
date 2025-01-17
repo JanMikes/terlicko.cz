@@ -37,17 +37,17 @@ readonly final class StrapiContent
     ) {}
 
     /**
-     * @return array<int, string>
+     * @return array<string, SekceData>
      */
-    public function get(): array
+    public function getSectionSlugs(): array
     {
         /** @var array{data: array<SekceDataArray>} $strapiResponse */
-        $strapiResponse = $this->strapiClient->getApiResource('sekce', populateLevel: 1);
+        $strapiResponse = $this->strapiClient->getApiResource('sekces', populateLevel: 2);
 
         $data = [];
 
         foreach ($strapiResponse['data'] as $sekceData) {
-            $data[$sekceData['id']] = $sekceData['slug'];
+            $data[$sekceData['slug']] = SekceData::createFromStrapiResponseWithoutComponents($sekceData);
         }
 
         return $data;

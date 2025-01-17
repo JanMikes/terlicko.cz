@@ -11,6 +11,7 @@ namespace Terlicko\Web\Value\Content\Data;
  *      slug: string,
  *      Meta_description: string,
  *      Komponenty: array<array{__component: string}>,
+ *      parent: null|array{slug: string},
  *  }
  */
 readonly final class SekceData
@@ -23,7 +24,22 @@ readonly final class SekceData
         public string $slug,
         public string|null $Meta_description,
         public array $Komponenty,
+        public null|string $parentSlug,
     ) {
+    }
+
+    /**
+     * @param SekceDataArray $data
+     */
+    public static function createFromStrapiResponseWithoutComponents(array $data): self
+    {
+        return new self(
+            $data['Nazev'],
+            $data['slug'],
+            $data['Meta_description'],
+            [],
+            $data['parent']['slug'] ?? null,
+        );
     }
 
     /**
@@ -56,6 +72,7 @@ readonly final class SekceData
             $data['slug'],
             $data['Meta_description'],
             $components,
+            null,
         );
     }
 }
