@@ -1,11 +1,25 @@
-{% for clovek in data.lide %}
-    {{ clovek.Jmeno }}
-    {{ clovek.Funkce }}
-    {{ clovek.Email }}
-    {{ clovek.Telefon }}
-    {{ clovek.Pohlavi }}
-
-    {% if clovek.Fotka %}
-        {{ clovek.Fotka.url }}
-    {% endif %}
-{% endfor %}
+<div class="my-4">
+    <div class="row g-3">
+        {% for clovek in data.lide %}
+            <div class="col-md-6 col-lg-4 my-3">
+                <div class="d-flex align-items-center">
+                    {% if clovek.Fotka %}
+                        <img src="{{ clovek.Fotka.url }}" alt="Foto {{ clovek.Jmeno }}" class="img-fluid me-3 rounded-circle" style="width: 95px; height: 95px; object-fit: cover;">
+                    {% else %}
+                        <span style="width: 95px; height: 95px; object-fit: cover;background: #8CADD5;line-height: 95px;color: #fff;" class="me-3 rounded-circle text-center">
+                            <i class="bi-person-fill fs-1"></i>
+                        </span>
+                    {% endif %}
+                    <div>
+                        <h5 class="fw-bold">{{ clovek.Jmeno }}</h5>
+                        <p>
+                            {{ clovek.Funkce }}
+                            {% if clovek.Email %}<br>{{ clovek.Email }}{% endif %}
+                            {% if clovek.Telefon %}<br>{{ clovek.Telefon }}{% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
