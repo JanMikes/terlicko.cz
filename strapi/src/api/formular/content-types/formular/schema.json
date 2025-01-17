@@ -28,7 +28,9 @@
       "type": "dynamiczone",
       "components": [
         "elementy.pole-formulare",
-        "elementy.pole-formulare-s-moznostmi"
+        "elementy.pole-formulare-s-moznostmi",
+        "komponenty.nadpis",
+        "komponenty.textove-pole"
       ]
     }
   }

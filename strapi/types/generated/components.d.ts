@@ -64,7 +64,9 @@ export interface ElementyPoleFormulare extends Struct.ComponentSchema {
   attributes: {
     Nadpis_pole: Schema.Attribute.String & Schema.Attribute.Required;
     Napoveda: Schema.Attribute.String;
-    Povinne: Schema.Attribute.Boolean & Schema.Attribute.Required;
+    Povinne: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
     Typ: Schema.Attribute.Enumeration<
       [
         'Text',
@@ -96,7 +98,9 @@ export interface ElementyPoleFormulareSMoznostmi
       Schema.Attribute.Required;
     Nadpis_pole: Schema.Attribute.String & Schema.Attribute.Required;
     Napoveda: Schema.Attribute.String;
-    Povinne: Schema.Attribute.Boolean & Schema.Attribute.Required;
+    Povinne: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
     Typ: Schema.Attribute.Enumeration<['Select', 'Checkbox list', 'Radio']> &
       Schema.Attribute.Required;
   };

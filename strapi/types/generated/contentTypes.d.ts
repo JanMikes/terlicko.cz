@@ -440,7 +440,12 @@ export interface ApiFormularFormular extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     Nazev_formulare: Schema.Attribute.String & Schema.Attribute.Required;
     Pole: Schema.Attribute.DynamicZone<
-      ['elementy.pole-formulare', 'elementy.pole-formulare-s-moznostmi']
+      [
+        'elementy.pole-formulare',
+        'elementy.pole-formulare-s-moznostmi',
+        'komponenty.nadpis',
+        'komponenty.textove-pole',
+      ]
     >;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
