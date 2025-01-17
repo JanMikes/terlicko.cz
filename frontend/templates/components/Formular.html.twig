@@ -1,13 +1,22 @@
-{{ data.formular.Nazev_formulare }}
+<div class="my-4">
+    <h2>{{ data.formular.Nazev_formulare }}</h2>
 
-{% for pole in data.formular.Pole %}
-    {{ pole.Povinne }}
-    {{ pole.Typ }}
-    {{ pole.Nadpis_pole }}
+    <div class="row">
+        {% for pole in data.formular.Pole %}
+            <div class="col-md-4 mb-3">
+                <label class="form-label">{{ pole.Nadpis_pole }}</label>
+                <input class="form-control">
+                {{ pole.Povinne }}
+                {{ pole.Typ }}
 
-    {% if pole.Typ in ['Select', 'Radio', 'Checkbox list'] %}
-        {% for moznost in pole.Moznosti %}
-            {{ moznost }}
+                {% if pole.Typ in ['Select', 'Radio', 'Checkbox list'] %}
+                    {% for moznost in pole.Moznosti %}
+                        {{ moznost }}
+                    {% endfor %}
+                {% endif %}
+            </div>
         {% endfor %}
-    {% endif %}
-{% endfor %}
+    </div>
+
+    <button type="submit" class="custom-badge">Odeslat</button>
+</div>
