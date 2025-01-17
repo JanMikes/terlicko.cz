@@ -1,4 +1,4 @@
-<div class="my-5">
+<div class="mt-2 mb-5">
     {% for tlacitko in data.Tlacitka %}
         <span class="{{ tlacitko.Styl == 'Styl 1' ? 'button-style-1' : 'button-style-2' }} {{ loop.first != true ? 'ms-4' }}">
             <twig:Odkaz data="{{ tlacitko.Odkaz }}">{{ tlacitko.Text }}{{ tlacitko.Styl == 'Styl 2' ? ' &raquo;' }}</twig:Odkaz>
