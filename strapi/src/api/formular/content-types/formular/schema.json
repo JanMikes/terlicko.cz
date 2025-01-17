@@ -32,6 +32,11 @@
         "komponenty.nadpis",
         "komponenty.textove-pole"
       ]
+    },
+    "Zobrazovat_nazev": {
+      "type": "boolean",
+      "default": true,
+      "required": true
     }
   }
 }

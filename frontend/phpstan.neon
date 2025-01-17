@@ -31,5 +31,7 @@ parameters:
         - "#^Call to an undefined method Symfony\\\\Config\\\\Framework\\\\Messenger#"
         -
             message: "#^Parameter \\#1 \\$data of static method Terlicko\\\\Web\\\\Value\\\\Content\\\\Data\\\\#"
-            path: "src/Value/Content/Data/SekceData.php"
+            paths:
+                - "src/Value/Content/Data/SekceData.php"
+                - "src/Value/Content/Data/FormularData.php"
 
