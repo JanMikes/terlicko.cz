@@ -8,7 +8,7 @@ namespace Terlicko\Web\Value\Content\Data;
  * @phpstan-type PoleFormulareDataArray array{
  *     Povinne: null|bool,
  *     Typ: string,
- *     Nadpis_pole: string,
+ *     Nadpis_pole: null|string,
  *     Napoveda: null|string,
  *     __component: string,
  *  }
@@ -33,7 +33,7 @@ readonly final class PoleFormulareData
         return new self(
             $data['Povinne'] ?? false,
             $data['Typ'],
-            $data['Nadpis_pole'],
+            $data['Nadpis_pole'] ?? '',
             $data['Napoveda'],
         );
     }
