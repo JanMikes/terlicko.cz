@@ -11,59 +11,43 @@
         </ol>
     </nav>
 
-    <section class="aktuality-section">
-        <h2>Aktuality</h2>
+    <h1 class="fw-bolder">Aktuality</h1>
 
-        {% if tagy %}
-            <p class="tags">
-                {% for Tag in tagy %}
-                    <a href="{{ path('aktuality_tag_filter', {'tag': Tag.slug}) }}" class="tag-link {% if Tag.slug == active_tag %}active_tag{% endif %}">
-                        {{ Tag.Tag }}
-                    </a>
-                {% endfor %}
-            </p>
-        {% endif %}
-
-        <div class="actualities-wrapper">
-            {% for aktualita in aktuality %}
-                <article>
-                    <div class="actuality-inner">
-                        {% if aktualita.Obrazek %}
-                            <div class="image-wrapper">
-                                <img src="{{ aktualita.Obrazek.url }}" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
-                            </div>
-                        {% endif %}
-
-                        <div class="actuality-content">
-                            <h3 id="aktualita-{{ aktualita.slug }}">
-                                {% if aktualita.slug %}
-                                    <a href="{{ path('detail_aktuality', {'slug': aktualita.slug}) }}">
-                                        {{ aktualita.Nadpis }}
-                                    </a>
-                                {% else %}
-                                    {{ aktualita.Nadpis }}
-                                {% endif %}
-                            </h3>
-
-                            <p><time>{{ aktualita.DatumZverejneni|date('d.m.Y') }}</time></p>
-
-                            {% if aktualita.Tagy %}
-                                <p class="tags">
-                                    {% for Tag in aktualita.Tagy %}
-                                        <a href="{{ path('aktuality_tag_filter', {'tag': Tag.slug}) }}" class="tag-link">
-                                            {{ Tag.Tag }}
-                                        </a>
-                                    {% endfor %}
-                                </p>
-                            {% endif %}
-
-                            {{ aktualita.Popis|u.truncate(150, '...', true)|markdown_to_html|nl2br }}
-                        </div>
-                    </div>
-                </article>
+    {% if tagy %}
+        <p class="tags">
+            {% for Tag in tagy %}
+                <a href="{{ path('aktuality_tag_filter', {'tag': Tag.slug}) }}" class="custom-badge {% if Tag.slug == active_tag %}active_tag{% endif %}">
+                    {{ Tag.Tag }}
+                </a>
             {% endfor %}
-        </div>
-    </section>
+        </p>
+    {% endif %}
+
+    <div class="row">
+        {% for aktualita in aktuality %}
+            <div class="col-sm-6 col-md-4 col-lg-3 my-3">
+                <a href="{{ path('detail_aktuality', {'slug': aktualita.slug}) }}" class="text-decoration-none">
+                    {% if aktualita.Obrazek %}
+                        <img class="img-fluid mb-2" src="{{ aktualita.Obrazek.url }}" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
+                    {% endif %}
+
+                    {% if aktualita.Tagy %}
+                        <span class="d-block text-secondary">
+                                    {% for Tag in aktualita.Tagy %}
+                                        {% if not loop.first %}
+                                            |
+                                        {% endif %}
+                                        {{ Tag.Tag }}
+                                    {% endfor %}
+                                </span>
+                    {% endif %}
+
+                    <h3 class="h5 border-top mt-2 pt-2">{{ aktualita.Nadpis }}</h3>
+                    <time class="small text-primary-emphasis">{{ aktualita.DatumZverejneni|date('d.m.Y') }}</time>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
 
