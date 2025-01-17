@@ -9,6 +9,7 @@ namespace Terlicko\Web\Value\Content\Data;
  *     Povinne: bool,
  *     Typ: string,
  *     Nadpis_pole: string,
+ *     Napoveda: null|string,
  *     Moznosti: array<array{Text: string}>,
  *     __component: string,
  *  }
@@ -26,6 +27,7 @@ readonly final class PoleFormulareSMoznostmiData
         public string $Typ,
         public string $Nadpis_pole,
         public array $Moznosti,
+        public null|string $Napoveda,
     ) {}
 
     /**
@@ -44,6 +46,7 @@ readonly final class PoleFormulareSMoznostmiData
             $data['Typ'],
             $data['Nadpis_pole'],
             $options,
+            $data['Napoveda'],
         );
     }
 }

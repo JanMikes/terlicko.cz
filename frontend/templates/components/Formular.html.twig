@@ -1,22 +1,101 @@
 <div class="mt-2 mb-5">
     <h2>{{ data.formular.Nazev_formulare }}</h2>
 
-    <div class="row">
-        {% for pole in data.formular.Pole %}
-            <div class="col-md-4 mb-3">
-                <label class="form-label">{{ pole.Nadpis_pole }}</label>
-                <input class="form-control">
-                {{ pole.Povinne }}
-                {{ pole.Typ }}
+    <form method="POST" action="#" enctype="multipart/form-data">
+        <div class="row">
+            {% for pole in data.formular.Pole %}
+                <div class="col-md-4 mb-3">
+                    <label for="pole_{{ loop.index }}" class="form-label {{ pole.Povinne ? 'required' }}">
+                        {{ pole.Nadpis_pole }}
+                    </label>
 
-                {% if pole.Typ in ['Select', 'Radio', 'Checkbox list'] %}
-                    {% for moznost in pole.Moznosti %}
-                        {{ moznost }}
-                    {% endfor %}
-                {% endif %}
-            </div>
-        {% endfor %}
-    </div>
+                    {% if pole.Typ == 'Text' %}
+                        <input type="text" id="pole_{{ loop.index }}" name="pole_{{ loop.index }}"
+                               class="form-control" {{ pole.Povinne ? 'required' }}>
 
-    <button type="submit" class="custom-badge">Odeslat</button>
+                    {% elseif pole.Typ == 'Textové pole' %}
+                        <textarea id="pole_{{ loop.index }}" name="pole_{{ loop.index }}"
+                                  class="form-control" {{ pole.Povinne ? 'required' }}></textarea>
+
+                    {% elseif pole.Typ == 'Email' %}
+                        <input type="email" id="pole_{{ loop.index }}" name="pole_{{ loop.index }}"
+                               class="form-control" {{ pole.Povinne ? 'required' }}>
+
+                    {% elseif pole.Typ == 'Telefon' %}
+                        <input type="tel" id="pole_{{ loop.index }}" name="pole_{{ loop.index }}"
+                               class="form-control" {{ pole.Povinne ? 'required' }}>
+
+                    {% elseif pole.Typ == 'Foto' or pole.Typ == 'Soubor' %}
+                        <input type="file" id="pole_{{ loop.index }}" name="pole_{{ loop.index }}"
+                               class="form-control" {{ pole.Povinne ? 'required' }}>
+
+                    {% elseif pole.Typ == 'Datum' %}
+                        <input type="date" id="pole_{{ loop.index }}" name="pole_{{ loop.index }}"
+                               class="form-control" {{ pole.Povinne ? 'required' }}>
+
+                    {% elseif pole.Typ == 'Datum_od_do' %}
+                        <div class="row">
+                            <div class="col">
+                                <input type="date" id="pole_od_{{ loop.index }}" name="pole_od_{{ loop.index }}"
+                                       class="form-control" placeholder="Od" {{ pole.Povinne ? 'required' }}>
+                            </div>
+                            <div class="col">
+                                <input type="date" id="pole_do_{{ loop.index }}" name="pole_do_{{ loop.index }}"
+                                       class="form-control" placeholder="Do" {{ pole.Povinne ? 'required' }}>
+                            </div>
+                        </div>
+
+                    {% elseif pole.Typ == 'Checkbox' %}
+                        <div class="form-check">
+                            <input type="checkbox" id="pole_{{ loop.index }}" name="pole_{{ loop.index }}"
+                                   class="form-check-input" {{ pole.Povinne ? 'required' }}>
+                            <label for="pole_{{ loop.index }}" class="form-check-label">
+                                {{ pole.Nadpis_pole }}
+                            </label>
+                        </div>
+
+                    {% elseif pole.Typ == 'Select' %}
+                        <select id="pole_{{ loop.index }}" name="pole_{{ loop.index }}"
+                                class="form-select" {{ pole.Povinne ? 'required' }}>
+                            {% for moznost in pole.Moznosti %}
+                                <option value="{{ moznost }}">{{ moznost }}</option>
+                            {% endfor %}
+                        </select>
+
+                    {% elseif pole.Typ == 'Radio' %}
+                        {% for moznost in pole.Moznosti %}
+                            <div class="form-check">
+                                <input type="radio" id="pole_{{ loop.index }}_{{ loop.index0 }}"
+                                       name="pole_{{ loop.index }}" value="{{ moznost }}"
+                                       class="form-check-input" {{ pole.Povinne ? 'required' }}>
+                                <label for="pole_{{ loop.index }}_{{ loop.index0 }}" class="form-check-label">
+                                    {{ moznost }}
+                                </label>
+                            </div>
+                        {% endfor %}
+
+                    {% elseif pole.Typ == 'Checkbox list' %}
+                        {% for moznost in pole.Moznosti %}
+                            <div class="form-check">
+                                <input type="checkbox" id="pole_{{ loop.index }}_{{ loop.index0 }}"
+                                       name="pole_{{ loop.index }}[]" value="{{ moznost }}"
+                                       class="form-check-input" {{ pole.Povinne ? 'required' }}>
+                                <label for="pole_{{ loop.index }}_{{ loop.index0 }}" class="form-check-label">
+                                    {{ moznost }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if pole.Napoveda %}
+                        <div class="form-text">
+                            {{ pole.Napoveda }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Odeslat</button>
+    </form>
 </div>

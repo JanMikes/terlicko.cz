@@ -403,3 +403,49 @@ hr.hr {
     height: 4px;
     background: var(--bs-secondary);
 }
+
+.form-label {
+    color: var(--bs-primary);
+    font-weight: bold;
+}
+
+.form-label.required::after {
+    content: " *";
+    color: var(--bs-danger);
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+    border: none !important;
+    border-bottom: 2px solid var(--bs-primary) !important;
+    border-radius: 0 !important;
+    outline: none !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):focus,
+select:focus,
+textarea:focus {
+    border-bottom-color: var(--bs-secondary) !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+    padding: 0.375rem !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):disabled,
+select:disabled,
+textarea:disabled {
+    border-bottom-style: dashed !important;
+    background-color: #f8f9fa !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):hover,
+select:hover,
+textarea:hover {
+    border-bottom-color: #6c757d !important;
+}
