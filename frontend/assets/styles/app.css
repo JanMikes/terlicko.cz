@@ -349,6 +349,7 @@ header {
     border-radius: 0 10px;
     display: inline-block;
     font-weight: bold;
+    border: 0;
 }
 
 .article-icon {
