@@ -6,7 +6,7 @@ namespace Terlicko\Web\Value\Content\Data;
 
 /**
  * @phpstan-type PoleFormulareDataArray array{
- *     Povinne: bool,
+ *     Povinne: null|bool,
  *     Typ: string,
  *     Nadpis_pole: string,
  *     Napoveda: null|string,
@@ -31,7 +31,7 @@ readonly final class PoleFormulareData
     public static function createFromStrapiResponse(array $data): self
     {
         return new self(
-            $data['Povinne'],
+            $data['Povinne'] ?? false,
             $data['Typ'],
             $data['Nadpis_pole'],
             $data['Napoveda'],
