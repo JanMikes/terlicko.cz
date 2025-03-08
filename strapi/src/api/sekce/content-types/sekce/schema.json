@@ -40,7 +40,8 @@
         "komponenty.soubory-ke-stazeni",
         "komponenty.textove-pole",
         "komponenty.tlacitka",
-        "komponenty.uredni-deska"
+        "komponenty.uredni-deska",
+        "komponenty.termin-akce"
       ],
       "required": true,
       "min": 1

@@ -18,7 +18,6 @@ use DateTimeImmutable;
  *      Popis: null|string,
  *      Zobrazovat: bool,
  *      slug: string,
- *      Zobrazovat_na_uredni_desce: bool,
  *      Obrazek: null|ImageDataArray,
  *      Galerie: null|array<ImageDataArray>,
  *      Zverejnil: null|ClovekDataArray,

@@ -11,7 +11,6 @@ namespace Terlicko\Web\Value\Content\Data;
  *     Email: null|string,
  *     Telefon: null|string,
  *     Pohlavi: string,
- *     Funkce: null|string,
  *     Fotka: null|ImageDataArray,
  *  }
  */
@@ -22,7 +21,6 @@ readonly final class ClovekData
 
     public function __construct(
         public string $Jmeno,
-        public null|string $Funkce,
         public null|string $Email,
         public null|string $Telefon,
         public string $Pohlavi,
@@ -44,7 +42,6 @@ readonly final class ClovekData
     {
         return new self(
             $data['Jmeno'],
-            $data['Funkce'],
             $data['Email'],
             $data['Telefon'],
             $data['Pohlavi'],

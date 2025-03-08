@@ -72,10 +72,6 @@
         "videos",
         "audios"
       ]
-    },
-    "Zobrazovat_na_uredni_desce": {
-      "type": "boolean",
-      "default": false
     }
   }
 }

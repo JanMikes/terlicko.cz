@@ -157,45 +157,14 @@ readonly final class StrapiContent
 
 
     /**
-     * @throws InvalidKategorie
-     *
      * @return array<UredniDeskaData>
      */
     public function getUredniDeskyDataFilteredByKategorie(string $kategorieSlug): array
     {
-        $kategorie = KategorieUredniDesky::fromSlug($kategorieSlug);
-        $field = $this->uredniDeskaKategorieToUredniDeskaField($kategorie->name);
-
-        return $this->getUredniDeskyData($field, shouldHideIfExpired: true);
+        // TODO
+        return [];
+        // return $this->getUredniDeskyData($field, shouldHideIfExpired: true);
     }
-
-
-    private function uredniDeskaKategorieToUredniDeskaField(string $kategorie): string|null
-    {
-        return match ($kategorie) {
-            'Formulare' => 'Zobrazit_v_formulare',
-            'Navody' => 'Zobrazit_v_navody',
-            'Odpady' => 'Zobrazit_v_odpady',
-            'Rozpocty' => 'Zobrazit_v_rozpocty',
-            'Strategicke_dokumenty' => 'Zobrazit_v_strategicke_dokumenty',
-            'Uzemni_plan' => 'Zobrazit_v_uzemni_plan',
-            'Uzemni_studie' => 'Zobrazit_v_uzemni_studie',
-            'Vyhlasky' => 'Zobrazit_v_vyhlasky',
-            'Vyrocni_zpravy' => 'Zobrazit_v_vyrocni_zpravy',
-            'Zivotni_situace' => 'Zobrazit_v_zivotni_situace',
-            'Poskytnute_informace' => 'Zobrazit_v_poskytnute_informace',
-            'Verejnopravni_smlouvy' => 'Zobrazit_v_verejnopravni_smlouvy',
-            'Zapisy_z_jednani_zastupitelstva' => 'Zobrazit_v_zapisy_z_jednani_zastupitelstva',
-            'Usneseni_rady' => 'Zobrazit_v_usneseni_rady',
-            'Financni_vybor' => 'Zobrazit_v_financni_vybor',
-            'Kulturni_komise' => 'Zobrazit_v_kulturni_komise',
-            'Volby' => 'Zobrazit_v_volby',
-            'Projekty' => 'Zobrazit_v_projekty',
-            '-' => null,
-            default => throw new \LogicException('Resource not matched: ' . $kategorie),
-        };
-    }
-
 
     /**
      * @return array<TagData>

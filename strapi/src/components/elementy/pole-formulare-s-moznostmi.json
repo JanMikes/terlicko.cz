@@ -34,6 +34,10 @@
     },
     "Napoveda": {
       "type": "string"
+    },
+    "Vyplnuje_urad": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

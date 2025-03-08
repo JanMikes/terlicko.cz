@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace Terlicko\Web\Value\Content\Data;
 
 /**
- * @phpstan-import-type ClovekDataArray from ClovekData
+ * @phpstan-import-type ClovekSamospravyDataArray from ClovekSamospravyData
  */
 readonly final class SamospravaComponentData
 {
     /**
-     * @param array<ClovekData> $lide
+     * @param array<ClovekSamospravyData> $lide
      */
     public function __construct(
         public array $lide,
     ) {}
 
     /**
-     * @param array{lides: array<ClovekDataArray>} $data
+     * @param array{Lide: array<ClovekSamospravyDataArray>} $data
      */
     public static function createFromStrapiResponse(array $data): self
     {
         return new self(
-            ClovekData::createManyFromStrapiResponse($data['lides']),
+            ClovekSamospravyData::createManyFromStrapiResponse($data['Lide']),
         );
     }
 }

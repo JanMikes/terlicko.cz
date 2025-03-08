@@ -409,8 +409,6 @@ export interface ApiAktualityAktuality extends Struct.CollectionTypeSchema {
     Zobrazovat: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<true>;
-    Zobrazovat_na_uredni_desce: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
     Zverejnil: Schema.Attribute.Relation<'oneToOne', 'api::lide.lide'>;
   };
 }
@@ -457,6 +455,37 @@ export interface ApiFormularFormular extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiKategorieUredniDeskyKategorieUredniDesky
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'kategorie_uredni_deskies';
+  info: {
+    description: '';
+    displayName: 'Kategorie \u00FA\u0159edn\u00ED desky';
+    pluralName: 'kategorie-uredni-deskies';
+    singularName: 'kategorie-uredni-desky';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::kategorie-uredni-desky.kategorie-uredni-desky'
+    > &
+      Schema.Attribute.Private;
+    Nazev: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'Nazev'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiLideLide extends Struct.CollectionTypeSchema {
   collectionName: 'lides';
   info: {
@@ -474,7 +503,6 @@ export interface ApiLideLide extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     Email: Schema.Attribute.Email;
     Fotka: Schema.Attribute.Media<'images'>;
-    Funkce: Schema.Attribute.String;
     Jmeno: Schema.Attribute.String & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::lide.lide'> &
@@ -555,6 +583,7 @@ export interface ApiSekceSekce extends Struct.CollectionTypeSchema {
         'komponenty.textove-pole',
         'komponenty.tlacitka',
         'komponenty.uredni-deska',
+        'komponenty.termin-akce',
       ]
     > &
       Schema.Attribute.Required &
@@ -622,11 +651,16 @@ export interface ApiUredniDeskaUredniDeska extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    categories: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::kategorie-uredni-desky.kategorie-uredni-desky'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     Datum_stazeni: Schema.Attribute.Date;
     Datum_zverejneni: Schema.Attribute.Date & Schema.Attribute.Required;
+    Ikonka: Schema.Attribute.Media<'images' | 'files'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -646,62 +680,6 @@ export interface ApiUredniDeskaUredniDeska extends Struct.CollectionTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     Uvodni_obrazek: Schema.Attribute.Media<'images'>;
-    Zobrazit_v_aktualitach: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_financni_vybor: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_formulare: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_kulturni_komise: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_navody: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_odpady: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_poskytnute_informace: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_projekty: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_rozpocty: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_strategicke_dokumenty: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_usneseni_rady: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_uzemni_plan: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_uzemni_studie: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_verejnopravni_smlouvy: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_volby: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_vyhlasky: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_vyrocni_zpravy: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_zapisy_z_jednani_zastupitelstva: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    Zobrazit_v_zivotni_situace: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
     Zobrazovat: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<true>;
@@ -1220,6 +1198,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::aktuality.aktuality': ApiAktualityAktuality;
       'api::formular.formular': ApiFormularFormular;
+      'api::kategorie-uredni-desky.kategorie-uredni-desky': ApiKategorieUredniDeskyKategorieUredniDesky;
       'api::lide.lide': ApiLideLide;
       'api::menu.menu': ApiMenuMenu;
       'api::sekce.sekce': ApiSekceSekce;

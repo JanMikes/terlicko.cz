@@ -7,10 +7,10 @@
   },
   "options": {},
   "attributes": {
-    "lides": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::lide.lide"
+    "Lide": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elementy.clovek-samospravy"
     }
   }
 }

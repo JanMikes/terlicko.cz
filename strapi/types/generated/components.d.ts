@@ -13,6 +13,18 @@ export interface ElementyBanner extends Struct.ComponentSchema {
   };
 }
 
+export interface ElementyClovekSamospravy extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_clovek_samospravies';
+  info: {
+    displayName: '\u010Clov\u011Bk samospr\u00E1vy';
+    icon: 'user';
+  };
+  attributes: {
+    Funkce: Schema.Attribute.String;
+    lide: Schema.Attribute.Relation<'oneToOne', 'api::lide.lide'>;
+  };
+}
+
 export interface ElementyDlazdice extends Struct.ComponentSchema {
   collectionName: 'components_dlazdice_dlazdices';
   info: {
@@ -50,6 +62,7 @@ export interface ElementyOdkaz extends Struct.ComponentSchema {
   };
   attributes: {
     sekce: Schema.Attribute.Relation<'oneToOne', 'api::sekce.sekce'>;
+    Soubor: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     URL: Schema.Attribute.String;
   };
 }
@@ -82,6 +95,7 @@ export interface ElementyPoleFormulare extends Struct.ComponentSchema {
     > &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'Text'>;
+    Vyplnuje_urad: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
   };
 }
 
@@ -103,6 +117,7 @@ export interface ElementyPoleFormulareSMoznostmi
       Schema.Attribute.DefaultTo<true>;
     Typ: Schema.Attribute.Enumeration<['Select', 'Checkbox list', 'Radio']> &
       Schema.Attribute.Required;
+    Vyplnuje_urad: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
   };
 }
 
@@ -260,7 +275,7 @@ export interface KomponentySamosprava extends Struct.ComponentSchema {
     icon: 'address-card';
   };
   attributes: {
-    lides: Schema.Attribute.Relation<'oneToMany', 'api::lide.lide'>;
+    Lide: Schema.Attribute.Component<'elementy.clovek-samospravy', true>;
   };
 }
 
@@ -293,6 +308,19 @@ export interface KomponentySouboryKeStazeni extends Struct.ComponentSchema {
   };
 }
 
+export interface KomponentyTerminAkce extends Struct.ComponentSchema {
+  collectionName: 'components_komponenty_termin_akces';
+  info: {
+    displayName: 'Term\u00EDn akce';
+    icon: 'calendar';
+  };
+  attributes: {
+    Termin: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    Zaznam: Schema.Attribute.String;
+    Zivy_prenos: Schema.Attribute.String;
+  };
+}
+
 export interface KomponentyTextovePole extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_textove_poles';
   info: {
@@ -320,33 +348,15 @@ export interface KomponentyTlacitka extends Struct.ComponentSchema {
 export interface KomponentyUredniDeska extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_uredni_deskas';
   info: {
+    description: '';
     displayName: '\u00DA\u0159edn\u00ED deska';
     icon: 'book';
   };
   attributes: {
-    Kategorie: Schema.Attribute.Enumeration<
-      [
-        'Formul\u00E1\u0159e',
-        'N\u00E1vody',
-        'Odpady',
-        'Rozpo\u010Dty',
-        'Strategick\u00E9 dokumenty',
-        '\u00DAzemn\u00ED pl\u00E1n',
-        '\u00DAzemn\u00ED studie',
-        'Vyhl\u00E1\u0161ky',
-        'V\u00FDro\u010Dn\u00ED zpr\u00E1vy',
-        '\u017Divotn\u00ED situace',
-        'Poskytnut\u00E9 informace',
-        'Ve\u0159ejnopr\u00E1vn\u00ED smlouvy',
-        'Z\u00E1pisy z jedn\u00E1n\u00ED zastupitelstva',
-        'Usnesen\u00ED rady',
-        'Finan\u010Dn\u00ED v\u00FDbor',
-        'Kultirn\u00ED komise',
-        'Volby',
-        'Projekty',
-      ]
-    > &
-      Schema.Attribute.Required;
+    kategorie_uredni_deskies: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::kategorie-uredni-desky.kategorie-uredni-desky'
+    >;
     Pocet: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
@@ -364,6 +374,7 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'elementy.banner': ElementyBanner;
+      'elementy.clovek-samospravy': ElementyClovekSamospravy;
       'elementy.dlazdice': ElementyDlazdice;
       'elementy.obrazek-galerie': ElementyObrazekGalerie;
       'elementy.odkaz': ElementyOdkaz;
@@ -381,6 +392,7 @@ declare module '@strapi/strapi' {
       'komponenty.samosprava': KomponentySamosprava;
       'komponenty.sekce-s-dlazdicema': KomponentySekceSDlazdicema;
       'komponenty.soubory-ke-stazeni': KomponentySouboryKeStazeni;
+      'komponenty.termin-akce': KomponentyTerminAkce;
       'komponenty.textove-pole': KomponentyTextovePole;
       'komponenty.tlacitka': KomponentyTlacitka;
       'komponenty.uredni-deska': KomponentyUredniDeska;

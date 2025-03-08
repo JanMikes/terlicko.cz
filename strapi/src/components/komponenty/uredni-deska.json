@@ -2,40 +2,22 @@
   "collectionName": "components_komponenty_uredni_deskas",
   "info": {
     "displayName": "Úřední deska",
-    "icon": "book"
+    "icon": "book",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "Kategorie": {
-      "type": "enumeration",
-      "enum": [
-        "Formuláře",
-        "Návody",
-        "Odpady",
-        "Rozpočty",
-        "Strategické dokumenty",
-        "Územní plán",
-        "Územní studie",
-        "Vyhlášky",
-        "Výroční zprávy",
-        "Životní situace",
-        "Poskytnuté informace",
-        "Veřejnoprávní smlouvy",
-        "Zápisy z jednání zastupitelstva",
-        "Usnesení rady",
-        "Finanční výbor",
-        "Kultirní komise",
-        "Volby",
-        "Projekty"
-      ],
-      "required": true
-    },
     "Pocet": {
       "type": "integer",
       "default": 6,
       "required": true,
       "min": 1,
       "max": 30
+    },
+    "kategorie_uredni_deskies": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::kategorie-uredni-desky.kategorie-uredni-desky"
     }
   }
 }

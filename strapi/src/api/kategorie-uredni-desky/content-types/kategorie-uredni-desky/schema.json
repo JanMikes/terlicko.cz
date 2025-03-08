@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "kategorie_uredni_deskies",
+  "info": {
+    "singularName": "kategorie-uredni-desky",
+    "pluralName": "kategorie-uredni-deskies",
+    "displayName": "Kategorie úřední desky",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nazev": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "Nazev",
+      "required": true
+    }
+  }
+}
