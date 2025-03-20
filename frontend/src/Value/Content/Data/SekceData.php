@@ -63,7 +63,7 @@ readonly final class SekceData
                 'komponenty.soubory-ke-stazeni' => new Component('SouboryKeStazeni', SouboryKeStazeniComponentData::createFromStrapiResponse($component)),
                 'komponenty.tlacitka' => new Component('Tlacitka', TlacitkaComponentData::createFromStrapiResponse($component)),
                 'komponenty.uredni-deska' => new Component('UredniDeska', UredniDeskaComponentData::createFromStrapiResponse($component)),
-                'komponenty.termin-akce' => new Component('TerminAkce', UredniDeskaComponentData::createFromStrapiResponse($component)),
+                'komponenty.termin-akce' => new Component('TerminAkce', TerminAkceComponentData::createFromStrapiResponse($component)),
                 default => throw new \Exception('Unknown component ' . $component['__component']),
             };
         }

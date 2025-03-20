@@ -8,7 +8,7 @@ namespace Terlicko\Web\Value\Content\Data;
  * @phpstan-import-type ImageDataArray from ImageData
  * @phpstan-import-type OdkazDataArray from OdkazData
  * @phpstan-type DlazdiceDataArray array{
- *     Ikona: ImageDataArray,
+ *     Ikona: null|ImageDataArray,
  *     Nadpis_dlazdice: string,
  *     Odkaz: OdkazDataArray,
  * }
@@ -19,7 +19,7 @@ readonly final class DlazdiceData
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(
-        public ImageData $Ikona,
+        public null|ImageData $Ikona,
         public string $Nadpis_dlazdice,
         public OdkazData $Odkaz,
     ) {
@@ -31,7 +31,7 @@ readonly final class DlazdiceData
     public static function createFromStrapiResponse(array $data): self
     {
         return new self(
-            ImageData::createFromStrapiResponse($data['Ikona']),
+            $data['Ikona'] ? ImageData::createFromStrapiResponse($data['Ikona']) : null,
             $data['Nadpis_dlazdice'],
             OdkazData::createFromStrapiResponse($data['Odkaz']),
         );

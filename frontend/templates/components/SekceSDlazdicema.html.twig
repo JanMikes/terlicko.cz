@@ -1,7 +1,9 @@
 <div class="d-flex flex-wrap gap-3 mt-2 mb-5 align-items-stretch">
     {% for dlazdice in data.Dlazdice %}
         <twig:Odkaz data="{{ dlazdice.Odkaz }}" class="column-dlazdice align-items-center justify-content-center flex-wrap text-center">
-            <img src="{{ dlazdice.Ikona.url }}" class="img-fluid mb-3">
+            {% if dlazdice.Ikona %}
+                <img src="{{ dlazdice.Ikona.url }}" class="img-fluid mb-3">
+            {% endif %}
             <span class="divider"></span>
             {{ dlazdice.Nadpis_dlazdice }}
         </twig:Odkaz>

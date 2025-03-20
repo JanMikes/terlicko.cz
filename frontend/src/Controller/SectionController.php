@@ -28,7 +28,10 @@ final class SectionController extends AbstractController
 
         foreach ($breadcrumbs as $slug) {
             $linkforSlug = $this->strapiLinkHelper->getLinkForSlug($slug);
-            $breadcrumbLinks[$linkforSlug] = $sections[$slug]->Nazev;
+
+            if (isset($sections[$slug]->Nazev)) {
+                $breadcrumbLinks[$linkforSlug] = $sections[$slug]->Nazev;
+            }
         }
 
         try {

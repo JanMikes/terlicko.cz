@@ -29,7 +29,7 @@
             {% if uredni_deska.Kategorie %}
                 <p class="tags">
                     {% for Kategorie in uredni_deska.Kategorie %}
-                        <a href="{{ path('uredni_deska_kategorie_filter', {'kategorie': Kategorie.slug}) }}" class="tag-link">{{ Kategorie.value }}</a>
+                        <a href="{{ path('uredni_deska_kategorie_filter', {'kategorie': Kategorie.slug}) }}" class="tag-link">{{ Kategorie.Nazev }}</a>
                     {% endfor %}
                 </p>
             {% endif %}
