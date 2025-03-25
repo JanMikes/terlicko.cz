@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_komponenty_kartas",
+  "info": {
+    "displayName": "Karta",
+    "icon": "cup"
+  },
+  "options": {},
+  "attributes": {
+    "Obrazek": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "Nazev": {
+      "type": "string",
+      "required": true
+    },
+    "Adresa": {
+      "type": "string",
+      "required": true
+    },
+    "Telefon": {
+      "type": "string",
+      "required": true
+    },
+    "Email": {
+      "type": "email",
+      "required": false
+    },
+    "Odkaz": {
+      "type": "string"
+    }
+  }
+}

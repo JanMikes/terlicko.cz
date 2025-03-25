@@ -9,7 +9,7 @@
                         <span class="me-3 flex-shrink-0 rounded-circle text-center placeholder-icon-person {{ clovekSamospravy.clovek.isMuz ? 'male' : 'female' }}"></span>
                     {% endif %}
                     <div>
-                        <h5 class="fw-bold mb-0">{{ clovekSamospravy.clovek.Jmeno }}</h5>
+                        <h5 class="fw-bold mb-1">{{ clovekSamospravy.clovek.Jmeno }}</h5>
                         <p class="m-0">
                             {% if clovekSamospravy.Funkce %}<span class="d-inline-block mb-1">{{ clovekSamospravy.Funkce }}</span><br>{% endif %}
                             {% if clovekSamospravy.clovek.Email %}<a href="mailto:{{ clovekSamospravy.clovek.Email }}">{{ clovekSamospravy.clovek.Email }}</a><br>{% endif %}

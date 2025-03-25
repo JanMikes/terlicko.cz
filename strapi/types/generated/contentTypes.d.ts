@@ -584,6 +584,7 @@ export interface ApiSekceSekce extends Struct.CollectionTypeSchema {
         'komponenty.tlacitka',
         'komponenty.uredni-deska',
         'komponenty.termin-akce',
+        'komponenty.karta',
       ]
     > &
       Schema.Attribute.Required &

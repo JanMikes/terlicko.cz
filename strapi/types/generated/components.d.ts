@@ -216,6 +216,22 @@ export interface KomponentyGalerie extends Struct.ComponentSchema {
   };
 }
 
+export interface KomponentyKarta extends Struct.ComponentSchema {
+  collectionName: 'components_komponenty_kartas';
+  info: {
+    displayName: 'Karta';
+    icon: 'cup';
+  };
+  attributes: {
+    Adresa: Schema.Attribute.String & Schema.Attribute.Required;
+    Email: Schema.Attribute.Email;
+    Nazev: Schema.Attribute.String & Schema.Attribute.Required;
+    Obrazek: Schema.Attribute.Media<'images'>;
+    Odkaz: Schema.Attribute.String;
+    Telefon: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface KomponentyNadpis extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_nadpis';
   info: {
@@ -386,6 +402,7 @@ declare module '@strapi/strapi' {
       'komponenty.aktuality': KomponentyAktuality;
       'komponenty.formular': KomponentyFormular;
       'komponenty.galerie': KomponentyGalerie;
+      'komponenty.karta': KomponentyKarta;
       'komponenty.nadpis': KomponentyNadpis;
       'komponenty.obrazek': KomponentyObrazek;
       'komponenty.rozdelovnik': KomponentyRozdelovnik;

@@ -41,7 +41,8 @@
         "komponenty.textove-pole",
         "komponenty.tlacitka",
         "komponenty.uredni-deska",
-        "komponenty.termin-akce"
+        "komponenty.termin-akce",
+        "komponenty.karta"
       ],
       "required": true,
       "min": 1
