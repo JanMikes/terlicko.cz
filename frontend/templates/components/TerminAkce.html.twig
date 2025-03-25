@@ -1,0 +1,13 @@
+<p>
+    {% if data.Termin %}
+        <time>{{ data.Termin|date:'d.m.Y H:i' }}</time><br>
+    {% endif %}
+
+    {% if data.ZivyPrenos %}
+        {{ data.ZivyPrenos }}<br>
+    {% endif %}
+
+    {% if data.Zaznam %}
+        {{ data.Zaznam }}
+    {% endif %}
+</p>

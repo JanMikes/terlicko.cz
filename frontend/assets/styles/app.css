@@ -449,3 +449,18 @@ select:hover,
 textarea:hover {
     border-bottom-color: #6c757d !important;
 }
+
+.placeholder-icon-person {
+    width: 95px;
+    height: 95px;
+    display: block;
+    background-size: contain;
+}
+
+.placeholder-icon-person.male {
+    background: url('../images/icon-male-placeholder.svg') center center no-repeat;
+}
+
+.placeholder-icon-person.female {
+    background: url('../images/icon-female-placeholder.svg') center center no-repeat;
+}

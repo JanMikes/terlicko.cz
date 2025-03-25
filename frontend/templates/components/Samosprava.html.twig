@@ -6,9 +6,7 @@
                     {% if clovekSamospravy.clovek.Fotka %}
                         <img src="{{ clovekSamospravy.clovek.Fotka.url }}" alt="Foto {{ clovekSamospravy.clovek.Jmeno }}" class="img-fluid me-3 rounded-circle" style="width: 95px; height: 95px; object-fit: cover;">
                     {% else %}
-                        <span style="width: 95px; height: 95px; object-fit: cover;background: #8CADD5;line-height: 95px;color: #fff;" class="me-3 rounded-circle text-center">
-                            <i class="bi-person-fill fs-1"></i>
-                        </span>
+                        <span class="me-3 rounded-circle text-center placeholder-icon-person {{ clovekSamospravy.clovek.isMuz ? 'male' : 'female' }}"></span>
                     {% endif %}
                     <div>
                         <h5 class="fw-bold">{{ clovekSamospravy.clovek.Jmeno }}</h5>
