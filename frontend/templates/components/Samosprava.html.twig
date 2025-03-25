@@ -1,18 +1,18 @@
 <div class="mt-2 mb-5">
     <div class="row g-3">
         {% for clovekSamospravy in data.lide %}
-            <div class="col-md-6 col-lg-4 my-3">
-                <div class="d-flex align-items-center">
+            <div class="col-md-6 col-xl-4 my-3">
+                <div class="d-flex align-items-start">
                     {% if clovekSamospravy.clovek.Fotka %}
-                        <img src="{{ clovekSamospravy.clovek.Fotka.url }}" alt="Foto {{ clovekSamospravy.clovek.Jmeno }}" class="img-fluid me-3 rounded-circle" style="width: 95px; height: 95px; object-fit: cover;">
+                        <img src="{{ clovekSamospravy.clovek.Fotka.url }}" alt="Foto {{ clovekSamospravy.clovek.Jmeno }}" class="img-fluid me-3 rounded-circle flex-shrink-0" style="width: 95px; height: 95px; object-fit: cover;">
                     {% else %}
-                        <span class="me-3 rounded-circle text-center placeholder-icon-person {{ clovekSamospravy.clovek.isMuz ? 'male' : 'female' }}"></span>
+                        <span class="me-3 flex-shrink-0 rounded-circle text-center placeholder-icon-person {{ clovekSamospravy.clovek.isMuz ? 'male' : 'female' }}"></span>
                     {% endif %}
                     <div>
-                        <h5 class="fw-bold">{{ clovekSamospravy.clovek.Jmeno }}</h5>
-                        <p>
-                            {% if clovekSamospravy.Funkce %}{{ clovekSamospravy.Funkce }}<br>{% endif %}
-                            {% if clovekSamospravy.clovek.Email %}{{ clovekSamospravy.clovek.Email }}<br>{% endif %}
+                        <h5 class="fw-bold mb-0">{{ clovekSamospravy.clovek.Jmeno }}</h5>
+                        <p class="m-0">
+                            {% if clovekSamospravy.Funkce %}<span class="d-inline-block mb-1">{{ clovekSamospravy.Funkce }}</span><br>{% endif %}
+                            {% if clovekSamospravy.clovek.Email %}<a href="mailto:{{ clovekSamospravy.clovek.Email }}">{{ clovekSamospravy.clovek.Email }}</a><br>{% endif %}
                             {% if clovekSamospravy.clovek.Telefon %}{{ clovekSamospravy.clovek.Telefon }}{% endif %}
                         </p>
                     </div>

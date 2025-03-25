@@ -48,7 +48,7 @@
                 </div>
             {% endif %}
 
-            {{ aktualita.Popis|markdown_to_html|nl2br }}
+            {{ aktualita.Popis|markdown_to_html }}
 
             {% if aktualita.Soubory %}
                 <ul class="files-list">
