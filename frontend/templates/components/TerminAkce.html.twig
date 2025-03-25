@@ -1,6 +1,6 @@
 <p>
     {% if data.Termin %}
-        <time>{{ data.Termin|date:'d.m.Y H:i' }}</time><br>
+        <time>{{ data.Termin|date('d.m.Y H:i') }}</time><br>
     {% endif %}
 
     {% if data.ZivyPrenos %}
