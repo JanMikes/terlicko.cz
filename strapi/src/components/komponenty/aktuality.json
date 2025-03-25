@@ -2,7 +2,8 @@
   "collectionName": "components_komponenty_aktualities",
   "info": {
     "displayName": "Aktuality",
-    "icon": "paper-plane"
+    "icon": "seed",
+    "description": ""
   },
   "options": {},
   "attributes": {

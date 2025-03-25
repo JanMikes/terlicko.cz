@@ -2,16 +2,18 @@
   "collectionName": "components_komponenty_kartas",
   "info": {
     "displayName": "Karta",
-    "icon": "cup"
+    "icon": "folder",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "Obrazek": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "Nazev": {
       "type": "string",

@@ -42,7 +42,9 @@
         "komponenty.tlacitka",
         "komponenty.uredni-deska",
         "komponenty.termin-akce",
-        "komponenty.karta"
+        "komponenty.karta",
+        "komponenty.vizitka",
+        "komponenty.program-kina"
       ],
       "required": true,
       "min": 1

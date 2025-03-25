@@ -2,7 +2,8 @@
   "collectionName": "components_komponenty_nadpis",
   "info": {
     "displayName": "Nadpis",
-    "icon": "font"
+    "icon": "bold",
+    "description": ""
   },
   "options": {},
   "attributes": {

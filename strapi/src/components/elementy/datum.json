@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_elementy_data",
+  "info": {
+    "displayName": "Datum",
+    "icon": "calendar"
+  },
+  "options": {},
+  "attributes": {
+    "Datum": {
+      "type": "datetime",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_elementy_lekar",
+  "info": {
+    "displayName": "Lékař",
+    "icon": "wheelchair"
+  },
+  "options": {},
+  "attributes": {
+    "Jmeno": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

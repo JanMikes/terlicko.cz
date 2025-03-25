@@ -25,6 +25,17 @@ export interface ElementyClovekSamospravy extends Struct.ComponentSchema {
   };
 }
 
+export interface ElementyDatum extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_data';
+  info: {
+    displayName: 'Datum';
+    icon: 'calendar';
+  };
+  attributes: {
+    Datum: Schema.Attribute.DateTime & Schema.Attribute.Required;
+  };
+}
+
 export interface ElementyDlazdice extends Struct.ComponentSchema {
   collectionName: 'components_dlazdice_dlazdices';
   info: {
@@ -37,6 +48,17 @@ export interface ElementyDlazdice extends Struct.ComponentSchema {
     Nadpis_dlazdice: Schema.Attribute.String & Schema.Attribute.Required;
     Odkaz: Schema.Attribute.Component<'elementy.odkaz', false> &
       Schema.Attribute.Required;
+  };
+}
+
+export interface ElementyLekar extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_lekar';
+  info: {
+    displayName: 'L\u00E9ka\u0159';
+    icon: 'wheelchair';
+  };
+  attributes: {
+    Jmeno: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -134,6 +156,18 @@ export interface ElementySoubor extends Struct.ComponentSchema {
   };
 }
 
+export interface ElementyTelefon extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_telefons';
+  info: {
+    displayName: 'Telefon';
+    icon: 'phone';
+  };
+  attributes: {
+    NazevTelefonu: Schema.Attribute.String;
+    Telefon: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface ElementyTlacitko extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_tlacitkos';
   info: {
@@ -166,8 +200,9 @@ export interface ElementyVyberZMoznosti extends Struct.ComponentSchema {
 export interface KomponentyAktuality extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_aktualities';
   info: {
+    description: '';
     displayName: 'Aktuality';
-    icon: 'paper-plane';
+    icon: 'seed';
   };
   attributes: {
     kategories: Schema.Attribute.Relation<'oneToMany', 'api::tagy.tagy'>;
@@ -186,8 +221,9 @@ export interface KomponentyAktuality extends Struct.ComponentSchema {
 export interface KomponentyFormular extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_formular';
   info: {
+    description: '';
     displayName: 'Formul\u00E1\u0159';
-    icon: 'align-justify';
+    icon: 'discuss';
   };
   attributes: {
     formular: Schema.Attribute.Relation<'oneToOne', 'api::formular.formular'>;
@@ -199,7 +235,7 @@ export interface KomponentyGalerie extends Struct.ComponentSchema {
   info: {
     description: '';
     displayName: 'Galerie';
-    icon: 'images';
+    icon: 'landscape';
   };
   attributes: {
     Obrazek: Schema.Attribute.Component<'elementy.obrazek-galerie', true> &
@@ -219,8 +255,9 @@ export interface KomponentyGalerie extends Struct.ComponentSchema {
 export interface KomponentyKarta extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_kartas';
   info: {
+    description: '';
     displayName: 'Karta';
-    icon: 'cup';
+    icon: 'folder';
   };
   attributes: {
     Adresa: Schema.Attribute.String & Schema.Attribute.Required;
@@ -235,8 +272,9 @@ export interface KomponentyKarta extends Struct.ComponentSchema {
 export interface KomponentyNadpis extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_nadpis';
   info: {
+    description: '';
     displayName: 'Nadpis';
-    icon: 'font';
+    icon: 'bold';
   };
   attributes: {
     Nadpis: Schema.Attribute.String & Schema.Attribute.Required;
@@ -251,7 +289,7 @@ export interface KomponentyObrazek extends Struct.ComponentSchema {
   info: {
     description: '';
     displayName: 'Obr\u00E1zek';
-    icon: 'image';
+    icon: 'picture';
   };
   attributes: {
     Obrazek: Schema.Attribute.Component<'elementy.banner', true> &
@@ -265,11 +303,28 @@ export interface KomponentyObrazek extends Struct.ComponentSchema {
   };
 }
 
+export interface KomponentyProgramKina extends Struct.ComponentSchema {
+  collectionName: 'components_komponenty_program_kinas';
+  info: {
+    description: '';
+    displayName: 'Program kina';
+    icon: 'layer';
+  };
+  attributes: {
+    Datumy: Schema.Attribute.Component<'elementy.datum', true>;
+    Film: Schema.Attribute.String & Schema.Attribute.Required;
+    Obrazek: Schema.Attribute.Media<'images'>;
+    Popisek: Schema.Attribute.String;
+    Vstupne: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface KomponentyRozdelovnik extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_rozdelovniks';
   info: {
+    description: '';
     displayName: 'Rozd\u011Blovn\u00EDk';
-    icon: 'minus';
+    icon: 'oneToOne';
   };
   attributes: {
     Tloustka_cary: Schema.Attribute.Enumeration<
@@ -288,7 +343,7 @@ export interface KomponentySamosprava extends Struct.ComponentSchema {
   info: {
     description: '';
     displayName: 'Lid\u00E9';
-    icon: 'address-card';
+    icon: 'user';
   };
   attributes: {
     Lide: Schema.Attribute.Component<'elementy.clovek-samospravy', true>;
@@ -300,7 +355,7 @@ export interface KomponentySekceSDlazdicema extends Struct.ComponentSchema {
   info: {
     description: '';
     displayName: 'Dla\u017Edice';
-    icon: 'th';
+    icon: 'apps';
   };
   attributes: {
     Dlazdice: Schema.Attribute.Component<'elementy.dlazdice', true> &
@@ -313,7 +368,7 @@ export interface KomponentySouboryKeStazeni extends Struct.ComponentSchema {
   info: {
     description: '';
     displayName: 'Soubory ke sta\u017Een\u00ED';
-    icon: 'file-alt';
+    icon: 'attachment';
   };
   attributes: {
     Pocet_sloupcu: Schema.Attribute.Enumeration<['Jeden', 'Dva']> &
@@ -340,8 +395,9 @@ export interface KomponentyTerminAkce extends Struct.ComponentSchema {
 export interface KomponentyTextovePole extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_textove_poles';
   info: {
+    description: '';
     displayName: 'Textov\u00E9 pole';
-    icon: 'text-height';
+    icon: 'layer';
   };
   attributes: {
     Text: Schema.Attribute.RichText & Schema.Attribute.Required;
@@ -353,7 +409,7 @@ export interface KomponentyTlacitka extends Struct.ComponentSchema {
   info: {
     description: '';
     displayName: 'Tla\u010D\u00EDtka';
-    icon: 'window-restore';
+    icon: 'cursor';
   };
   attributes: {
     Tlacitka: Schema.Attribute.Component<'elementy.tlacitko', true> &
@@ -366,7 +422,7 @@ export interface KomponentyUredniDeska extends Struct.ComponentSchema {
   info: {
     description: '';
     displayName: '\u00DA\u0159edn\u00ED deska';
-    icon: 'book';
+    icon: 'pin';
   };
   attributes: {
     kategorie_uredni_deskies: Schema.Attribute.Relation<
@@ -386,17 +442,36 @@ export interface KomponentyUredniDeska extends Struct.ComponentSchema {
   };
 }
 
+export interface KomponentyVizitka extends Struct.ComponentSchema {
+  collectionName: 'components_komponenty_vizitkas';
+  info: {
+    description: '';
+    displayName: 'Vizitka';
+    icon: 'briefcase';
+  };
+  attributes: {
+    Adresa: Schema.Attribute.String & Schema.Attribute.Required;
+    Lekari: Schema.Attribute.Component<'elementy.lekar', true>;
+    Odkaz: Schema.Attribute.String;
+    OteviraciDoba: Schema.Attribute.Text;
+    Telefony: Schema.Attribute.Component<'elementy.telefon', true>;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'elementy.banner': ElementyBanner;
       'elementy.clovek-samospravy': ElementyClovekSamospravy;
+      'elementy.datum': ElementyDatum;
       'elementy.dlazdice': ElementyDlazdice;
+      'elementy.lekar': ElementyLekar;
       'elementy.obrazek-galerie': ElementyObrazekGalerie;
       'elementy.odkaz': ElementyOdkaz;
       'elementy.pole-formulare': ElementyPoleFormulare;
       'elementy.pole-formulare-s-moznostmi': ElementyPoleFormulareSMoznostmi;
       'elementy.soubor': ElementySoubor;
+      'elementy.telefon': ElementyTelefon;
       'elementy.tlacitko': ElementyTlacitko;
       'elementy.vyber-z-moznosti': ElementyVyberZMoznosti;
       'komponenty.aktuality': KomponentyAktuality;
@@ -405,6 +480,7 @@ declare module '@strapi/strapi' {
       'komponenty.karta': KomponentyKarta;
       'komponenty.nadpis': KomponentyNadpis;
       'komponenty.obrazek': KomponentyObrazek;
+      'komponenty.program-kina': KomponentyProgramKina;
       'komponenty.rozdelovnik': KomponentyRozdelovnik;
       'komponenty.samosprava': KomponentySamosprava;
       'komponenty.sekce-s-dlazdicema': KomponentySekceSDlazdicema;
@@ -413,6 +489,7 @@ declare module '@strapi/strapi' {
       'komponenty.textove-pole': KomponentyTextovePole;
       'komponenty.tlacitka': KomponentyTlacitka;
       'komponenty.uredni-deska': KomponentyUredniDeska;
+      'komponenty.vizitka': KomponentyVizitka;
     }
   }
 }
