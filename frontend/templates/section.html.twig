@@ -15,7 +15,7 @@
             </ol>
         </nav>
 
-        <h1 class="fw-bolder mb-3">{{ sekce.Nazev }}</h1>
+        <h1 class="fw-bolder mb-4">{{ sekce.Nazev }}</h1>
 
         {% for komponenta in sekce.Komponenty %}
             {{ component(komponenta.type, { data: komponenta.data }) }}

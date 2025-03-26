@@ -583,10 +583,10 @@ export interface ApiSekceSekce extends Struct.CollectionTypeSchema {
         'komponenty.textove-pole',
         'komponenty.tlacitka',
         'komponenty.uredni-deska',
-        'komponenty.termin-akce',
-        'komponenty.karta',
-        'komponenty.vizitka',
+        'komponenty.vizitky',
+        'komponenty.terminy-akci',
         'komponenty.program-kina',
+        'komponenty.karty',
       ]
     > &
       Schema.Attribute.Required &

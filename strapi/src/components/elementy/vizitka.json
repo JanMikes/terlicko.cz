@@ -1,5 +1,5 @@
 {
-  "collectionName": "components_komponenty_vizitkas",
+  "collectionName": "components_elementy_vizitkas",
   "info": {
     "displayName": "Vizitka",
     "icon": "briefcase",
@@ -8,13 +8,12 @@
   "options": {},
   "attributes": {
     "Adresa": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "Odkaz": {
       "type": "string"
     },
-    "OteviraciDoba": {
+    "Oteviraci_doba": {
       "type": "text"
     },
     "Lekari": {

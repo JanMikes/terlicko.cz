@@ -41,10 +41,10 @@
         "komponenty.textove-pole",
         "komponenty.tlacitka",
         "komponenty.uredni-deska",
-        "komponenty.termin-akce",
-        "komponenty.karta",
-        "komponenty.vizitka",
-        "komponenty.program-kina"
+        "komponenty.vizitky",
+        "komponenty.terminy-akci",
+        "komponenty.program-kina",
+        "komponenty.karty"
       ],
       "required": true,
       "min": 1

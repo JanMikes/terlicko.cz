@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_komponenty_karties",
+  "info": {
+    "displayName": "Karty",
+    "icon": "stack"
+  },
+  "options": {},
+  "attributes": {
+    "Karty": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elementy.karta"
+    }
+  }
+}

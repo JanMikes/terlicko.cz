@@ -51,6 +51,37 @@ export interface ElementyDlazdice extends Struct.ComponentSchema {
   };
 }
 
+export interface ElementyFilm extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_films';
+  info: {
+    displayName: 'Film';
+    icon: 'television';
+  };
+  attributes: {
+    Datumy: Schema.Attribute.Component<'elementy.datum', true>;
+    Film: Schema.Attribute.String & Schema.Attribute.Required;
+    Obrazek: Schema.Attribute.Media<'images' | 'files'>;
+    Popis: Schema.Attribute.String;
+    Vstupne: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ElementyKarta extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_kartas';
+  info: {
+    displayName: 'Karta';
+    icon: 'file';
+  };
+  attributes: {
+    Adresa: Schema.Attribute.String;
+    Email: Schema.Attribute.Email;
+    Nazev: Schema.Attribute.String & Schema.Attribute.Required;
+    Obrazek: Schema.Attribute.Media<'images' | 'files'>;
+    Odkaz: Schema.Attribute.String;
+    Telefon: Schema.Attribute.String;
+  };
+}
+
 export interface ElementyLekar extends Struct.ComponentSchema {
   collectionName: 'components_elementy_lekar';
   info: {
@@ -159,12 +190,26 @@ export interface ElementySoubor extends Struct.ComponentSchema {
 export interface ElementyTelefon extends Struct.ComponentSchema {
   collectionName: 'components_elementy_telefons';
   info: {
+    description: '';
     displayName: 'Telefon';
     icon: 'phone';
   };
   attributes: {
-    NazevTelefonu: Schema.Attribute.String;
+    Nazev_telefonu: Schema.Attribute.String;
     Telefon: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ElementyTerminAkce extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_termin_akces';
+  info: {
+    displayName: 'Term\u00EDn akce';
+    icon: 'calendar';
+  };
+  attributes: {
+    Termin: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    Zaznam: Schema.Attribute.String;
+    Zivy_prenos: Schema.Attribute.String;
   };
 }
 
@@ -182,6 +227,22 @@ export interface ElementyTlacitko extends Struct.ComponentSchema {
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'Styl 1'>;
     Text: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ElementyVizitka extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_vizitkas';
+  info: {
+    description: '';
+    displayName: 'Vizitka';
+    icon: 'briefcase';
+  };
+  attributes: {
+    Adresa: Schema.Attribute.String;
+    Lekari: Schema.Attribute.Component<'elementy.lekar', true>;
+    Odkaz: Schema.Attribute.String;
+    Oteviraci_doba: Schema.Attribute.Text;
+    Telefony: Schema.Attribute.Component<'elementy.telefon', true>;
   };
 }
 
@@ -252,20 +313,14 @@ export interface KomponentyGalerie extends Struct.ComponentSchema {
   };
 }
 
-export interface KomponentyKarta extends Struct.ComponentSchema {
-  collectionName: 'components_komponenty_kartas';
+export interface KomponentyKarty extends Struct.ComponentSchema {
+  collectionName: 'components_komponenty_karties';
   info: {
-    description: '';
-    displayName: 'Karta';
-    icon: 'folder';
+    displayName: 'Karty';
+    icon: 'stack';
   };
   attributes: {
-    Adresa: Schema.Attribute.String & Schema.Attribute.Required;
-    Email: Schema.Attribute.Email;
-    Nazev: Schema.Attribute.String & Schema.Attribute.Required;
-    Obrazek: Schema.Attribute.Media<'images'>;
-    Odkaz: Schema.Attribute.String;
-    Telefon: Schema.Attribute.String & Schema.Attribute.Required;
+    Karty: Schema.Attribute.Component<'elementy.karta', true>;
   };
 }
 
@@ -306,16 +361,11 @@ export interface KomponentyObrazek extends Struct.ComponentSchema {
 export interface KomponentyProgramKina extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_program_kinas';
   info: {
-    description: '';
     displayName: 'Program kina';
-    icon: 'layer';
+    icon: 'television';
   };
   attributes: {
-    Datumy: Schema.Attribute.Component<'elementy.datum', true>;
-    Film: Schema.Attribute.String & Schema.Attribute.Required;
-    Obrazek: Schema.Attribute.Media<'images'>;
-    Popisek: Schema.Attribute.String;
-    Vstupne: Schema.Attribute.String & Schema.Attribute.Required;
+    Filmy: Schema.Attribute.Component<'elementy.film', true>;
   };
 }
 
@@ -379,16 +429,14 @@ export interface KomponentySouboryKeStazeni extends Struct.ComponentSchema {
   };
 }
 
-export interface KomponentyTerminAkce extends Struct.ComponentSchema {
-  collectionName: 'components_komponenty_termin_akces';
+export interface KomponentyTerminyAkci extends Struct.ComponentSchema {
+  collectionName: 'components_komponenty_terminy_akci';
   info: {
-    displayName: 'Term\u00EDn akce';
+    displayName: 'Term\u00EDny akc\u00ED';
     icon: 'calendar';
   };
   attributes: {
-    Termin: Schema.Attribute.DateTime & Schema.Attribute.Required;
-    Zaznam: Schema.Attribute.String;
-    Zivy_prenos: Schema.Attribute.String;
+    Terminy: Schema.Attribute.Component<'elementy.termin-akce', true>;
   };
 }
 
@@ -442,19 +490,14 @@ export interface KomponentyUredniDeska extends Struct.ComponentSchema {
   };
 }
 
-export interface KomponentyVizitka extends Struct.ComponentSchema {
-  collectionName: 'components_komponenty_vizitkas';
+export interface KomponentyVizitky extends Struct.ComponentSchema {
+  collectionName: 'components_komponenty_vizitkies';
   info: {
-    description: '';
-    displayName: 'Vizitka';
+    displayName: 'Vizitky';
     icon: 'briefcase';
   };
   attributes: {
-    Adresa: Schema.Attribute.String & Schema.Attribute.Required;
-    Lekari: Schema.Attribute.Component<'elementy.lekar', true>;
-    Odkaz: Schema.Attribute.String;
-    OteviraciDoba: Schema.Attribute.Text;
-    Telefony: Schema.Attribute.Component<'elementy.telefon', true>;
+    Vizitky: Schema.Attribute.Component<'elementy.vizitka', true>;
   };
 }
 
@@ -465,6 +508,8 @@ declare module '@strapi/strapi' {
       'elementy.clovek-samospravy': ElementyClovekSamospravy;
       'elementy.datum': ElementyDatum;
       'elementy.dlazdice': ElementyDlazdice;
+      'elementy.film': ElementyFilm;
+      'elementy.karta': ElementyKarta;
       'elementy.lekar': ElementyLekar;
       'elementy.obrazek-galerie': ElementyObrazekGalerie;
       'elementy.odkaz': ElementyOdkaz;
@@ -472,12 +517,14 @@ declare module '@strapi/strapi' {
       'elementy.pole-formulare-s-moznostmi': ElementyPoleFormulareSMoznostmi;
       'elementy.soubor': ElementySoubor;
       'elementy.telefon': ElementyTelefon;
+      'elementy.termin-akce': ElementyTerminAkce;
       'elementy.tlacitko': ElementyTlacitko;
+      'elementy.vizitka': ElementyVizitka;
       'elementy.vyber-z-moznosti': ElementyVyberZMoznosti;
       'komponenty.aktuality': KomponentyAktuality;
       'komponenty.formular': KomponentyFormular;
       'komponenty.galerie': KomponentyGalerie;
-      'komponenty.karta': KomponentyKarta;
+      'komponenty.karty': KomponentyKarty;
       'komponenty.nadpis': KomponentyNadpis;
       'komponenty.obrazek': KomponentyObrazek;
       'komponenty.program-kina': KomponentyProgramKina;
@@ -485,11 +532,11 @@ declare module '@strapi/strapi' {
       'komponenty.samosprava': KomponentySamosprava;
       'komponenty.sekce-s-dlazdicema': KomponentySekceSDlazdicema;
       'komponenty.soubory-ke-stazeni': KomponentySouboryKeStazeni;
-      'komponenty.termin-akce': KomponentyTerminAkce;
+      'komponenty.terminy-akci': KomponentyTerminyAkci;
       'komponenty.textove-pole': KomponentyTextovePole;
       'komponenty.tlacitka': KomponentyTlacitka;
       'komponenty.uredni-deska': KomponentyUredniDeska;
-      'komponenty.vizitka': KomponentyVizitka;
+      'komponenty.vizitky': KomponentyVizitky;
     }
   }
 }

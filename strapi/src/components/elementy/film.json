@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_elementy_films",
+  "info": {
+    "displayName": "Film",
+    "icon": "television"
+  },
+  "options": {},
+  "attributes": {
+    "Film": {
+      "type": "string",
+      "required": true
+    },
+    "Vstupne": {
+      "type": "string",
+      "required": true
+    },
+    "Popis": {
+      "type": "string"
+    },
+    "Obrazek": {
+      "allowedTypes": [
+        "images",
+        "files"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "Datumy": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elementy.datum"
+    }
+  }
+}

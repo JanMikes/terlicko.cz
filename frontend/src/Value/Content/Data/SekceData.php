@@ -64,6 +64,7 @@ readonly final class SekceData
                 'komponenty.tlacitka' => new Component('Tlacitka', TlacitkaComponentData::createFromStrapiResponse($component)),
                 'komponenty.uredni-deska' => new Component('UredniDeska', UredniDeskaComponentData::createFromStrapiResponse($component)),
                 'komponenty.termin-akce' => new Component('TerminAkce', TerminAkceComponentData::createFromStrapiResponse($component)),
+                'komponenty.karta' => new Component('Karta', KartaData::createFromStrapiResponse($component)),
                 default => throw new \Exception('Unknown component ' . $component['__component']),
             };
         }

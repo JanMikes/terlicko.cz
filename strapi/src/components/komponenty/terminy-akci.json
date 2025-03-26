@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_komponenty_terminy_akci",
+  "info": {
+    "displayName": "Termíny akcí",
+    "icon": "calendar"
+  },
+  "options": {},
+  "attributes": {
+    "Terminy": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elementy.termin-akce"
+    }
+  }
+}

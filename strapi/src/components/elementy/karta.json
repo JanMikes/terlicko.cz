@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_elementy_kartas",
+  "info": {
+    "displayName": "Karta",
+    "icon": "file"
+  },
+  "options": {},
+  "attributes": {
+    "Obrazek": {
+      "allowedTypes": [
+        "images",
+        "files"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "Nazev": {
+      "type": "string",
+      "required": true
+    },
+    "Adresa": {
+      "type": "string"
+    },
+    "Telefon": {
+      "type": "string"
+    },
+    "Email": {
+      "type": "email"
+    },
+    "Odkaz": {
+      "type": "string"
+    }
+  }
+}
