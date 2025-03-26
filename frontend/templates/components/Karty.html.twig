@@ -1,27 +1,35 @@
-{% for karta in data.Karty %}
-    {{ karta.Nazev }}
+<div class="d-flex flex-wrap gap-4 mt-2 mb-5 align-items-stretch">
+    {% for karta in data.Karty %}
+        <div class="column-karta align-items-center justify-content-center flex-wrap text-center">
+            {% if karta.Obrazek %}
+                <img class="img-fluid" src="{{ karta.Obrazek.url }}" alt="">
+            {% endif %}
 
-    {% if karta.Adresa %}
-        {{ karta.Adresa }}
-    {% endif %}
+            <h4 class="my-3">{{ karta.Nazev }}</h4>
 
-    {% if karta.Telefon %}
-        {{ karta.Telefon }}
-    {% endif %}
+            <p class="mb-2">
+                {% if karta.Adresa %}
+                    {{ karta.Adresa }}<br>
+                {% endif %}
 
-    {% if karta.Email %}
-        {{ karta.Email }}
-    {% endif %}
+                {% if karta.Telefon %}
+                    {{ karta.Telefon }}<br>
+                {% endif %}
 
-    {% if karta.Odkaz %}
-        {{ karta.Odkaz }}
-    {% endif %}
+                {% if karta.Email %}
+                    <a href="mailto:{{ karta.Email }}">{{ karta.Email }}</a><br>
+                {% endif %}
 
-    {% if karta.OdkazNaMapu %}
-        {{ karta.OdkazNaMapu }}
-    {% endif %}
+            </p>
 
-    {% if karta.Obrazek %}
-        <img class="img-fluid mb-2" src="{{ karta.Obrazek.url }}" alt="">
-    {% endif %}
-{% endfor %}
+            {% if karta.Odkaz %}
+                <a href="{{ karta.Odkaz }}" target="_blank" class="custom-badge mt-2">Navštívit web</a>
+            {% endif %}
+
+            {% if karta.OdkazNaMapu %}
+                <a href="{{ karta.OdkazNaMapu }}" target="_blank" class="custom-badge mt-2">Zobrazit na mapě</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
