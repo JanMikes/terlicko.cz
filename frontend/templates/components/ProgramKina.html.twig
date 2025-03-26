@@ -1,1 +1,16 @@
-program kina
+{% for film in data.Filmy %}
+    {{ film.Film }}
+    {{ film.Vstupne }}
+
+    {% if film.Popis %}
+        {{ film.Popis }}
+    {% endif %}
+
+    {% if film.Obrazek %}
+        <img class="img-fluid mb-2" src="{{ film.Obrazek.url }}" alt="">
+    {% endif %}
+
+    {% for datum in film.Datumy %}
+        {{ datum.Datum|date('d.m.Y H:i:s')}}
+    {% endfor %}
+{% endfor %}

@@ -66,7 +66,7 @@ readonly final class SekceData
                 'komponenty.terminy-akci' => new Component('TerminyAkci', TerminyAkciComponentData::createFromStrapiResponse($component)),
                 'komponenty.vizitky' => new Component('Vizitky', VizitkyComponentData::createFromStrapiResponse($component)),
                 'komponenty.karty' => new Component('Karty', KartyComponentData::createFromStrapiResponse($component)),
-                'komponenty.program-kina' => new Component('ProgramKina', ProgramKingaComponentData::createFromStrapiResponse($component)),
+                'komponenty.program-kina' => new Component('ProgramKina', ProgramKinaComponentData::createFromStrapiResponse($component)),
                 default => throw new \Exception('Unknown component ' . $component['__component']),
             };
         }
