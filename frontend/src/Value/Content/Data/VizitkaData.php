@@ -12,8 +12,8 @@ namespace Terlicko\Web\Value\Content\Data;
  *     Odkaz_na_mapu: null|string,
  *     Odkaz: null|string,
  *     Oteviraci_doba: null|string,
- *     Lekari: array<LekarData>,
- *     Telefony: array<TelefonData>,
+ *     Telefony: array<TelefonDataArray>,
+ *     Lekari: array<LekarDataArray>,
  * }
  */
 readonly final class VizitkaData

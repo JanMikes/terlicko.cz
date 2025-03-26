@@ -19,7 +19,7 @@ readonly final class TerminAkceData
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(
-        public DateTimeImmutable $Termin,
+        public null|DateTimeImmutable $Termin,
         public null|string $ZivyPrenos,
         public null|string $Zaznam,
     ) {}

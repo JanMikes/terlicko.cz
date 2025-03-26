@@ -12,7 +12,7 @@ namespace Terlicko\Web\Value\Content\Data;
  */
 readonly final class TelefonData
 {
-    /** @use CanCreateManyFromStrapiResponse<VizitkaDataArray> */
+    /** @use CanCreateManyFromStrapiResponse<TelefonDataArray> */
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(

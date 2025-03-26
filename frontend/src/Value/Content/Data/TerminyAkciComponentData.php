@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Terlicko\Web\Value\Content\Data;
 
 /**
- * @phpstan-import-type TalcitkoDataArray from TlacitkoData
+ * @phpstan-import-type TerminAkceDataArray from TerminAkceData
  */
 readonly final class TerminyAkciComponentData
 {
@@ -15,7 +15,7 @@ readonly final class TerminyAkciComponentData
     ) {}
 
     /**
-     * @param array{Terminy: array<TlacitkoDataArray>} $data
+     * @param array{Terminy: array<TerminAkceDataArray>} $data
      */
     public static function createFromStrapiResponse(array $data): self
     {

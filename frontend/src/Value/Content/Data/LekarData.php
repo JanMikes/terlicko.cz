@@ -11,7 +11,7 @@ namespace Terlicko\Web\Value\Content\Data;
  */
 readonly final class LekarData
 {
-    /** @use CanCreateManyFromStrapiResponse<VizitkaDataArray> */
+    /** @use CanCreateManyFromStrapiResponse<LekarDataArray> */
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(

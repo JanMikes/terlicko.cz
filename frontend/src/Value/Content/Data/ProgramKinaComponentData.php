@@ -15,7 +15,7 @@ readonly final class ProgramKinaComponentData
     ) {}
 
     /**
-     * @param array<FilmDataArray> $data
+     * @param array{Filmy: array<FilmDataArray>} $data
      */
     public static function createFromStrapiResponse(array $data): self
     {
