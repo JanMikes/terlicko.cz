@@ -69,6 +69,7 @@ export interface ElementyFilm extends Struct.ComponentSchema {
 export interface ElementyKarta extends Struct.ComponentSchema {
   collectionName: 'components_elementy_kartas';
   info: {
+    description: '';
     displayName: 'Karta';
     icon: 'file';
   };
@@ -78,6 +79,7 @@ export interface ElementyKarta extends Struct.ComponentSchema {
     Nazev: Schema.Attribute.String & Schema.Attribute.Required;
     Obrazek: Schema.Attribute.Media<'images' | 'files'>;
     Odkaz: Schema.Attribute.String;
+    Odkaz_na_mapu: Schema.Attribute.String;
     Telefon: Schema.Attribute.String;
   };
 }
@@ -241,6 +243,7 @@ export interface ElementyVizitka extends Struct.ComponentSchema {
     Adresa: Schema.Attribute.String;
     Lekari: Schema.Attribute.Component<'elementy.lekar', true>;
     Odkaz: Schema.Attribute.String;
+    Odkaz_na_mapu: Schema.Attribute.String;
     Oteviraci_doba: Schema.Attribute.Text;
     Telefony: Schema.Attribute.Component<'elementy.telefon', true>;
   };

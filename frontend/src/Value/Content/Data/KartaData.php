@@ -9,22 +9,27 @@ namespace Terlicko\Web\Value\Content\Data;
  * @phpstan-type KartaDataArray array{
  *     id: int,
  *     Nazev: string,
- *     Adresa: string,
- *     Telefon: string,
+ *     Adresa: null|string,
+ *     Telefon: null|string,
  *     Email: null|string,
  *     Odkaz: null|string,
+ *     Odkaz_na_mapu: null|string,
  *     Obrazek: null|ImageDataArray,
  *  }
  */
 readonly final class KartaData
 {
+    /** @use CanCreateManyFromStrapiResponse<KartaDataArray> */
+    use CanCreateManyFromStrapiResponse;
+
     public function __construct(
         public int $id,
         public string $Nazev,
-        public string $Adresa,
-        public string $Telefon,
+        public null|string $Adresa,
+        public null|string $Telefon,
         public null|string $Email,
         public null|string $Odkaz,
+        public null|string $OdkazNaMapu,
         public null|ImageData $Obrazek,
     ) {}
 
@@ -40,6 +45,7 @@ readonly final class KartaData
             Telefon: $data['Telefon'],
             Email: $data['Email'],
             Odkaz: $data['Odkaz'],
+            OdkazNaMapu: $data['Odkaz_na_mapu'],
             Obrazek: $data['Obrazek'] !== null ? ImageData::createFromStrapiResponse($data['Obrazek']) : null,
         );
     }

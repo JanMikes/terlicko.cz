@@ -42,8 +42,8 @@ readonly final class VizitkaData
             OdkazNaMapu: $data['Odkaz_na_mapu'],
             Odkaz: $data['Odkaz'],
             OteviraciDoba: $data['Oteviraci_doba'],
-            Lekari: [], // TODO: $data['Lekari'],
-            Telefony: [], // TODO: $data['Telefony'],
+            Lekari: LekarData::createManyFromStrapiResponse($data['Lekari']),
+            Telefony: TelefonData::createManyFromStrapiResponse($data['Telefony']),
         );
     }
 }

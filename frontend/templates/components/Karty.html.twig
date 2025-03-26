@@ -1,1 +1,27 @@
-karty
+{% for karta in data.Karty %}
+    {{ karta.Nazev }}
+
+    {% if karta.Adresa %}
+        {{ karta.Adresa }}
+    {% endif %}
+
+    {% if karta.Telefon %}
+        {{ karta.Telefon }}
+    {% endif %}
+
+    {% if karta.Email %}
+        {{ karta.Email }}
+    {% endif %}
+
+    {% if karta.Odkaz %}
+        {{ karta.Odkaz }}
+    {% endif %}
+
+    {% if karta.OdkazNaMapu %}
+        {{ karta.OdkazNaMapu }}
+    {% endif %}
+
+    {% if karta.Obrazek %}
+        <img class="img-fluid mb-2" src="{{ karta.Obrazek.url }}" alt="">
+    {% endif %}
+{% endfor %}

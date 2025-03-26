@@ -25,6 +25,9 @@
       "type": "component",
       "repeatable": true,
       "component": "elementy.telefon"
+    },
+    "Odkaz_na_mapu": {
+      "type": "string"
     }
   }
 }

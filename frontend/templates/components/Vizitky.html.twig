@@ -1,1 +1,28 @@
-vizitky
+{% for vizitka in data.Vizitky %}
+    {% if vizitka.Adresa %}
+        {{ vizitka.Adresa }}
+    {% endif %}
+
+    {% if vizitka.OdkazNaMapu %}
+        {{ vizitka.OdkazNaMapu }}
+    {% endif %}
+
+    {% if vizitka.Odkaz %}
+        {{ vizitka.Odkaz }}
+    {% endif %}
+
+    {% if vizitka.OteviraciDoba %}
+        {{ vizitka.OteviraciDoba|nl2br }}
+    {% endif %}
+
+    {% for lekar in vizitka.Lekari %}
+        {{ lekar.Jmeno }}
+    {% endfor %}
+
+    {% for telefon in vizitka.Telefony %}
+        {{ telefon.Telefon }}
+        {% if telefon.NazevTelefonu %}
+            {{ telefon.NazevTelefonu }}
+        {% endif %}
+    {% endfor %}
+{% endfor %}

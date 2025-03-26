@@ -2,17 +2,19 @@
   "collectionName": "components_elementy_kartas",
   "info": {
     "displayName": "Karta",
-    "icon": "file"
+    "icon": "file",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "Obrazek": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "Nazev": {
       "type": "string",
@@ -28,6 +30,9 @@
       "type": "email"
     },
     "Odkaz": {
+      "type": "string"
+    },
+    "Odkaz_na_mapu": {
       "type": "string"
     }
   }

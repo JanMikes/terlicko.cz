@@ -8,7 +8,6 @@ use DateTimeImmutable;
 
 /**
  * @phpstan-type TerminAkceDataArray array{
- *     id: int,
  *     Termin: string,
  *     Zivy_prenos: null|string,
  *     Zaznam: null|string,
@@ -16,9 +15,11 @@ use DateTimeImmutable;
  */
 readonly final class TerminAkceData
 {
+    /** @use CanCreateManyFromStrapiResponse<TerminAkceDataArray> */
+    use CanCreateManyFromStrapiResponse;
+
     public function __construct(
-        public int $id,
-        public null|DateTimeImmutable $Termin,
+        public DateTimeImmutable $Termin,
         public null|string $ZivyPrenos,
         public null|string $Zaznam,
     ) {}
@@ -29,7 +30,6 @@ readonly final class TerminAkceData
     public static function createFromStrapiResponse(array $data): self
     {
         return new self(
-            id: $data['id'],
             Termin: $data['Termin'] ? new DateTimeImmutable($data['Termin']) : null,
             ZivyPrenos: $data['Zivy_prenos'],
             Zaznam: $data['Zaznam'],

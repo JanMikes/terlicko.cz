@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Terlicko\Web\Value\Content\Data;
 
 /**
- * @phpstan-type LekarDataArray array{
+ * @phpstan-type FilmDataArray array{
  *      Jmeno: string,
  *  }
  */
-readonly final class LekarData
+readonly final class FilmData
 {
     /** @use CanCreateManyFromStrapiResponse<VizitkaDataArray> */
     use CanCreateManyFromStrapiResponse;
@@ -19,7 +19,7 @@ readonly final class LekarData
     ) {}
 
     /**
-     * @param LekarDataArray $data
+     * @param FilmDataArray $data
      */
     public static function createFromStrapiResponse(array $data): self
     {

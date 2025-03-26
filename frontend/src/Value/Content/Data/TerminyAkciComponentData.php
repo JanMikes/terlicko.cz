@@ -4,16 +4,23 @@ declare(strict_types=1);
 
 namespace Terlicko\Web\Value\Content\Data;
 
+/**
+ * @phpstan-import-type TalcitkoDataArray from TlacitkoData
+ */
 readonly final class TerminyAkciComponentData
 {
     public function __construct(
+        /** @var array<TerminAkceData> */
+        public array $Terminy,
     ) {}
 
     /**
-     * @param array<mixed> $data
+     * @param array{Terminy: array<TlacitkoDataArray>} $data
      */
     public static function createFromStrapiResponse(array $data): self
     {
-        return new self;
+        return new self(
+            Terminy: TerminAkceData::createManyFromStrapiResponse($data['Terminy']),
+        );
     }
 }

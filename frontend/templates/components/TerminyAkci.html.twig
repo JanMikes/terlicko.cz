@@ -1,1 +1,15 @@
-Terminy akci
+{% for termin in data.Terminy %}
+    <p>
+        {% if termin.Termin %}
+            <time>{{ termin.Termin|date('d.m.Y H:i') }}</time><br>
+        {% endif %}
+
+        {% if termin.ZivyPrenos %}
+            {{ termin.ZivyPrenos }}<br>
+        {% endif %}
+
+        {% if termin.Zaznam %}
+            {{ termin.Zaznam }}
+        {% endif %}
+    </p>
+{% endfor %}
