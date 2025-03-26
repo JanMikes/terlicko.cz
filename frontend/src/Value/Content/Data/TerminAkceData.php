@@ -7,14 +7,14 @@ namespace Terlicko\Web\Value\Content\Data;
 use DateTimeImmutable;
 
 /**
- * @phpstan-type TerminAkceComponentDataArray array{
+ * @phpstan-type TerminAkceDataArray array{
  *     id: int,
  *     Termin: string,
  *     Zivy_prenos: null|string,
  *     Zaznam: null|string,
  *  }
  */
-readonly final class TerminAkceComponentData
+readonly final class TerminAkceData
 {
     public function __construct(
         public int $id,
@@ -24,7 +24,7 @@ readonly final class TerminAkceComponentData
     ) {}
 
     /**
-     * @param TerminAkceComponentDataArray $data
+     * @param TerminAkceDataArray $data
      */
     public static function createFromStrapiResponse(array $data): self
     {
