@@ -532,3 +532,13 @@ textarea:hover {
     display: inline-block;
     margin: 0 5px;
 }
+
+.card-phone-name {
+    font-weight: bold;
+}
+
+.card-doctor {
+    border: 2px solid var(--bs-primary);
+    padding: 15px;
+    border-radius: 4px;
+}

@@ -1,28 +1,52 @@
-{% for vizitka in data.Vizitky %}
-    {% if vizitka.Adresa %}
-        {{ vizitka.Adresa }}
-    {% endif %}
+<div class="row gx-5 my-3">
+    {% for vizitka in data.Vizitky %}
+        <div class="col-sm-6 col-lg-4">
+            <div class="card-doctor p-4">
 
-    {% if vizitka.OdkazNaMapu %}
-        {{ vizitka.OdkazNaMapu }}
-    {% endif %}
+                <h4>
+                    {% for lekar in vizitka.Lekari %}
+                        {% if not loop.first %}<br>{% endif %}{{ lekar.Jmeno }}
+                    {% endfor %}
+                </h4>
 
-    {% if vizitka.Odkaz %}
-        {{ vizitka.Odkaz }}
-    {% endif %}
+                {% if vizitka.Adresa %}
+                    <p>
+                        {{ vizitka.Adresa }}
+                    </p>
+                {% endif %}
 
-    {% if vizitka.OteviraciDoba %}
-        {{ vizitka.OteviraciDoba|nl2br }}
-    {% endif %}
+                {% if vizitka.Telefony|length > 0 %}
+                    <p>
+                        {% for telefon in vizitka.Telefony %}
+                            {% if not loop.first %}<br>{% endif %}
 
-    {% for lekar in vizitka.Lekari %}
-        {{ lekar.Jmeno }}
+                            {% if telefon.NazevTelefonu %}
+                                <span class="card-phone-name">{{ telefon.NazevTelefonu }}:</span>
+                            {% endif %}
+
+                            {{ telefon.Telefon }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+
+                {% if vizitka.OdkazNaMapu %}
+                    {{ vizitka.OdkazNaMapu }}
+                {% endif %}
+
+
+                {% if vizitka.OteviraciDoba %}
+                    <hr class="hr-dotted my-4">
+
+                    <div class="h6 fw-bold mb-0">Ordinační hodiny</div>
+                    {{ vizitka.OteviraciDoba|nl2br }}
+                {% endif %}
+
+                {% if vizitka.Odkaz %}
+                    <p class="mb-0 mt-3">
+                        <a class="text-center custom-badge w-100 d-inline-block" href="{{ vizitka.Odkaz }}">navštívit web</a>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
     {% endfor %}
-
-    {% for telefon in vizitka.Telefony %}
-        {{ telefon.Telefon }}
-        {% if telefon.NazevTelefonu %}
-            {{ telefon.NazevTelefonu }}
-        {% endif %}
-    {% endfor %}
-{% endfor %}
+</div>
