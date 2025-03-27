@@ -205,10 +205,12 @@ export interface ElementyTelefon extends Struct.ComponentSchema {
 export interface ElementyTerminAkce extends Struct.ComponentSchema {
   collectionName: 'components_elementy_termin_akces';
   info: {
+    description: '';
     displayName: 'Term\u00EDn akce';
     icon: 'calendar';
   };
   attributes: {
+    Nazev: Schema.Attribute.String;
     Termin: Schema.Attribute.DateTime & Schema.Attribute.Required;
     Zaznam: Schema.Attribute.String;
     Zivy_prenos: Schema.Attribute.String;
