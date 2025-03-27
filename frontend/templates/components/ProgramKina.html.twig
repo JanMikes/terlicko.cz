@@ -1,16 +1,31 @@
-{% for film in data.Filmy %}
-    {{ film.Film }}
-    {{ film.Vstupne }}
+<div class="row gx-5 my-3">
+    {% for film in data.Filmy %}
+        <div class="col-md-6 my-3">
+            <div class="d-flex">
+                {% if film.Obrazek %}
+                    <div class="me-3 text-center" style="width: 90px;">
+                        <img class="img-fluid rounded-circle m-auto" src="{{ film.Obrazek.url }}" alt="">
+                    </div>
+                {% endif %}
 
-    {% if film.Popis %}
-        {{ film.Popis }}
-    {% endif %}
+                <div>
+                    <div class="fw-bold mb-0 h4">{{ film.Film }}</div>
 
-    {% if film.Obrazek %}
-        <img class="img-fluid mb-2" src="{{ film.Obrazek.url }}" alt="">
-    {% endif %}
+                    {% for datum in film.Datumy %}
+                        {% if not loop.first %}
+                            <span class="cinema-separator"></span>
+                        {% endif %}
+                        <span class="cinema-date">{{ datum.Datum|date('d.m. H:i')}}</span>
+                    {% endfor %}
 
-    {% for datum in film.Datumy %}
-        {{ datum.Datum|date('d.m.Y H:i:s')}}
+                    <span class="cinema-separator"></span>
+                    <span class="cinema-entry-fee">{{ film.Vstupne }}</span>
+
+                    {% if film.Popis %}
+                        <br><small>{{ film.Popis }}</small>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     {% endfor %}
-{% endfor %}
+</div>

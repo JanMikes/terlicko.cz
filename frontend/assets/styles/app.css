@@ -519,3 +519,16 @@ textarea:hover {
     color: var(--bs-primary-text-emphasis);
     font-weight: bold;
 }
+
+.cinema-date, .cinema-entry-fee {
+    color: var(--bs-primary-text-emphasis);
+    font-size: 18px;
+}
+
+.cinema-separator {
+    height: 13px;
+    background: var(--bs-secondary);
+    width: 2px;
+    display: inline-block;
+    margin: 0 5px;
+}
