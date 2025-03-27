@@ -140,7 +140,7 @@ body {
 }
 
 header {
-    border-bottom: 8px solid #8CADD5;
+    border-bottom: 8px solid var(--bs-primary-text-emphasis);
 }
 
 .nav-link-instagram,
@@ -477,4 +477,45 @@ textarea:hover {
     border-radius: 4px;
     text-decoration: none;
     color: var(--bs-primary);
+}
+
+.event-date {
+    text-decoration: none;
+    background: var(--bs-secondary);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 0 10px;
+    display: inline-block;
+    border: 0;
+    text-align: center;
+    font-size: 20px;
+    line-height: 110%;
+}
+
+.event-date span {
+    font-size: 26px;
+}
+
+.event-live-stream {
+    border-radius: 4px;
+    background: var(--bs-primary);
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 10px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.event-replay {
+    background: #fff;
+    color: #ea3323;
+    font-weight: bold;
+    padding: 5px 10px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.event-time {
+    color: var(--bs-primary-text-emphasis);
+    font-weight: bold;
 }
