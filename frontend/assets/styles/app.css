@@ -542,3 +542,7 @@ textarea:hover {
     padding: 15px;
     border-radius: 4px;
 }
+
+p img {
+    max-width: 100%;
+}
