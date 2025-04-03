@@ -11,7 +11,11 @@
 
                 {% if vizitka.Adresa %}
                     <p>
-                        {{ vizitka.Adresa }}
+                        {% if vizitka.OdkazNaMapu %}
+                            <a href="{{ vizitka.OdkazNaMapu }}">{{ vizitka.Adresa }}</a>
+                        {% else %}
+                            {{ vizitka.Adresa }}
+                        {% endif %}
                     </p>
                 {% endif %}
 
@@ -27,10 +31,6 @@
                             {{ telefon.Telefon }}
                         {% endfor %}
                     </p>
-                {% endif %}
-
-                {% if vizitka.OdkazNaMapu %}
-                    {{ vizitka.OdkazNaMapu }}
                 {% endif %}
 
 
