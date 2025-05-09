@@ -396,12 +396,18 @@ hr.hr {
 
 .column-dlazdice {
     width: 246px;
-    border: 2.5px solid var(--bs-primary);
+    border: 2px solid var(--bs-primary);
     padding: 20px 15px 15px 15px;
     border-radius: 4px;
     font-weight: bold;
     text-decoration: none;
     color: var(--bs-primary);
+    transition: all 0.3s;
+}
+
+a.column-dlazdice:hover {
+    background: var(--bs-primary);
+    color: #fff;
 }
 
 .column-dlazdice .divider {
@@ -474,7 +480,7 @@ textarea:hover {
 }
 
 .section-content h2, .section-content h3, .section-content h4, .section-content h5, .section-content h6 {
-    margin-bottom: 1rem !important;
+    font-weight: bold !important;
 }
 
 

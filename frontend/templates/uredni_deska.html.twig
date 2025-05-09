@@ -11,7 +11,7 @@
             </ol>
         </nav>
 
-        <h1 class="fw-bolder mb-4">Úřední deska</h1>
+        <h1 class="fw-bolder mb-5">Úřední deska</h1>
 
         {#
         <p class="my-4">
@@ -25,9 +25,13 @@
         </p>
         #}
 
-        {% for kategorie in kategorie_uredni_desky %}
-            <a class="custom-badge small mb-1 {% if kategorie.slug == active_kategorie %}active_tag{% endif %}" href="{{ path('uredni_deska_kategorie_filter', {'kategorie': kategorie.slug}) }}">{{ kategorie.Nazev }}</a>
-        {% endfor %}
+        {% if kategorie_uredni_desky %}
+            <p class="mt-n">
+                {% for kategorie in kategorie_uredni_desky %}
+                    <a class="custom-badge small mb-1 {% if kategorie.slug == active_kategorie %}active_tag{% endif %}" href="{{ path('uredni_deska_kategorie_filter', {'kategorie': kategorie.slug}) }}">{{ kategorie.Nazev }}</a>
+                {% endfor %}
+            </p>
+        {% endif %}
 
         {#
         {% for Kategorie in uredni_deska.Kategorie %}
@@ -48,7 +52,7 @@
                                         - {{ uredni_deska.Datum_stazeni|date('d.m.Y') }}
                                     {% endif %}
                                 </time>
-                                <h2 class="h5 mt-1 fw-bold">{{ uredni_deska.Nadpis }}</h2>
+                                <h2 class="h6 mt-1 fw-bold">{{ uredni_deska.Nadpis }}</h2>
                             </a>
 
                             {#
