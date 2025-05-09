@@ -4,8 +4,8 @@
 #}
 
 <div class="row my-4">
-    {% for uredni_deska_dokument in this.items %}
-        {% if loop.index < data.Pocet %}
+    {% for uredni_deska_dokument in this.getItems(data.Pocet, data.Kategorie) %}
+        {% if loop.index <= data.Pocet %}
             <article class="col-sm-6 col-md-4 my-3">
                 <div class="d-flex">
                     <span class="article-icon me-3"></span>
@@ -21,6 +21,8 @@
     {% endfor %}
 </div>
 
+{#
 <p class="button-style-1 my-4">
     <a href="#">Zobrazit více</a>
 </p>
+#}

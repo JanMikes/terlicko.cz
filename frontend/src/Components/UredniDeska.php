@@ -6,6 +6,8 @@ namespace Terlicko\Web\Components;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Terlicko\Web\Services\Strapi\StrapiContent;
+use Terlicko\Web\Value\Content\Data\KategorieUredniDeskyData;
+use Terlicko\Web\Value\Content\Data\TagData;
 use Terlicko\Web\Value\Content\Data\UredniDeskaData;
 
 #[AsTwigComponent]
@@ -17,10 +19,16 @@ readonly final class UredniDeska
     }
 
     /**
+     * @param array<KategorieUredniDeskyData> $kategorie
      * @return array<UredniDeskaData>
      */
-    public function getItems(): array
+    public function getItems(int $Pocet, array $kategorie): array
     {
-        return $this->content->getUredniDeskyData();
+        $categorySlugs = [];
+        foreach ($kategorie as $category) {
+            $categorySlugs[] = $category->slug;
+        }
+
+        return $this->content->getUredniDeskyData(category: $categorySlugs, limit: $Pocet, shouldHideIfExpired: true);
     }
 }
