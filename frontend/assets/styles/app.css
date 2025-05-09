@@ -352,6 +352,10 @@ header {
     border: 0;
 }
 
+.custom-badge.active_tag {
+    background: var(--bs-primary);
+}
+
 .article-icon {
     background: url('../images/icon-house.svg') center center no-repeat var(--bs-primary-text-emphasis);
     display: block;

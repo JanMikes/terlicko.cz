@@ -1,29 +1,27 @@
 <div class="mt-2 mb-5">
     <div class="row">
-        {% for aktualita in this.items %}
-            {% if loop.index < data.Pocet %}
-                <div class="col-sm-6 col-md-4 col-lg-3 my-3">
-                    <a href="{{ path('detail_aktuality', {'slug': aktualita.slug}) }}" class="text-decoration-none">
-                        {% if aktualita.Obrazek %}
-                            <img class="img-fluid mb-2" src="{{ aktualita.Obrazek.url }}" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
-                        {% endif %}
+        {% for aktualita in this.getItems(data.Pocet, data.kategorie) %}
+            <div class="col-sm-6 col-md-4 col-lg-3 my-3">
+                <a href="{{ path('detail_aktuality', {'slug': aktualita.slug}) }}" class="text-decoration-none">
+                    {% if aktualita.Obrazek %}
+                        <img class="img-fluid mb-2" src="{{ aktualita.Obrazek.url }}" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
+                    {% endif %}
 
-                        {% if aktualita.Tagy %}
-                            <span class="d-block text-secondary">
-                                {% for Tag in aktualita.Tagy %}
-                                    {% if not loop.first %}
-                                        |
-                                    {% endif %}
-                                    {{ Tag.Tag }}
-                                {% endfor %}
-                            </span>
-                        {% endif %}
+                    {% if aktualita.Tagy %}
+                        <span class="d-block text-secondary">
+                            {% for Tag in aktualita.Tagy %}
+                                {% if not loop.first %}
+                                    |
+                                {% endif %}
+                                {{ Tag.Tag }}
+                            {% endfor %}
+                        </span>
+                    {% endif %}
 
-                        <h3 class="h5 border-top mt-2 pt-2">{{ aktualita.Nadpis }}</h3>
-                        <time class="small text-secondary">{{ aktualita.DatumZverejneni|date('d.m.Y') }}</time>
-                    </a>
-                </div>
-            {% endif %}
+                    <h3 class="h5 border-top mt-2 pt-2">{{ aktualita.Nadpis }}</h3>
+                    <time class="small text-secondary">{{ aktualita.DatumZverejneni|date('d.m.Y') }}</time>
+                </a>
+            </div>
         {% endfor %}
     </div>
 </div>

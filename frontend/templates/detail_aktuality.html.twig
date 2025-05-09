@@ -36,8 +36,9 @@
             {% if aktualita.Tagy %}
                 <p class="tags">
                     {% for Tag in aktualita.Tagy %}
-                        {#  <a href="{{ Kategorie.name }}" class="tag-link">{{ Kategorie.value }}</a> #}
-                        <span class="tag-link">{{ Tag.Tag }}</span>
+                        <a href="{{ path('aktuality_tag_filter', {'tag': Tag.slug}) }}" class="custom-badge">
+                            {{ Tag.Tag }}
+                        </a>
                     {% endfor %}
                 </p>
             {% endif %}

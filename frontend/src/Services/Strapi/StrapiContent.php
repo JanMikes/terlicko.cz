@@ -54,9 +54,10 @@ readonly final class StrapiContent
     }
 
     /**
+     * @param null|string|array<string> $tag
      * @return array<AktualitaData>
      */
-    public function getAktualityData(int|null $limit = null, null|string $tag = null): array
+    public function getAktualityData(int|null $limit = null, null|array|string $tag = null): array
     {
         $pagination = null;
 
@@ -69,11 +70,17 @@ readonly final class StrapiContent
 
         $filters = [
             'Zobrazovat' => ['$eq' => true],
-            'tags' => ['slug' => ['$eq' => $tag]],
+
         ];
 
-        if ($tag == null) {
-            unset($filters['tags']);
+        if (is_string($tag)) {
+           $filters['tags'] = ['slug' => ['$eq' => $tag]];
+        }
+
+        if (is_array($tag)) {
+            foreach ($tag as $tagName) {
+                $filters['tags']['slug']['$in'][] = $tagName;
+            }
         }
 
         /** @var array{data: array<AktualitaDataArray>} $strapiResponse */
