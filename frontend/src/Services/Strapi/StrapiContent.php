@@ -175,17 +175,6 @@ readonly final class StrapiContent
         );
     }
 
-
-    /**
-     * @return array<UredniDeskaData>
-     */
-    public function getUredniDeskyDataFilteredByKategorie(string $kategorieSlug): array
-    {
-        // TODO
-        return [];
-        // return $this->getUredniDeskyData($field, shouldHideIfExpired: true);
-    }
-
     /**
      * @return array<KategorieUredniDeskyData>
      */
