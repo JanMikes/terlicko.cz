@@ -352,6 +352,10 @@ header {
     border: 0;
 }
 
+.custom-badge.custom-badge-secondary {
+    background: var(--bs-primary-text-emphasis);
+}
+
 .custom-badge.active_tag {
     background: var(--bs-primary);
 }

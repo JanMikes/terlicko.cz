@@ -19,6 +19,8 @@ final class UredniDeskaController extends AbstractController
     {
         return $this->render('uredni_deska.html.twig', [
             'uredni_desky' => $this->content->getUredniDeskyData(shouldHideIfExpired: true),
+            'kategorie_uredni_desky' => $this->content->getKategorieUredniDesky(),
+            'active_kategorie' => null,
         ]);
     }
 }

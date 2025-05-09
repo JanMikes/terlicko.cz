@@ -133,11 +133,13 @@
                                     <time class="text-secondary fw-bold">{{ uredni_deska_dokument.Datum_zverejneni|date('d.m.Y') }}</time> {% if uredni_deska_dokument.Datum_stazeni %}- <time class="text-secondary fw-bold">{{ uredni_deska_dokument.Datum_stazeni|date('d.m.Y') }}</time>{% endif %}
                                     <h2 class="h5 mt-1 fw-bold">{{ uredni_deska_dokument.Nadpis }}</h2>
                                 </a>
+                                {#
                                 {% if uredni_deska_dokument.Kategorie %}
                                     {% for Kategorie in uredni_deska_dokument.Kategorie %}
                                         <a class="custom-badge small" href="{{ path('uredni_deska_kategorie_filter', {'kategorie': Kategorie.slug}) }}">{{ Kategorie.Nazev }}</a>
                                     {% endfor %}
                                 {% endif %}
+                                #}
                             </div>
                         </div>
                     </article>

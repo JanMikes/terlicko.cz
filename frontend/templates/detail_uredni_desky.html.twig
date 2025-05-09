@@ -13,7 +13,7 @@
         </nav>
 
         <section class="uredni-deska-detail">
-            <h2>{{ uredni_deska.Nadpis }}</h2>
+            <h1 class="fw-bolder mb-4">{{ uredni_deska.Nadpis }}</h1>
 
             <p>
                 Zveřejněno <time>{{ uredni_deska.Datum_zverejneni|date('d.m.Y') }}</time>
@@ -29,7 +29,9 @@
             {% if uredni_deska.Kategorie %}
                 <p class="tags">
                     {% for Kategorie in uredni_deska.Kategorie %}
-                        <a href="{{ path('uredni_deska_kategorie_filter', {'kategorie': Kategorie.slug}) }}" class="tag-link">{{ Kategorie.Nazev }}</a>
+                        <a href="{{ path('uredni_deska_kategorie_filter', {'kategorie': Kategorie.slug}) }}" class="custom-badge">
+                            {{ Kategorie.Nazev }}
+                        </a>
                     {% endfor %}
                 </p>
             {% endif %}
@@ -40,7 +42,7 @@
                         <li>
                             <a class="file-link" href="{{ file.url }}">
                                 <span class="file-caption">{{ file.caption}}</span>
-                                <span class="file-info">({{ file.kbytes }}kb)</span>
+                                <span class="file-info">({{ file.size }}kb)</span>
                                 <span class="icon-download"></span>
                             </a>
                         </li>

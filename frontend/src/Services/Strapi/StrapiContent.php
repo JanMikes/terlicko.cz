@@ -7,6 +7,7 @@ namespace Terlicko\Web\Services\Strapi;
 use Psr\Clock\ClockInterface;
 use Terlicko\Web\Value\Content\Data\AktualitaData;
 use Terlicko\Web\Value\Content\Data\KategorieUredniDesky;
+use Terlicko\Web\Value\Content\Data\KategorieUredniDeskyData;
 use Terlicko\Web\Value\Content\Data\MenuData;
 use Terlicko\Web\Value\Content\Data\SekceData;
 use Terlicko\Web\Value\Content\Data\UredniDeskaData;
@@ -109,10 +110,15 @@ readonly final class StrapiContent
     }
 
     /**
+     * @param string|array<string>|null $category
      * @return array<UredniDeskaData>
      */
-    public function getUredniDeskyData(string|null $categoryField = null, int|null $limit = null, bool $shouldHideIfExpired = false): array
-    {
+    public function getUredniDeskyData(
+        string|array|null $category = null,
+        int|null $limit = null,
+        int|null $year = null,
+        bool $shouldHideIfExpired = false
+    ): array {
         $now = $this->clock->now();
         $filters = [];
 
@@ -126,8 +132,14 @@ readonly final class StrapiContent
             ];
         }
 
-        if ($categoryField) {
-            $filters[$categoryField] = ['$eq' => true];
+        if (is_string($category)) {
+            $filters['categories'] = ['slug' => ['$eq' => $category]];
+        }
+
+        if (is_array($category)) {
+            foreach ($category as $categoryName) {
+                $filters['categories']['slug']['$in'][] = $categoryName;
+            }
         }
 
         $pagination = null;
@@ -171,6 +183,17 @@ readonly final class StrapiContent
         // TODO
         return [];
         // return $this->getUredniDeskyData($field, shouldHideIfExpired: true);
+    }
+
+    /**
+     * @return array<KategorieUredniDeskyData>
+     */
+    public function getKategorieUredniDesky(): array
+    {
+        /** @var array{data: array<KategorieUredniDeskyDataArray>} $strapiResponse */
+        $strapiResponse = $this->strapiClient->getApiResource('kategorie-uredni-deskies');
+
+        return KategorieUredniDeskyData::createManyFromStrapiResponse($strapiResponse['data']);
     }
 
     /**
