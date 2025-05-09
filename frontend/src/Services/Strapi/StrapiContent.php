@@ -29,6 +29,7 @@ use Terlicko\Web\Value\Content\Data\TagData;
  * @phpstan-import-type SekceDataArray from SekceData
  * @phpstan-import-type TagDataArray from TagData
  * @phpstan-import-type UredniDeskaDataArray from UredniDeskaData
+ * @phpstan-import-type KategorieUredniDeskyDataArray from KategorieUredniDeskyData
  */
 readonly final class StrapiContent
 {

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Terlicko\Web\Services\Strapi\StrapiContent;
 use Terlicko\Web\Value\Content\Data\KategorieUredniDesky;
+use Terlicko\Web\Value\Content\Exception\InvalidKategorie;
 
 final class UredniDeskaKategorieFilterController extends AbstractController
 {
