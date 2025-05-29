@@ -67,6 +67,7 @@ readonly final class SekceData
                 'komponenty.vizitky' => new Component('Vizitky', VizitkyComponentData::createFromStrapiResponse($component)),
                 'komponenty.karty' => new Component('Karty', KartyComponentData::createFromStrapiResponse($component)),
                 'komponenty.program-kina' => new Component('ProgramKina', ProgramKinaComponentData::createFromStrapiResponse($component)),
+                'komponenty.pas-s-obrazkem' => new Component('PasSObrazkem', PasSObrazkemComponentData::createFromStrapiResponse($component)),
                 default => throw new \Exception('Unknown component ' . $component['__component']),
             };
         }

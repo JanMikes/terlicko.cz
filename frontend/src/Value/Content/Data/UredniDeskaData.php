@@ -19,8 +19,8 @@ use DateTimeImmutable;
  *     Zodpovedna_osoba: null|ClovekDataArray,
  *     Soubory: null|array<FileDataArray>,
  *     slug: string,
- *     Ikonka: null|ImageData,
- *     Uvodni_obrazek: null|ImageData,
+ *     Ikonka: null|ImageDataArray,
+ *     Uvodni_obrazek: null|ImageDataArray,
  *     categories: array<KategorieUredniDeskyDataArray>
  *  }
  */
