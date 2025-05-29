@@ -1,5 +1,31 @@
-<div class="mt-2 mb-5">
+<div class="d-flex flex-wrap gap-4 mt-3 mb-5 align-items-stretch">
     {% for karta in data.Karty %}
-        Karta
+        <div class="column-karta-s-argumenty align-items-center justify-content-center flex-wrap text-center">
+            {% if karta.Nadpis and karta.Umisteni_nadpisu != 'pod obrázkem' %}
+                <h4 class="mt-0 mb-3">{{ karta.Nadpis }}</h4>
+            {% endif %}
+
+            {% if karta.Obrazek %}
+                <img class="img-fluid" src="{{ karta.Obrazek.url }}" alt="">
+            {% endif %}
+
+            {% if karta.Nadpis and karta.Umisteni_nadpisu == 'pod obrázkem' %}
+                <h4 class="my-3">{{ karta.Nadpis }}</h4>
+            {% endif %}
+
+            {% if karta.Text %}
+                <p class="mb-0 mt-3">
+                    {{ karta.Text|nl2br }}
+                </p>
+            {% endif %}
+
+            {% if karta.Tlacitko %}
+                <span class="mt-3 d-inline-block {{ karta.Tlacitko.Styl == 'Styl 1' ? 'button-style-1' : 'button-style-2' }}">
+                    <twig:Odkaz data="{{ karta.Tlacitko.Odkaz }}">{{ karta.Tlacitko.Text }}{{ karta.Tlacitko.Styl == 'Styl 2' ? ' &raquo;' }}</twig:Odkaz>
+                </span>
+            {% endif %}
+
+        </div>
     {% endfor %}
 </div>
+

@@ -560,3 +560,7 @@ textarea:hover {
 p img {
     max-width: 100%;
 }
+
+.column-karta-s-argumenty {
+    width: 246px;
+}
