@@ -1,3 +1,27 @@
-<div class="mt-2 mb-5">
-    Pás s obrázkem
+<div class="mt-2 mb-5" style="{% if data.Pozadi %}background: url('{{ data.Pozadi.url }}') center center no-repeat;background-size: contain;{% endif %}{% if data.Pozadi_barva %}background-color: {{ data.Pozadi_barva }};{% endif %}">
+    <div class="row">
+        <div class="col-sm-4">
+            {% if data.Fotka %}
+                <img class="img-fluid" src="{{ data.Fotka.url }}" alt="">
+            {% endif %}
+        </div>
+
+        <div class="col-sm-8">
+            {% if data.Nadpis %}
+                <h4 class="my-3">{{ data.Nadpis }}</h4>
+            {% endif %}
+
+            {% if data.Text %}
+                <p class="my-3">
+                    {{ data.Text|nl2br }}
+                </p>
+            {% endif %}
+
+            {% for tlacitko in data.Tlacitka %}
+                <span class="d-inline-block my-2 {{ tlacitko.Styl == 'Styl 1' ? 'button-style-1' : 'button-style-2' }} {{ loop.first != true ? 'ms-4' }}">
+                    <twig:Odkaz data="{{ tlacitko.Odkaz }}">{{ tlacitko.Text }}{{ tlacitko.Styl == 'Styl 2' ? ' &raquo;' }}</twig:Odkaz>
+                </span>
+            {% endfor %}
+        </div>
+    </div>
 </div>
