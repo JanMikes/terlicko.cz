@@ -74,13 +74,31 @@ export interface ElementyKarta extends Struct.ComponentSchema {
     icon: 'file';
   };
   attributes: {
-    Adresa: Schema.Attribute.String;
+    Adresa: Schema.Attribute.String & Schema.Attribute.Required;
     Email: Schema.Attribute.Email;
     Nazev: Schema.Attribute.String & Schema.Attribute.Required;
     Obrazek: Schema.Attribute.Media<'images' | 'files'>;
     Odkaz: Schema.Attribute.String;
     Odkaz_na_mapu: Schema.Attribute.String;
     Telefon: Schema.Attribute.String;
+  };
+}
+
+export interface ElementyKartaSArgumenty extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_karta_s_argumenties';
+  info: {
+    displayName: 'Karta s argumenty';
+    icon: 'filter';
+  };
+  attributes: {
+    Nadpis: Schema.Attribute.String;
+    Obrazek: Schema.Attribute.Media<'images'>;
+    Text: Schema.Attribute.RichText;
+    Tlacitko: Schema.Attribute.Component<'elementy.tlacitko', false>;
+    Umisteni_nadpisu: Schema.Attribute.Enumeration<
+      ['pod obr\u00E1zkem', 'nad obr\u00E1zkem']
+    > &
+      Schema.Attribute.DefaultTo<'pod obr\u00E1zkem'>;
   };
 }
 
@@ -363,6 +381,34 @@ export interface KomponentyObrazek extends Struct.ComponentSchema {
   };
 }
 
+export interface KomponentyPasKaretSArgumenty extends Struct.ComponentSchema {
+  collectionName: 'components_komponenty_pas_karet_s_argumenties';
+  info: {
+    displayName: 'P\u00E1s karet s argumenty';
+    icon: 'apps';
+  };
+  attributes: {
+    Karty: Schema.Attribute.Component<'elementy.karta-s-argumenty', true>;
+  };
+}
+
+export interface KomponentyPasSObrazkem extends Struct.ComponentSchema {
+  collectionName: 'components_komponenty_pas_s_obrazkems';
+  info: {
+    displayName: 'P\u00E1s s obr\u00E1zkem';
+    icon: 'layout';
+  };
+  attributes: {
+    Fotka: Schema.Attribute.Media<'images'>;
+    Nadpis: Schema.Attribute.String;
+    Pozadi: Schema.Attribute.Media<'images'>;
+    Text: Schema.Attribute.RichText;
+    Tlacitko: Schema.Attribute.Component<'elementy.tlacitko', true>;
+    Umisteni_fotky: Schema.Attribute.Enumeration<['vlevo', 'vpravo']> &
+      Schema.Attribute.DefaultTo<'vlevo'>;
+  };
+}
+
 export interface KomponentyProgramKina extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_program_kinas';
   info: {
@@ -515,6 +561,7 @@ declare module '@strapi/strapi' {
       'elementy.dlazdice': ElementyDlazdice;
       'elementy.film': ElementyFilm;
       'elementy.karta': ElementyKarta;
+      'elementy.karta-s-argumenty': ElementyKartaSArgumenty;
       'elementy.lekar': ElementyLekar;
       'elementy.obrazek-galerie': ElementyObrazekGalerie;
       'elementy.odkaz': ElementyOdkaz;
@@ -532,6 +579,8 @@ declare module '@strapi/strapi' {
       'komponenty.karty': KomponentyKarty;
       'komponenty.nadpis': KomponentyNadpis;
       'komponenty.obrazek': KomponentyObrazek;
+      'komponenty.pas-karet-s-argumenty': KomponentyPasKaretSArgumenty;
+      'komponenty.pas-s-obrazkem': KomponentyPasSObrazkem;
       'komponenty.program-kina': KomponentyProgramKina;
       'komponenty.rozdelovnik': KomponentyRozdelovnik;
       'komponenty.samosprava': KomponentySamosprava;

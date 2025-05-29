@@ -9,7 +9,11 @@
 
             <p class="mb-2">
                 {% if karta.Adresa %}
-                    {{ karta.Adresa }}<br>
+                    {% if karta.OdkazNaMapu %}
+                        <a href="{{ karta.OdkazNaMapu }}" target="_blank" class="custom-badge mt-2">{{ karta.Adresa }}</a>
+                    {% else %}
+                        {{ karta.Adresa }}<br>
+                    {% endif %}
                 {% endif %}
 
                 {% if karta.Telefon %}
@@ -26,9 +30,6 @@
                 <a href="{{ karta.Odkaz }}" target="_blank" class="custom-badge mt-2">Navštívit web</a>
             {% endif %}
 
-            {% if karta.OdkazNaMapu %}
-                <a href="{{ karta.OdkazNaMapu }}" target="_blank" class="custom-badge mt-2">Zobrazit na mapě</a>
-            {% endif %}
         </div>
     {% endfor %}
 </div>

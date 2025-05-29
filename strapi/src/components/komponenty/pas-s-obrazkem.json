@@ -1,0 +1,43 @@
+{
+  "collectionName": "components_komponenty_pas_s_obrazkems",
+  "info": {
+    "displayName": "Pás s obrázkem",
+    "icon": "layout"
+  },
+  "options": {},
+  "attributes": {
+    "Fotka": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "Umisteni_fotky": {
+      "type": "enumeration",
+      "enum": [
+        "vlevo",
+        "vpravo"
+      ],
+      "default": "vlevo"
+    },
+    "Nadpis": {
+      "type": "string"
+    },
+    "Text": {
+      "type": "richtext"
+    },
+    "Tlacitko": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elementy.tlacitko"
+    },
+    "Pozadi": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

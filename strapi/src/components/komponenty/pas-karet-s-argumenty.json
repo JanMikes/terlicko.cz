@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_komponenty_pas_karet_s_argumenties",
+  "info": {
+    "displayName": "Pás karet s argumenty",
+    "icon": "apps"
+  },
+  "options": {},
+  "attributes": {
+    "Karty": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elementy.karta-s-argumenty"
+    }
+  }
+}

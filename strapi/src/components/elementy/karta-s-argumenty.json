@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_elementy_karta_s_argumenties",
+  "info": {
+    "displayName": "Karta s argumenty",
+    "icon": "filter"
+  },
+  "options": {},
+  "attributes": {
+    "Obrazek": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "Nadpis": {
+      "type": "string"
+    },
+    "Umisteni_nadpisu": {
+      "type": "enumeration",
+      "enum": [
+        "pod obrázkem",
+        "nad obrázkem"
+      ],
+      "default": "pod obrázkem"
+    },
+    "Text": {
+      "type": "richtext"
+    },
+    "Tlacitko": {
+      "type": "component",
+      "repeatable": false,
+      "component": "elementy.tlacitko"
+    }
+  }
+}

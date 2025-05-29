@@ -44,7 +44,9 @@
         "komponenty.vizitky",
         "komponenty.terminy-akci",
         "komponenty.program-kina",
-        "komponenty.karty"
+        "komponenty.karty",
+        "komponenty.pas-s-obrazkem",
+        "komponenty.pas-karet-s-argumenty"
       ],
       "required": true,
       "min": 1

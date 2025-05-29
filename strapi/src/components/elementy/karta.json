@@ -21,7 +21,8 @@
       "required": true
     },
     "Adresa": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "Telefon": {
       "type": "string"
