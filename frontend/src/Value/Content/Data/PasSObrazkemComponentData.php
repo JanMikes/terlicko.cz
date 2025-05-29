@@ -19,6 +19,7 @@ readonly final class PasSObrazkemComponentData
         /** @var array<TlacitkoData> */
         public array $Tlacitka,
         public null|ImageData $Pozadi,
+        public null|string $Pozadi_barva,
     ) {}
 
     /**
@@ -27,8 +28,9 @@ readonly final class PasSObrazkemComponentData
      *     Nadpis: null|string,
      *     Text: null|string,
      *     Fotka: null|ImageDataArray,
-     *     Tlacitko: array<TlacitkoDataArray>,
+     *     Tlacitko: null|array<TlacitkoDataArray>,
      *     Pozadi: null|ImageDataArray,
+     *     Pozadi_barva: null|string,
      *  } $data
      */
     public static function createFromStrapiResponse(array $data): self
@@ -40,6 +42,7 @@ readonly final class PasSObrazkemComponentData
             Fotka: $data['Fotka'] !== null ? ImageData::createFromStrapiResponse($data['Fotka']) : null,
             Tlacitka: TlacitkoData::createManyFromStrapiResponse($data['Tlacitko'] ?? []),
             Pozadi: $data['Pozadi'] !== null ? ImageData::createFromStrapiResponse($data['Pozadi']) : null,
+            Pozadi_barva: $data['Pozadi_barva'],
         );
     }
 }

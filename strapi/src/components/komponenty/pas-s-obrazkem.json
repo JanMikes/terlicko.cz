@@ -2,16 +2,18 @@
   "collectionName": "components_komponenty_pas_s_obrazkems",
   "info": {
     "displayName": "Pás s obrázkem",
-    "icon": "layout"
+    "icon": "layout",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "Fotka": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "Umisteni_fotky": {
       "type": "enumeration",
@@ -33,11 +35,17 @@
       "component": "elementy.tlacitko"
     },
     "Pozadi": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "Pozadi_barva": {
+      "type": "customField",
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+      "customField": "plugin::color-picker.color"
     }
   }
 }

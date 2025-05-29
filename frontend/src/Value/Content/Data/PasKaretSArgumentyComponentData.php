@@ -22,7 +22,7 @@ readonly final class PasKaretSArgumentyComponentData
     public static function createFromStrapiResponse(array $data): self
     {
         return new self(
-            Karty: $data['Karty'] !== null ? KartaSArgumentyData::createManyFromStrapiResponse($data['Karty']) : null,
+            Karty: KartaSArgumentyData::createManyFromStrapiResponse($data['Karty'] ?? []),
         );
     }
 }

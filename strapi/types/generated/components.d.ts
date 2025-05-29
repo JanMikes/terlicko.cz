@@ -395,6 +395,7 @@ export interface KomponentyPasKaretSArgumenty extends Struct.ComponentSchema {
 export interface KomponentyPasSObrazkem extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_pas_s_obrazkems';
   info: {
+    description: '';
     displayName: 'P\u00E1s s obr\u00E1zkem';
     icon: 'layout';
   };
@@ -402,6 +403,8 @@ export interface KomponentyPasSObrazkem extends Struct.ComponentSchema {
     Fotka: Schema.Attribute.Media<'images'>;
     Nadpis: Schema.Attribute.String;
     Pozadi: Schema.Attribute.Media<'images'>;
+    Pozadi_barva: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'plugin::color-picker.color'>;
     Text: Schema.Attribute.RichText;
     Tlacitko: Schema.Attribute.Component<'elementy.tlacitko', true>;
     Umisteni_fotky: Schema.Attribute.Enumeration<['vlevo', 'vpravo']> &
