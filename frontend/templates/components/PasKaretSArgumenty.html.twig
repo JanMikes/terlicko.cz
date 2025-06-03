@@ -2,7 +2,7 @@
     {% for karta in data.Karty %}
         <div class="column-karta-s-argumenty align-items-center justify-content-center flex-wrap text-center">
             {% if karta.Nadpis and karta.Umisteni_nadpisu != 'pod obrázkem' %}
-                <h4 class="mt-0 mb-3">{{ karta.Nadpis }}</h4>
+                <h4 class="h5 mt-0 mb-3">{{ karta.Nadpis }}</h4>
             {% endif %}
 
             {% if karta.Obrazek %}
@@ -10,11 +10,11 @@
             {% endif %}
 
             {% if karta.Nadpis and karta.Umisteni_nadpisu == 'pod obrázkem' %}
-                <h4 class="my-3">{{ karta.Nadpis }}</h4>
+                <h4 class="h5 my-3">{{ karta.Nadpis }}</h4>
             {% endif %}
 
             {% if karta.Text %}
-                <p class="mb-0 mt-3">
+                <p class="mb-0 mt-3 small">
                     {{ karta.Text|nl2br }}
                 </p>
             {% endif %}

@@ -10,7 +10,7 @@
             <p class="mb-2">
                 {% if karta.Adresa %}
                     {% if karta.OdkazNaMapu %}
-                        <a href="{{ karta.OdkazNaMapu }}" target="_blank" class="custom-badge mt-2">{{ karta.Adresa }}</a>
+                        <a href="{{ karta.OdkazNaMapu }}" target="_blank" class="mt-2">{{ karta.Adresa }}</a><br>
                     {% else %}
                         {{ karta.Adresa }}<br>
                     {% endif %}
