@@ -458,12 +458,13 @@ export interface ApiFormularFormular extends Struct.CollectionTypeSchema {
 export interface ApiIkonkyIkonky extends Struct.CollectionTypeSchema {
   collectionName: 'ikonkies';
   info: {
+    description: '';
     displayName: 'Ikonky';
     pluralName: 'ikonkies';
     singularName: 'ikonky';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -653,6 +654,7 @@ export interface ApiSekceSekce extends Struct.CollectionTypeSchema {
         'komponenty.karty',
         'komponenty.pas-s-obrazkem',
         'komponenty.pas-karet-s-argumenty',
+        'komponenty.tipy-na-vylet',
       ]
     > &
       Schema.Attribute.Required &

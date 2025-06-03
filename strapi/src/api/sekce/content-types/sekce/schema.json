@@ -46,7 +46,8 @@
         "komponenty.program-kina",
         "komponenty.karty",
         "komponenty.pas-s-obrazkem",
-        "komponenty.pas-karet-s-argumenty"
+        "komponenty.pas-karet-s-argumenty",
+        "komponenty.tipy-na-vylet"
       ],
       "required": true,
       "min": 1

@@ -4,10 +4,11 @@
   "info": {
     "singularName": "ikonky",
     "pluralName": "ikonkies",
-    "displayName": "Ikonky"
+    "displayName": "Ikonky",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -15,12 +16,12 @@
       "type": "string"
     },
     "Ikonka": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
     }
   }
 }
