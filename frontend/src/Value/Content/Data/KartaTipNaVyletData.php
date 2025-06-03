@@ -15,7 +15,7 @@ namespace Terlicko\Web\Value\Content\Data;
  *     Obrazek: null|ImageDataArray,
  *     Tlacitko: null|TlacitkoDataArray,
  *     Stuzka: null|string,
- *     Ikonky: null|IkonkaDataArray
+ *     Ikonky: null|array<IkonkaDataArray>
  *  }
  */
 readonly final class KartaTipNaVyletData
