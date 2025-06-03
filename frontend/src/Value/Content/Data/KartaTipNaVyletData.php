@@ -7,7 +7,7 @@ namespace Terlicko\Web\Value\Content\Data;
 /**
  * @phpstan-import-type ImageDataArray from ImageData
  * @phpstan-import-type TlacitkoDataArray from TlacitkoData
- * @phpstan-import-type IkonkyDataArray from IkonkyData
+ * @phpstan-import-type IkonkaDataArray from IkonkaData
  * @phpstan-type KartaTipNaVyletDataArray array{
  *     Nadpis: null|string,
  *     Umisteni_nadpisu: null|string,
@@ -15,7 +15,7 @@ namespace Terlicko\Web\Value\Content\Data;
  *     Obrazek: null|ImageDataArray,
  *     Tlacitko: null|TlacitkoDataArray,
  *     Stuzka: null|string,
- *     Ikonky: null|IkonkyDataArray
+ *     Ikonky: null|IkonkaDataArray
  *  }
  */
 readonly final class KartaTipNaVyletData
