@@ -2,16 +2,18 @@
   "collectionName": "components_elementy_karta_tip_na_vylets",
   "info": {
     "displayName": "Karta tip na výlet",
-    "icon": "car"
+    "icon": "car",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "Obrazek": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "Nadpis": {
       "type": "string"
@@ -29,7 +31,7 @@
     },
     "Tlacitko": {
       "type": "component",
-      "repeatable": true,
+      "repeatable": false,
       "component": "elementy.tlacitko"
     },
     "Stuzka": {

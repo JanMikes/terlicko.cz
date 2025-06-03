@@ -106,6 +106,7 @@ export interface ElementyKartaSArgumenty extends Struct.ComponentSchema {
 export interface ElementyKartaTipNaVylet extends Struct.ComponentSchema {
   collectionName: 'components_elementy_karta_tip_na_vylets';
   info: {
+    description: '';
     displayName: 'Karta tip na v\u00FDlet';
     icon: 'car';
   };
@@ -115,7 +116,7 @@ export interface ElementyKartaTipNaVylet extends Struct.ComponentSchema {
     Obrazek: Schema.Attribute.Media<'images'>;
     Stuzka: Schema.Attribute.String;
     Text: Schema.Attribute.RichText;
-    Tlacitko: Schema.Attribute.Component<'elementy.tlacitko', true>;
+    Tlacitko: Schema.Attribute.Component<'elementy.tlacitko', false>;
     Umisteni_nadpisu: Schema.Attribute.Enumeration<
       ['pod obr\u00E1zkem', 'nad obr\u00E1zkem']
     > &

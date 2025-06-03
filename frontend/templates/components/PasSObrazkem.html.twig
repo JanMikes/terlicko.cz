@@ -1,12 +1,14 @@
 <div class="mt-2 mb-5" style="{% if data.Pozadi %}background: url('{{ data.Pozadi.url }}') center center no-repeat;background-size: contain;{% endif %}{% if data.Pozadi_barva %}background-color: {{ data.Pozadi_barva }};{% endif %}">
     <div class="row gx-0">
-        <div class="col-sm-8">
-            <div class="py-3 pe-3">
-                {% if data.Fotka %}
-                    <img class="img-fluid" src="{{ data.Fotka.url }}" alt="">
-                {% endif %}
+        {% if data.Umisteni_fotky == 'vlevo' %}
+            <div class="col-sm-8">
+                <div class="py-3 pe-3">
+                    {% if data.Fotka %}
+                        <img class="img-fluid" src="{{ data.Fotka.url }}" alt="">
+                    {% endif %}
+                </div>
             </div>
-        </div>
+        {% endif %}
 
         <div class="col-sm-4">
             {% if data.Nadpis %}
@@ -25,5 +27,15 @@
                 </span>
             {% endfor %}
         </div>
+
+        {% if data.Umisteni_fotky == 'vpravo' %}
+            <div class="col-sm-8">
+                <div class="py-3 ps-3">
+                    {% if data.Fotka %}
+                        <img class="img-fluid" src="{{ data.Fotka.url }}" alt="">
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
