@@ -570,3 +570,7 @@ p img {
     border-radius: 0 !important;
     padding: 6px 10px !important;
 }
+
+.img-wrapper {
+    max-width: 100%;
+}
