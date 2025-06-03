@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_komponenty_tipy_na_vylets",
+  "info": {
+    "displayName": "Tipy na výlet",
+    "icon": "car"
+  },
+  "options": {},
+  "attributes": {
+    "Karty": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elementy.karta-tip-na-vylet"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "kalendar_akcis",
+  "info": {
+    "singularName": "kalendar-akci",
+    "pluralName": "kalendar-akcis",
+    "displayName": "Kalendář akcí"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Datum": {
+      "type": "datetime"
+    },
+    "Nazev": {
+      "type": "string"
+    },
+    "Poradatel": {
+      "type": "string"
+    },
+    "Aktualita": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::aktuality.aktuality"
+    }
+  }
+}

@@ -1,19 +1,17 @@
 {
-  "collectionName": "components_elementy_karta_s_argumenties",
+  "collectionName": "components_elementy_karta_tip_na_vylets",
   "info": {
-    "displayName": "Karta s argumenty",
-    "icon": "filter",
-    "description": ""
+    "displayName": "Karta tip na výlet",
+    "icon": "car"
   },
   "options": {},
   "attributes": {
     "Obrazek": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
       "allowedTypes": [
         "images"
-      ]
+      ],
+      "type": "media",
+      "multiple": false
     },
     "Nadpis": {
       "type": "string"
@@ -31,8 +29,16 @@
     },
     "Tlacitko": {
       "type": "component",
-      "repeatable": false,
+      "repeatable": true,
       "component": "elementy.tlacitko"
+    },
+    "Stuzka": {
+      "type": "string"
+    },
+    "Ikonky": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ikonky.ikonky"
     }
   }
 }

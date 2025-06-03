@@ -455,6 +455,70 @@ export interface ApiFormularFormular extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiIkonkyIkonky extends Struct.CollectionTypeSchema {
+  collectionName: 'ikonkies';
+  info: {
+    displayName: 'Ikonky';
+    pluralName: 'ikonkies';
+    singularName: 'ikonky';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Ikonka: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::ikonky.ikonky'
+    > &
+      Schema.Attribute.Private;
+    Nazev: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiKalendarAkciKalendarAkci
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'kalendar_akcis';
+  info: {
+    displayName: 'Kalend\u00E1\u0159 akc\u00ED';
+    pluralName: 'kalendar-akcis';
+    singularName: 'kalendar-akci';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    Aktualita: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::aktuality.aktuality'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Datum: Schema.Attribute.DateTime;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::kalendar-akci.kalendar-akci'
+    > &
+      Schema.Attribute.Private;
+    Nazev: Schema.Attribute.String;
+    Poradatel: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiKategorieUredniDeskyKategorieUredniDesky
   extends Struct.CollectionTypeSchema {
   collectionName: 'kategorie_uredni_deskies';
@@ -1203,6 +1267,8 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::aktuality.aktuality': ApiAktualityAktuality;
       'api::formular.formular': ApiFormularFormular;
+      'api::ikonky.ikonky': ApiIkonkyIkonky;
+      'api::kalendar-akci.kalendar-akci': ApiKalendarAkciKalendarAkci;
       'api::kategorie-uredni-desky.kategorie-uredni-desky': ApiKategorieUredniDeskyKategorieUredniDesky;
       'api::lide.lide': ApiLideLide;
       'api::menu.menu': ApiMenuMenu;

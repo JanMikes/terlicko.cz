@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ikonkies",
+  "info": {
+    "singularName": "ikonky",
+    "pluralName": "ikonkies",
+    "displayName": "Ikonky"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nazev": {
+      "type": "string"
+    },
+    "Ikonka": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}

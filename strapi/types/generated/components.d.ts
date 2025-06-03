@@ -87,6 +87,7 @@ export interface ElementyKarta extends Struct.ComponentSchema {
 export interface ElementyKartaSArgumenty extends Struct.ComponentSchema {
   collectionName: 'components_elementy_karta_s_argumenties';
   info: {
+    description: '';
     displayName: 'Karta s argumenty';
     icon: 'filter';
   };
@@ -95,6 +96,26 @@ export interface ElementyKartaSArgumenty extends Struct.ComponentSchema {
     Obrazek: Schema.Attribute.Media<'images'>;
     Text: Schema.Attribute.RichText;
     Tlacitko: Schema.Attribute.Component<'elementy.tlacitko', false>;
+    Umisteni_nadpisu: Schema.Attribute.Enumeration<
+      ['pod obr\u00E1zkem', 'nad obr\u00E1zkem']
+    > &
+      Schema.Attribute.DefaultTo<'pod obr\u00E1zkem'>;
+  };
+}
+
+export interface ElementyKartaTipNaVylet extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_karta_tip_na_vylets';
+  info: {
+    displayName: 'Karta tip na v\u00FDlet';
+    icon: 'car';
+  };
+  attributes: {
+    Ikonky: Schema.Attribute.Relation<'oneToMany', 'api::ikonky.ikonky'>;
+    Nadpis: Schema.Attribute.String;
+    Obrazek: Schema.Attribute.Media<'images'>;
+    Stuzka: Schema.Attribute.String;
+    Text: Schema.Attribute.RichText;
+    Tlacitko: Schema.Attribute.Component<'elementy.tlacitko', true>;
     Umisteni_nadpisu: Schema.Attribute.Enumeration<
       ['pod obr\u00E1zkem', 'nad obr\u00E1zkem']
     > &
@@ -506,6 +527,17 @@ export interface KomponentyTextovePole extends Struct.ComponentSchema {
   };
 }
 
+export interface KomponentyTipyNaVylet extends Struct.ComponentSchema {
+  collectionName: 'components_komponenty_tipy_na_vylets';
+  info: {
+    displayName: 'Tipy na v\u00FDlet';
+    icon: 'car';
+  };
+  attributes: {
+    Karty: Schema.Attribute.Component<'elementy.karta-tip-na-vylet', true>;
+  };
+}
+
 export interface KomponentyTlacitka extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_tlacitkas';
   info: {
@@ -565,6 +597,7 @@ declare module '@strapi/strapi' {
       'elementy.film': ElementyFilm;
       'elementy.karta': ElementyKarta;
       'elementy.karta-s-argumenty': ElementyKartaSArgumenty;
+      'elementy.karta-tip-na-vylet': ElementyKartaTipNaVylet;
       'elementy.lekar': ElementyLekar;
       'elementy.obrazek-galerie': ElementyObrazekGalerie;
       'elementy.odkaz': ElementyOdkaz;
@@ -591,6 +624,7 @@ declare module '@strapi/strapi' {
       'komponenty.soubory-ke-stazeni': KomponentySouboryKeStazeni;
       'komponenty.terminy-akci': KomponentyTerminyAkci;
       'komponenty.textove-pole': KomponentyTextovePole;
+      'komponenty.tipy-na-vylet': KomponentyTipyNaVylet;
       'komponenty.tlacitka': KomponentyTlacitka;
       'komponenty.uredni-deska': KomponentyUredniDeska;
       'komponenty.vizitky': KomponentyVizitky;
