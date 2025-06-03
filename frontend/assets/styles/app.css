@@ -564,3 +564,9 @@ p img {
 .column-karta-s-argumenty {
     width: 246px;
 }
+
+.custon-badge-btn-full {
+    width: 100% !important;
+    border-radius: 0 !important;
+    padding: 6px 10px !important;
+}
