@@ -54,7 +54,7 @@ readonly final class ImageData
 
             $large = new ImageData(
                 name: $data['formats']['large']['name'],
-                caption: $data['formats']['large']['caption'],
+                caption: $data['caption'],
                 url: $data['formats']['large']['url'],
                 size: (int) $largeSize,
                 ext: trim($data['formats']['large']['ext'], '.'),
@@ -67,7 +67,7 @@ readonly final class ImageData
 
             $thumbnail = new ImageData(
                 name: $data['formats']['large']['name'],
-                caption: $data['formats']['large']['caption'],
+                caption: $data['caption'],
                 url: $data['formats']['large']['url'],
                 size: (int) $thumbnailSize,
                 ext: trim($data['formats']['large']['ext'], '.'),
