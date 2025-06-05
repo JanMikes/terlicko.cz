@@ -581,3 +581,27 @@ p img {
 .collapse-toggle:not(.collapsed) .bi-chevron-down {
     transform: rotate(180deg);
 }
+
+.card-ribbon {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 12px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    background: var(--bs-primary-text-emphasis);
+}
+
+.card-icons {
+    margin-bottom: -10px;
+}
+
+.card-icons img {
+    height: 25px;
+    width: auto;
+    display: inline-block;
+}
+
+.card-icons img + img {
+    margin-left: 5px;
+}
