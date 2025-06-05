@@ -37,8 +37,16 @@
                 {% if vizitka.OteviraciDoba %}
                     <hr class="hr-dotted my-4">
 
-                    <div class="h6 fw-bold mb-0">Ordinační hodiny</div>
-                    {{ vizitka.OteviraciDoba|nl2br }}
+                    {% set collapseId = 'oteviraciDoba-' ~ loop.index ~ '-' ~ random(1000000) %}
+                    <div class="h6 fw-bold mb-0 collapse-toggle d-flex align-items-center justify-content-between collapsed w-100" data-bs-toggle="collapse" data-bs-target="#{{ collapseId }}" aria-expanded="false" aria-controls="{{ collapseId }}" style="cursor: pointer;">
+                        <span>Ordinační hodiny</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </div>
+                    <div id="{{ collapseId }}" class="collapse">
+                        <div class="pt-2">
+                            {{ vizitka.OteviraciDoba|nl2br }}
+                        </div>
+                    </div>
                 {% endif %}
 
                 {% if vizitka.Odkaz %}

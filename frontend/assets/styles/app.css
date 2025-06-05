@@ -574,3 +574,10 @@ p img {
 .img-wrapper {
     max-width: 100%;
 }
+
+.collapse-toggle .bi-chevron-down {
+    transition: transform 0.2s ease;
+}
+.collapse-toggle:not(.collapsed) .bi-chevron-down {
+    transform: rotate(180deg);
+}
