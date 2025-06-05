@@ -7,3 +7,10 @@ import 'bootstrap';
 import './styles/app.css';
 
 import './bootstrap.js';
+
+import GLightbox from 'glightbox';
+import 'glightbox/dist/css/glightbox.css';
+
+document.addEventListener('DOMContentLoaded', () => {
+  const lightbox = GLightbox({ selector: '.glightbox' });
+});

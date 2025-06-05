@@ -31,6 +31,8 @@ readonly final class ImageData
         public string $url,
         public float $size,
         public string $ext,
+        public null|ImageData $large = null,
+        public null|ImageData $thumbnail = null,
     ) {
     }
 
@@ -43,12 +45,43 @@ readonly final class ImageData
         /** @var numeric-string $size */
         $size = $data['size'];
 
+        $large = null;
+        $thumbnail = null;
+
+        if (isset($data['formats']['large'])) {
+            /** @var numeric-string $largeSize */
+            $largeSize = $data['formats']['large']['size'];
+
+            $large = new ImageData(
+                name: $data['formats']['large']['name'],
+                caption: $data['formats']['large']['caption'],
+                url: $data['formats']['large']['url'],
+                size: (int) $largeSize,
+                ext: trim($data['formats']['large']['ext'], '.'),
+            );
+        }
+
+        if (isset($data['formats']['thumbnail'])) {
+            /** @var numeric-string $thumbnailSize */
+            $thumbnailSize = $data['formats']['thumbnail']['size'];
+
+            $thumbnail = new ImageData(
+                name: $data['formats']['large']['name'],
+                caption: $data['formats']['large']['caption'],
+                url: $data['formats']['large']['url'],
+                size: (int) $thumbnailSize,
+                ext: trim($data['formats']['large']['ext'], '.'),
+            );
+        }
+
         return new self(
-            $data['name'],
-            $data['caption'],
-            $data['url'],
-            (int) $size,
-            trim($data['ext'], '.'),
+            name: $data['name'],
+            caption: $data['caption'],
+            url: $data['url'],
+            size: (int) $size,
+            ext: trim($data['ext'], '.'),
+            large: $large,
+            thumbnail: $thumbnail,
         );
     }
 }

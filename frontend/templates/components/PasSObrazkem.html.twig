@@ -2,7 +2,7 @@
     <div class="row gx-0">
         {% if data.Umisteni_fotky == 'vlevo' %}
             <div class="col-sm-8">
-                <div class="py-3 pe-3">
+                <div class="pb-3 pe-3">
                     {% if data.Fotka %}
                         <img class="img-fluid" src="{{ data.Fotka.url }}" alt="">
                     {% endif %}
@@ -30,7 +30,7 @@
 
         {% if data.Umisteni_fotky == 'vpravo' %}
             <div class="col-sm-8">
-                <div class="py-3 ps-3">
+                <div class="pb-3 ps-3">
                     {% if data.Fotka %}
                         <img class="img-fluid" src="{{ data.Fotka.url }}" alt="">
                     {% endif %}
