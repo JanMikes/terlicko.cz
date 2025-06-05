@@ -562,7 +562,9 @@ p img {
 }
 
 .column-karta-s-argumenty {
-    width: 246px;
+    flex: 1 1 calc((100% - 6rem) / 5);
+    max-width: calc((100% - 6rem) / 5);
+    width: 100%;
 }
 
 .custon-badge-btn-full {
