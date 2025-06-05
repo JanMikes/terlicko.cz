@@ -66,11 +66,11 @@ readonly final class ImageData
             $thumbnailSize = $data['formats']['thumbnail']['size'];
 
             $thumbnail = new ImageData(
-                name: $data['formats']['large']['name'],
+                name: $data['formats']['thumbnail']['name'],
                 caption: $data['caption'],
-                url: $data['formats']['large']['url'],
+                url: $data['formats']['thumbnail']['url'],
                 size: (int) $thumbnailSize,
-                ext: trim($data['formats']['large']['ext'], '.'),
+                ext: trim($data['formats']['thumbnail']['ext'], '.'),
             );
         }
 
