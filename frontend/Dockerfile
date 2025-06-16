@@ -1,4 +1,4 @@
-FROM ghcr.io/thedevs-cz/php:8.3
+FROM ghcr.io/thedevs-cz/php:8.4
 
 ENV APP_ENV="prod" \
     APP_DEBUG=0 \
