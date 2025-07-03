@@ -3,7 +3,7 @@
         {% for obrazek in data.Obrazek %}
             <div class="col {{ loop.index > data.Pocet_zobrazenych ? 'd-none' }}" data-gallery-target="item">
                 <a href="{{ obrazek.Obrazek.large.url ? obrazek.Obrazek.large.url : obrazek.Obrazek.url }}" class="glightbox">
-                    <img class="img-fluid" src="{{ obrazek.Obrazek.thumbnail ? obrazek.Obrazek.thubmnail.url : obrazek.Obrazek.url }}" alt="{{ obrazek.Popis }}" title="{{ obrazek.Popis }}">
+                    <img class="img-fluid" src="{{ obrazek.Obrazek.thumbnail ? obrazek.Obrazek.thumbnail.url : obrazek.Obrazek.url }}" alt="{{ obrazek.Popis }}" title="{{ obrazek.Popis }}">
                 </a>
             </div>
         {% endfor %}

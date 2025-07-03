@@ -41,5 +41,12 @@ return [
     'bootstrap-icons/font/bootstrap-icons.min.css' => [
         'version' => '1.11.3',
         'type' => 'css',
-    ]
+    ],
+    'glightbox' => [
+        'version' => '3.3.1',
+    ],
+    'glightbox/dist/css/glightbox.css' => [
+        'version' => '3.3.1',
+        'type' => 'css',
+    ],
 ];
