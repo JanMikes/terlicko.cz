@@ -1,9 +1,9 @@
 <div data-controller="gallery" class="mt-2 mb-5">
-    <div class="row row-cols-6 g-3">
+    <div class="row g-3">
         {% for obrazek in data.Obrazek %}
             <div class="col {{ loop.index > data.Pocet_zobrazenych ? 'd-none' }}" data-gallery-target="item">
                 <a href="{{ obrazek.Obrazek.large.url ? obrazek.Obrazek.large.url : obrazek.Obrazek.url }}" class="glightbox">
-                    <img class="img-fluid" src="{{ obrazek.Obrazek.thumbnail ? obrazek.Obrazek.thumbnail.url : obrazek.Obrazek.url }}" alt="{{ obrazek.Popis }}" title="{{ obrazek.Popis }}">
+                    <img class="img-fluid" style="width: 100%;" src="{{ obrazek.Obrazek.thumbnail ? obrazek.Obrazek.thumbnail.url : obrazek.Obrazek.url }}" alt="{{ obrazek.Popis }}" title="{{ obrazek.Popis }}">
                 </a>
             </div>
         {% endfor %}
