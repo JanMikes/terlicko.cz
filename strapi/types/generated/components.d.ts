@@ -345,7 +345,13 @@ export interface KomponentyGalerie extends Struct.ComponentSchema {
   };
   attributes: {
     Obrazek: Schema.Attribute.Component<'elementy.obrazek-galerie', true> &
-      Schema.Attribute.Required;
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 3;
+        },
+        number
+      >;
     Pocet_zobrazenych: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<

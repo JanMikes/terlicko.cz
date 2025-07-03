@@ -8,11 +8,11 @@
   "options": {},
   "attributes": {
     "Obrazek": {
-      "displayName": "Obrázek galerie",
       "type": "component",
-      "repeatable": true,
       "component": "elementy.obrazek-galerie",
-      "required": true
+      "repeatable": true,
+      "required": true,
+      "min": 3
     },
     "Pocet_zobrazenych": {
       "type": "integer",
