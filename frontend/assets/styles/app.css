@@ -144,6 +144,7 @@ header {
 }
 
 .nav-link-instagram,
+.nav-link-youtube,
 .nav-link-facebook{
     display: inline-block;
     text-indent: -9999px;
@@ -157,13 +158,25 @@ header {
 }
 
 .nav-link-instagram {
-    background-image: url('../images/instagram.svg');
+    -webkit-mask: url('../images/instagram.svg') no-repeat center center;
+    mask: url('../images/instagram.svg') no-repeat center center;
+    background-color: var(--bs-primary-text-emphasis);
     width: 26px;
     height: 26px;
 }
 
+.nav-link-youtube {
+    -webkit-mask: url('../images/youtube.svg') no-repeat center center;
+    mask: url('../images/youtube.svg') no-repeat center center;
+    background-color: var(--bs-primary-text-emphasis);
+    width: 15px;
+    height: 26px;
+}
+
 .nav-link-facebook {
-    background-image: url('../images/facebook.svg');
+    -webkit-mask: url('../images/facebook.svg') no-repeat center center;
+    mask: url('../images/facebook.svg') no-repeat center center;
+    background-color: var(--bs-primary-text-emphasis);
     width: 15px;
     height: 26px;
 }
