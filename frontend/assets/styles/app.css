@@ -631,14 +631,14 @@ h1, .h1 { font-size: calc(1.1rem + 0.8vw); }
 h2, .h2 { font-size: calc(0.95rem + 0.7vw); }
 h3, .h3 { font-size: calc(0.9rem + 0.5vw); }
 h4, .h4 { font-size: calc(0.8rem + 0.3vw); }
-h5, .h5 { font-size: calc(0.7rem + 0.2vw); }
-h6, .h6 { font-size: calc(0.6rem + 0.1vw); }
+h5, .h5 { font-size: calc(0.72rem + 0.25vw); }
+h6, .h6 { font-size: calc(0.62rem + 0.18vw); }
 
 @media (min-width: 1200px) {
     h1, .h1 { font-size: 3rem; }
     h2, .h2 { font-size: 2.25rem; }
-    h3, .h3 { font-size: 1.85rem; }
-    h4, .h4 { font-size: 1.45rem; }
-    h5, .h5 { font-size: 1.05rem; }
-    h6, .h6 { font-size: 0.65rem; }
+    h3, .h3 { font-size: 1.8rem; }
+    h4, .h4 { font-size: 1.4rem; }
+    h5, .h5 { font-size: 1.1rem; }
+    h6, .h6 { font-size: 0.8rem; }
 }
