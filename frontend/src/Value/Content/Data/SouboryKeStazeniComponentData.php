@@ -31,6 +31,10 @@ readonly final class SouboryKeStazeniComponentData
             $pocetSloupcu = 2;
         }
 
+        if ($data['Pocet_sloupcu'] === 'Tři') {
+            $pocetSloupcu = 3;
+        }
+
         return new self(
             $pocetSloupcu,
             SouborData::createManyFromStrapiResponse($data['Soubor']),

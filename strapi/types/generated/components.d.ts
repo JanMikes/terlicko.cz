@@ -503,7 +503,7 @@ export interface KomponentySouboryKeStazeni extends Struct.ComponentSchema {
     icon: 'attachment';
   };
   attributes: {
-    Pocet_sloupcu: Schema.Attribute.Enumeration<['Jeden', 'Dva']> &
+    Pocet_sloupcu: Schema.Attribute.Enumeration<['Jeden', 'Dva', 'T\u0159i']> &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'Jeden'>;
     Soubor: Schema.Attribute.Component<'elementy.soubor', true> &

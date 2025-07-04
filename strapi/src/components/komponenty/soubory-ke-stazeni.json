@@ -9,17 +9,18 @@
   "attributes": {
     "Pocet_sloupcu": {
       "type": "enumeration",
+      "required": true,
+      "default": "Jeden",
       "enum": [
         "Jeden",
-        "Dva"
-      ],
-      "required": true,
-      "default": "Jeden"
+        "Dva",
+        "Tři"
+      ]
     },
     "Soubor": {
       "type": "component",
-      "repeatable": true,
       "component": "elementy.soubor",
+      "repeatable": true,
       "required": true
     }
   }
