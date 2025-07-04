@@ -627,18 +627,18 @@ p img {
 
 
 /* Responsive headings: fluid mobile, static desktop */
-h1, .h1 { font-size: calc(1.125rem + 1vw); }
-h2, .h2 { font-size: calc(1rem + 0.8vw); }
-h3, .h3 { font-size: calc(0.9rem + 0.6vw); }
-h4, .h4 { font-size: calc(0.8rem + 0.4vw); }
+h1, .h1 { font-size: calc(1.1rem + 0.8vw); }
+h2, .h2 { font-size: calc(0.95rem + 0.7vw); }
+h3, .h3 { font-size: calc(0.9rem + 0.5vw); }
+h4, .h4 { font-size: calc(0.8rem + 0.3vw); }
 h5, .h5 { font-size: calc(0.7rem + 0.2vw); }
 h6, .h6 { font-size: calc(0.6rem + 0.1vw); }
 
 @media (min-width: 1200px) {
     h1, .h1 { font-size: 3rem; }
-    h2, .h2 { font-size: 2.5rem; }
-    h3, .h3 { font-size: 2.15rem; }
-    h4, .h4 { font-size: 1.8rem; }
-    h5, .h5 { font-size: 1.45rem; }
-    h6, .h6 { font-size: 1.1rem; }
+    h2, .h2 { font-size: 2.25rem; }
+    h3, .h3 { font-size: 1.85rem; }
+    h4, .h4 { font-size: 1.45rem; }
+    h5, .h5 { font-size: 1.05rem; }
+    h6, .h6 { font-size: 0.65rem; }
 }
