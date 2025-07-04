@@ -151,6 +151,8 @@ header {
     overflow: hidden;
     background-repeat: no-repeat;
     background-position: center center;
+    width: 26px;
+    height: 26px;
 }
 
 .nav-item a {
@@ -161,24 +163,18 @@ header {
     -webkit-mask: url('../images/instagram.svg') no-repeat center center;
     mask: url('../images/instagram.svg') no-repeat center center;
     background-color: var(--bs-primary-text-emphasis);
-    width: 26px;
-    height: 26px;
 }
 
 .nav-link-youtube {
     -webkit-mask: url('../images/youtube.svg') no-repeat center center;
     mask: url('../images/youtube.svg') no-repeat center center;
     background-color: var(--bs-primary-text-emphasis);
-    width: 15px;
-    height: 26px;
 }
 
 .nav-link-facebook {
     -webkit-mask: url('../images/facebook.svg') no-repeat center center;
     mask: url('../images/facebook.svg') no-repeat center center;
     background-color: var(--bs-primary-text-emphasis);
-    width: 15px;
-    height: 26px;
 }
 
 .home-hero {
