@@ -1,6 +1,6 @@
 <div class="d-flex flex-wrap gap-4 mt-3 mb-5 align-items-stretch">
     {% for karta in data.Karty %}
-        <div class="column-karta-s-argumenty align-items-center justify-content-center flex-wrap text-center position-relative">
+        <div class="column-karta-s-argumenty column-tipy-na-vylet align-items-center justify-content-center flex-wrap text-center position-relative">
             {% if karta.Stuzka %}
                 <span class="card-ribbon rounded-3">{{ karta.Stuzka }}</span>
             {% endif %}
@@ -29,7 +29,7 @@
 
 
             {% if karta.Text %}
-                <p class="mb-0 mt-3 small">
+                <p class="mb-0 mt-3 px-2 pb-2 small">
                     {{ karta.Text|nl2br }}
                 </p>
             {% endif %}
