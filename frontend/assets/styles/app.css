@@ -570,11 +570,6 @@ p img {
     max-width: 100%;
 }
 
-.column-karta-s-argumenty {
-    flex: 1 1 calc((100% - 6rem) / 5);
-    width: 100%;
-}
-
 .custon-badge-btn-full {
     width: 100% !important;
     border-radius: 0 !important;
@@ -641,4 +636,15 @@ h5, .h5 { font-size: calc(0.72rem + 0.25vw); }
     h4, .h4 { font-size: 1.4rem; }
     h5, .h5 { font-size: 1.1rem; }
 /*    h6, .h6 { font-size: 0.8rem; } */
+}
+
+.column-karta-s-argumenty {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .column-karta-s-argumenty {
+        flex: 0 1 calc((100% - (1.5rem * 2)) / 3);
+    }
 }
