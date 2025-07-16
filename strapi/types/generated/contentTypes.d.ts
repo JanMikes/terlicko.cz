@@ -707,6 +707,7 @@ export interface ApiTagyTagy extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::tagy.tagy'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    rank: Schema.Attribute.Integer;
     slug: Schema.Attribute.UID<'Tag'> & Schema.Attribute.Required;
     Tag: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;

@@ -192,7 +192,7 @@ readonly final class StrapiContent
     public function getTagy(): array
     {
         /** @var array{data: array<TagDataArray>} $strapiResponse */
-        $strapiResponse = $this->strapiClient->getApiResource('tagies');
+        $strapiResponse = $this->strapiClient->getApiResource('tagies', sort: ['rank']);
 
         return TagData::createManyFromStrapiResponse($strapiResponse['data']);
     }

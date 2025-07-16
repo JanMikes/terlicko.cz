@@ -20,6 +20,9 @@
       "type": "uid",
       "targetField": "Tag",
       "required": true
+    },
+    "rank": {
+      "type": "integer"
     }
   }
 }

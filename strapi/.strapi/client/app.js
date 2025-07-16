@@ -4,6 +4,7 @@
  */
 import colorPicker from "@strapi/plugin-color-picker/strapi-admin";
 import usersPermissions from "@strapi/plugin-users-permissions/strapi-admin";
+import dragDropContentTypesStrapi5 from "@yunusemrejs/drag-drop-content-types-strapi5/strapi-admin";
 import { renderAdmin } from "@strapi/strapi/admin";
 
 import customisations from "../../src/admin/app.js";
@@ -14,5 +15,6 @@ renderAdmin(document.getElementById("strapi"), {
   plugins: {
     "color-picker": colorPicker,
     "users-permissions": usersPermissions,
+    "drag-drop-content-types-strapi5": dragDropContentTypesStrapi5,
   },
 });

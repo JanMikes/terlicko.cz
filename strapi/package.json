@@ -13,6 +13,7 @@
     "@strapi/plugin-color-picker": "^5.14.0",
     "@strapi/plugin-users-permissions": "^5.8.0",
     "@strapi/strapi": "^5.8.0",
+    "@yunusemrejs/drag-drop-content-types-strapi5": "^1.0.11",
     "pg": "^8.6.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
