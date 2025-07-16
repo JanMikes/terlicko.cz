@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_komponenty_timelines",
+  "info": {
+    "displayName": "Timeline",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "Polozky": {
+      "type": "component",
+      "component": "elementy.timeline-polozka",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

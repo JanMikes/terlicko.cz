@@ -659,6 +659,7 @@ export interface ApiSekceSekce extends Struct.CollectionTypeSchema {
         'komponenty.pas-s-obrazkem',
         'komponenty.pas-karet-s-argumenty',
         'komponenty.tipy-na-vylet',
+        'komponenty.timeline',
       ]
     > &
       Schema.Attribute.Required &

@@ -257,6 +257,20 @@ export interface ElementyTerminAkce extends Struct.ComponentSchema {
   };
 }
 
+export interface ElementyTimelinePolozka extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_timeline_polozkas';
+  info: {
+    displayName: 'Timeline - polo\u017Eka';
+    icon: 'bulletList';
+  };
+  attributes: {
+    Fotka: Schema.Attribute.Media<'images'>;
+    Nadpis: Schema.Attribute.String;
+    Text: Schema.Attribute.RichText;
+    Tlacitko: Schema.Attribute.Component<'elementy.tlacitko', false>;
+  };
+}
+
 export interface ElementyTlacitko extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_tlacitkos';
   info: {
@@ -534,6 +548,17 @@ export interface KomponentyTextovePole extends Struct.ComponentSchema {
   };
 }
 
+export interface KomponentyTimeline extends Struct.ComponentSchema {
+  collectionName: 'components_komponenty_timelines';
+  info: {
+    displayName: 'Timeline';
+    icon: 'bulletList';
+  };
+  attributes: {
+    Polozky: Schema.Attribute.Component<'elementy.timeline-polozka', true>;
+  };
+}
+
 export interface KomponentyTipyNaVylet extends Struct.ComponentSchema {
   collectionName: 'components_komponenty_tipy_na_vylets';
   info: {
@@ -613,6 +638,7 @@ declare module '@strapi/strapi' {
       'elementy.soubor': ElementySoubor;
       'elementy.telefon': ElementyTelefon;
       'elementy.termin-akce': ElementyTerminAkce;
+      'elementy.timeline-polozka': ElementyTimelinePolozka;
       'elementy.tlacitko': ElementyTlacitko;
       'elementy.vizitka': ElementyVizitka;
       'elementy.vyber-z-moznosti': ElementyVyberZMoznosti;
@@ -631,6 +657,7 @@ declare module '@strapi/strapi' {
       'komponenty.soubory-ke-stazeni': KomponentySouboryKeStazeni;
       'komponenty.terminy-akci': KomponentyTerminyAkci;
       'komponenty.textove-pole': KomponentyTextovePole;
+      'komponenty.timeline': KomponentyTimeline;
       'komponenty.tipy-na-vylet': KomponentyTipyNaVylet;
       'komponenty.tlacitka': KomponentyTlacitka;
       'komponenty.uredni-deska': KomponentyUredniDeska;

@@ -14,9 +14,9 @@
   "attributes": {
     "Nazev": {
       "type": "string",
+      "maxLength": 80,
       "required": true,
-      "unique": true,
-      "maxLength": 80
+      "unique": true
     },
     "slug": {
       "type": "uid",
@@ -25,6 +25,11 @@
     },
     "Meta_description": {
       "type": "string"
+    },
+    "parent": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::sekce.sekce"
     },
     "Komponenty": {
       "type": "dynamiczone",
@@ -47,15 +52,11 @@
         "komponenty.karty",
         "komponenty.pas-s-obrazkem",
         "komponenty.pas-karet-s-argumenty",
-        "komponenty.tipy-na-vylet"
+        "komponenty.tipy-na-vylet",
+        "komponenty.timeline"
       ],
       "required": true,
       "min": 1
-    },
-    "parent": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::sekce.sekce"
     }
   }
 }
