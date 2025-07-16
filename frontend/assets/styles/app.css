@@ -136,7 +136,7 @@ body {
     --bs-primary-text-emphasis: #8CADD5;
     --bs-link-color-rgb: var(--bs-primary-rgb);
     --bs-breadcrumb-font-size: 12px;
-    padding-top: 113px;
+    padding-top: 110px;
 }
 
 .navbar-toggler {
