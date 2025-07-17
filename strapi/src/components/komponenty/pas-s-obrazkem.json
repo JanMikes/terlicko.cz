@@ -18,20 +18,20 @@
         "images"
       ]
     },
-    "Umisteni_fotky": {
-      "type": "enumeration",
-      "default": "vlevo",
-      "enum": [
-        "vlevo",
-        "vpravo"
-      ]
-    },
     "Zarovnani": {
       "type": "enumeration",
       "default": "Nahoru",
       "enum": [
         "Nahoru",
         "Na střed"
+      ]
+    },
+    "Umisteni_fotky": {
+      "type": "enumeration",
+      "default": "vlevo",
+      "enum": [
+        "vlevo",
+        "vpravo"
       ]
     },
     "Text": {
