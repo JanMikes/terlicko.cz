@@ -17,11 +17,11 @@
     },
     "Umisteni_fotky": {
       "type": "enumeration",
+      "default": "vlevo",
       "enum": [
         "vlevo",
         "vpravo"
-      ],
-      "default": "vlevo"
+      ]
     },
     "Nadpis": {
       "type": "string"
@@ -29,10 +29,18 @@
     "Text": {
       "type": "richtext"
     },
+    "Zarovnani": {
+      "type": "enumeration",
+      "default": "Nahoru",
+      "enum": [
+        "Nahoru",
+        "Na střed"
+      ]
+    },
     "Tlacitko": {
       "type": "component",
-      "repeatable": true,
-      "component": "elementy.tlacitko"
+      "component": "elementy.tlacitko",
+      "repeatable": true
     },
     "Pozadi": {
       "type": "media",
@@ -44,8 +52,8 @@
     },
     "Pozadi_barva": {
       "type": "customField",
-      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-      "customField": "plugin::color-picker.color"
+      "customField": "plugin::color-picker.color",
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
     }
   }
 }

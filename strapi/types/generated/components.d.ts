@@ -451,6 +451,8 @@ export interface KomponentyPasSObrazkem extends Struct.ComponentSchema {
     Tlacitko: Schema.Attribute.Component<'elementy.tlacitko', true>;
     Umisteni_fotky: Schema.Attribute.Enumeration<['vlevo', 'vpravo']> &
       Schema.Attribute.DefaultTo<'vlevo'>;
+    Zarovnani: Schema.Attribute.Enumeration<['Nahoru', 'Na st\u0159ed']> &
+      Schema.Attribute.DefaultTo<'Nahoru'>;
   };
 }
 

@@ -1,5 +1,5 @@
 <div class="mt-2 mb-5" style="{% if data.Pozadi %}background: url('{{ data.Pozadi.url }}') center center no-repeat;background-size: contain;{% endif %}{% if data.Pozadi_barva %}background-color: {{ data.Pozadi_barva }};{% endif %}">
-    <div class="row gx-0 align-items-center">
+    <div class="row gx-0 {{ data.Zarovnani == 'Na střed' ? 'align-items-center' }}">
         {% if data.Umisteni_fotky == 'vlevo' %}
             <div class="col-sm-8">
                 <div class="pb-3 pe-3">

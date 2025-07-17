@@ -20,19 +20,19 @@
     },
     "Umisteni_nadpisu": {
       "type": "enumeration",
+      "default": "pod obrázkem",
       "enum": [
         "pod obrázkem",
         "nad obrázkem"
-      ],
-      "default": "pod obrázkem"
+      ]
     },
     "Text": {
       "type": "richtext"
     },
     "Tlacitko": {
       "type": "component",
-      "repeatable": false,
-      "component": "elementy.tlacitko"
+      "component": "elementy.tlacitko",
+      "repeatable": false
     }
   }
 }
