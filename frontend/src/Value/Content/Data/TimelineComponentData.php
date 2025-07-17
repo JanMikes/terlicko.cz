@@ -6,21 +6,19 @@ namespace Terlicko\Web\Value\Content\Data;
 
 /**
  * @phpstan-import-type TimelineDataArray from TimelineData
- * @phpstan-type TimelineDataArray array{
- *     Polozky: <TimelineDataArray>
- *  }
+ * @phpstan-type TimelineComponentDataArray array{
+ *     Polozky: array<TimelineDataArray>,
+ * }
  */
 readonly final class TimelineComponentData
 {
-    /** @use CanCreateManyFromStrapiResponse<TimelineDataArray> */
-    use CanCreateManyFromStrapiResponse;
-
     public function __construct(
+        /** @var array<TimelineData> */
         public array $Polozky,
     ) {}
 
     /**
-     * @param TimelineDataArray $data
+     * @param TimelineComponentDataArray $data
      */
     public static function createFromStrapiResponse(array $data): self
     {
