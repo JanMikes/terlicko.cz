@@ -674,11 +674,10 @@ h5, .h5 { font-size: calc(0.72rem + 0.25vw); }
     color: var(--bs-primary);
     font-size: 18px;
     font-weight: bold;
-    position: relative;
 }
 
-.timeline-title i {
-    margin-left: 10px;
+.timeline-wrapper {
+    position: relative;
 }
 
 .timeline-title::before {
@@ -690,8 +689,9 @@ h5, .h5 { font-size: calc(0.72rem + 0.25vw); }
     border: 4px solid var(--bs-primary);
     background: var(--bs-primary);
     border-radius: 50%;
-    top: 10px;
-    left: -45px;
+    top: 50%;
+    margin-top: -10px;
+    left: -55px;
 }
 
 .timeline-component {
@@ -701,5 +701,9 @@ h5, .h5 { font-size: calc(0.72rem + 0.25vw); }
     padding-top: 22px;
     padding-bottom: 1px;
     */
-    padding-left: 35px;
+    padding-left: 55px;
+}
+
+.timeline-wrapper img {
+    max-width: 200px;
 }

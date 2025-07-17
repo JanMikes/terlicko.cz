@@ -1,24 +1,26 @@
 <div class="margin-component timeline-component">
     {% for timeline in data.Polozky %}
-        <div class="timeline-wrapper">
-            {% set collapseId = 'timeline-' ~ loop.index ~ '-' ~ random(1000000) %}
-            <div class="mb-4">
-                <div class="timeline-title mb-2 collapse-toggle d-inline-flex align-items-center justify-content-between collapsed" data-bs-toggle="collapse" data-bs-target="#{{ collapseId }}" aria-expanded="false" aria-controls="{{ collapseId }}" style="cursor: pointer;">
+        <div class="timeline-wrapper d-flex flex-wrap w-100 position-relative {{ not loop.first ? 'mt-3' }}">
+            {% if timeline.Fotka %}
+                <img src="{{ timeline.Fotka.url }}" alt="{{ timeline.Nadpis }}" class="img-fluid me-4">
+            {% endif %}
+
+            <div>
+                <div class="timeline-title mb-2 d-inline-flex align-items-center justify-content-between">
                     {{ timeline.Nadpis }}
-                    <i class="bi bi-chevron-down"></i>
                 </div>
 
-                <div id="{{ collapseId }}" class="collapse">
-                    <div class="pt-2">
+                {% if timeline.Text %}
+                    <div>
                         {{ timeline.Text|markdown_to_html }}
-
-                        {% if timeline.Fotka %}
-                            <p class="mt-3 mb-0">
-                                <img src="{{ timeline.Fotka.url }}" alt="{{ timeline.Nadpis }}" class="img-fluid">
-                            </p>
-                        {% endif %}
                     </div>
-                </div>
+                {% endif %}
+
+                {% if timeline.Tlacitko %}
+                    <span class="d-inline-block my-2 {{ timeline.Tlacitko.Styl == 'Styl 1' ? 'button-style-1' : 'button-style-2' }}">
+                        <twig:Odkaz data="{{ timeline.Tlacitko.Odkaz }}">{{ timeline.Tlacitko.Text }}{{ timeline.Tlacitko.Styl == 'Styl 2' ? ' &raquo;' }}</twig:Odkaz>
+                    </span>
+                {% endif %}
             </div>
         </div>
 
