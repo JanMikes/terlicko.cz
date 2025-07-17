@@ -668,3 +668,38 @@ h5, .h5 { font-size: calc(0.72rem + 0.25vw); }
         flex: 0 1 calc((100% - (1.5rem * 2)) / 3);
     }
 }
+
+
+.timeline-title {
+    color: var(--bs-primary);
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+}
+
+.timeline-title i {
+    margin-left: 10px;
+}
+
+.timeline-title::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 4px solid var(--bs-primary);
+    background: var(--bs-primary);
+    border-radius: 50%;
+    top: 10px;
+    left: -45px;
+}
+
+.timeline-component {
+    /*
+    border-left: 1px solid #999;
+    margin-left: 10px;
+    padding-top: 22px;
+    padding-bottom: 1px;
+    */
+    padding-left: 35px;
+}
