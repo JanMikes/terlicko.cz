@@ -7,6 +7,9 @@
   },
   "options": {},
   "attributes": {
+    "Nadpis": {
+      "type": "string"
+    },
     "Fotka": {
       "type": "media",
       "multiple": false,
@@ -23,12 +26,6 @@
         "vpravo"
       ]
     },
-    "Nadpis": {
-      "type": "string"
-    },
-    "Text": {
-      "type": "richtext"
-    },
     "Zarovnani": {
       "type": "enumeration",
       "default": "Nahoru",
@@ -36,6 +33,9 @@
         "Nahoru",
         "Na střed"
       ]
+    },
+    "Text": {
+      "type": "richtext"
     },
     "Tlacitko": {
       "type": "component",
