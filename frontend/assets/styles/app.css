@@ -707,3 +707,7 @@ h5, .h5 { font-size: calc(0.72rem + 0.25vw); }
 .timeline-wrapper img {
     max-width: 200px;
 }
+
+.timeline-content {
+    max-width: 700px;
+}

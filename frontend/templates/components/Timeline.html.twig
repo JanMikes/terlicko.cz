@@ -1,11 +1,11 @@
 <div class="margin-component timeline-component">
     {% for timeline in data.Polozky %}
-        <div class="timeline-wrapper d-flex w-100 position-relative {{ not loop.first ? 'mt-3' }}">
+        <div class="timeline-wrapper d-flex w-100 position-relative {{ not loop.first ? 'mt-4' }}">
             {% if timeline.Fotka %}
                 <img src="{{ timeline.Fotka.url }}" alt="{{ timeline.Nadpis }}" class="img-fluid me-4">
             {% endif %}
 
-            <div>
+            <div class="timeline-content">
                 <div class="timeline-title mb-2 d-inline-flex align-items-center justify-content-between">
                     {{ timeline.Nadpis }}
                 </div>
