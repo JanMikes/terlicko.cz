@@ -634,10 +634,6 @@ p img {
     margin-bottom: 3rem !important;
 }
 
-.column-tipy-na-vylet {
-    background: #efefef;
-}
-
 
 /* Responsive headings: fluid mobile, static desktop */
 h1, .h1 { font-size: calc(1.1rem + 0.8vw); }
@@ -657,12 +653,18 @@ h5, .h5 { font-size: calc(0.72rem + 0.25vw); }
 }
 
 .column-karta-s-argumenty {
+    flex: 1 1 calc((100% - 6rem) / 5);
+    width: 100%;
+}
+
+.column-tipy-na-vylet {
+    background: #efefef;
     flex: 0 0 100%;
     max-width: 100%;
 }
 
 @media (min-width: 768px) {
-    .column-karta-s-argumenty {
+    .column-tipy-na-vylet {
         flex: 0 1 calc((100% - (1.5rem * 2)) / 3);
     }
 }
