@@ -197,12 +197,12 @@ header.bg-dark {
 
 .home-hero {
     background: url('../images/terlicko-1.png') center top no-repeat #1E2648;
-    height: 963px;
+    height: 733px;
 }
 
 .home-hero-gradient {
     background: url('../images/home-hero-gradient.png') center top no-repeat;
-    height: 781px;
+    height: 551px;
 }
 
 .home-quick-links {
