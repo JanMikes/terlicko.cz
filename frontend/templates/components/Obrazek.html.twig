@@ -1,13 +1,15 @@
 <div class="row gx-3 mt-2 mb-5">
     {% for obrazek in data.Obrazek %}
-        <div class="col d-flex justify-content-center align-items-center">
-            {% if obrazek.Odkaz %}
-                <twig:Odkaz data="{{ obrazek.Odkaz }}">
+        {% if obrazek.Obrazek %}
+            <div class="col d-flex justify-content-center align-items-center">
+                {% if obrazek.Odkaz %}
+                    <twig:Odkaz data="{{ obrazek.Odkaz }}">
+                        <img class="img-fluid" src="{{ obrazek.Obrazek.url }}">
+                    </twig:Odkaz>
+                {% else %}
                     <img class="img-fluid" src="{{ obrazek.Obrazek.url }}">
-                </twig:Odkaz>
-            {% else %}
-                <img class="img-fluid" src="{{ obrazek.Obrazek.url }}">
-            {% endif %}
-        </div>
+                {% endif %}
+            </div>
+        {% endif %}
     {% endfor %}
 </div>

@@ -18,7 +18,7 @@ readonly final class ObrazekData
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(
-        public ImageData $Obrazek,
+        public null|ImageData $Obrazek,
         public null|OdkazData $Odkaz,
     ) {
     }
