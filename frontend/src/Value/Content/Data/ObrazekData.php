@@ -8,7 +8,7 @@ namespace Terlicko\Web\Value\Content\Data;
  * @phpstan-import-type ImageDataArray from ImageData
  * @phpstan-import-type OdkazDataArray from OdkazData
  * @phpstan-type ObrazekDataArray array{
- *     Obrazek: ImageDataArray,
+ *     Obrazek: null|ImageDataArray,
  *     Odkaz: null|OdkazDataArray,
  * }
  */
