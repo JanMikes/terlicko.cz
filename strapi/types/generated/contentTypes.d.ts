@@ -467,7 +467,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     singularName: 'homepage';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
