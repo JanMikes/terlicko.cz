@@ -35,9 +35,11 @@
             {% endif %}
 
             {% if karta.Tlacitko %}
-                <span class="mt-3 d-inline-block {{ karta.Tlacitko.Styl == 'Styl 1' ? 'button-style-1' : 'button-style-2' }}">
-                    <twig:Odkaz data="{{ karta.Tlacitko.Odkaz }}">{{ karta.Tlacitko.Text }}{{ karta.Tlacitko.Styl == 'Styl 2' ? ' &raquo;' }}</twig:Odkaz>
-                </span>
+                <p class="mt-3">
+                    <span class="d-inline-block {{ karta.Tlacitko.Styl == 'Styl 1' ? 'button-style-1' : 'button-style-2' }}">
+                        <twig:Odkaz data="{{ karta.Tlacitko.Odkaz }}">{{ karta.Tlacitko.Text }}{{ karta.Tlacitko.Styl == 'Styl 2' ? ' &raquo;' }}</twig:Odkaz>
+                    </span>
+                </p>
             {% endif %}
         </div>
     {% endfor %}
