@@ -7,7 +7,7 @@ namespace Terlicko\Web\Value\Content\Data;
 /**
  * @phpstan-import-type ImageDataArray from ImageData
  * @phpstan-type ObrazekGalerieDataArray array{
- *     Obrazek: ImageDataArray,
+ *     Obrazek: null|ImageDataArray,
  *     Popis: null|string,
  * }
  */
@@ -17,7 +17,7 @@ readonly final class ObrazekGalerieData
     use CanCreateManyFromStrapiResponse;
 
     public function __construct(
-        public ImageData $Obrazek,
+        public null|ImageData $Obrazek,
         public null|string $Popis,
     ) {
     }
@@ -28,7 +28,7 @@ readonly final class ObrazekGalerieData
     public static function createFromStrapiResponse(array $data): self
     {
         return new self(
-            ImageData::createFromStrapiResponse($data['Obrazek']),
+            $data['Obrazek'] !== null ? ImageData::createFromStrapiResponse($data['Obrazek']) : null,
             $data['Popis'],
         );
     }
