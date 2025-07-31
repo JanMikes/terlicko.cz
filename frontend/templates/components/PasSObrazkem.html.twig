@@ -21,13 +21,15 @@
                 </p>
             {% endif %}
 
-            {% for tlacitko in data.Tlacitka %}
+            {% if data.Tlacitka %}
                 <p class="my-2">
-                    <span class="d-inline-block {{ tlacitko.Styl == 'Styl 1' ? 'button-style-1' : 'button-style-2' }} {{ loop.first != true ? 'ms-4' }}">
-                        <twig:Odkaz data="{{ tlacitko.Odkaz }}">{{ tlacitko.Text }}{{ tlacitko.Styl == 'Styl 2' ? ' &raquo;' }}</twig:Odkaz>
-                    </span>
+                    {% for tlacitko in data.Tlacitka %}
+                        <span class="d-inline-block mt-2 {{ tlacitko.Styl == 'Styl 1' ? 'button-style-1' : 'button-style-2' }} {{ loop.last != true ? 'me-4' }}">
+                            <twig:Odkaz data="{{ tlacitko.Odkaz }}">{{ tlacitko.Text }}{{ tlacitko.Styl == 'Styl 2' ? ' &raquo;' }}</twig:Odkaz>
+                        </span>
+                    {% endfor %}
                 </p>
-            {% endfor %}
+            {% endif %}
         </div>
 
         {% if data.Umisteni_fotky == 'vpravo' %}
