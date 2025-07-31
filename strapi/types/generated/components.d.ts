@@ -66,6 +66,35 @@ export interface ElementyFilm extends Struct.ComponentSchema {
   };
 }
 
+export interface ElementyHomepageKarta extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_homepage_kartas';
+  info: {
+    displayName: 'Homepage - Karta';
+    icon: 'grid';
+  };
+  attributes: {
+    Nadpis: Schema.Attribute.String;
+    Obrazek: Schema.Attribute.Media<'images'>;
+    Obrazek_hover: Schema.Attribute.Media<'images'>;
+    Odkaz: Schema.Attribute.Component<'elementy.odkaz', false>;
+    Text: Schema.Attribute.String;
+  };
+}
+
+export interface ElementyHomepageRychlyOdkaz extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_homepage_rychly_odkazs';
+  info: {
+    displayName: 'Homepage - Rychl\u00FD odkaz';
+    icon: 'exit';
+  };
+  attributes: {
+    Nadpis: Schema.Attribute.String;
+    Obrazek: Schema.Attribute.Media<'images'>;
+    Obrazek_hover: Schema.Attribute.Media<'images'>;
+    Odkaz: Schema.Attribute.Component<'elementy.odkaz', false>;
+  };
+}
+
 export interface ElementyKarta extends Struct.ComponentSchema {
   collectionName: 'components_elementy_kartas';
   info: {
@@ -213,6 +242,21 @@ export interface ElementyPoleFormulareSMoznostmi
     Typ: Schema.Attribute.Enumeration<['Select', 'Checkbox list', 'Radio']> &
       Schema.Attribute.Required;
     Vyplnuje_urad: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+  };
+}
+
+export interface ElementySlide extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_slides';
+  info: {
+    displayName: 'Slide';
+    icon: 'landscape';
+  };
+  attributes: {
+    Nadpis: Schema.Attribute.String;
+    Obrazek: Schema.Attribute.Media<'images'>;
+    Text: Schema.Attribute.RichText;
+    Titulek: Schema.Attribute.String;
+    Tlacitko: Schema.Attribute.Component<'elementy.tlacitko', false>;
   };
 }
 
@@ -629,6 +673,8 @@ declare module '@strapi/strapi' {
       'elementy.datum': ElementyDatum;
       'elementy.dlazdice': ElementyDlazdice;
       'elementy.film': ElementyFilm;
+      'elementy.homepage-karta': ElementyHomepageKarta;
+      'elementy.homepage-rychly-odkaz': ElementyHomepageRychlyOdkaz;
       'elementy.karta': ElementyKarta;
       'elementy.karta-s-argumenty': ElementyKartaSArgumenty;
       'elementy.karta-tip-na-vylet': ElementyKartaTipNaVylet;
@@ -637,6 +683,7 @@ declare module '@strapi/strapi' {
       'elementy.odkaz': ElementyOdkaz;
       'elementy.pole-formulare': ElementyPoleFormulare;
       'elementy.pole-formulare-s-moznostmi': ElementyPoleFormulareSMoznostmi;
+      'elementy.slide': ElementySlide;
       'elementy.soubor': ElementySoubor;
       'elementy.telefon': ElementyTelefon;
       'elementy.termin-akce': ElementyTerminAkce;

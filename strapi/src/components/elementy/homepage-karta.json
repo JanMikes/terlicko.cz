@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_elementy_homepage_kartas",
+  "info": {
+    "displayName": "Homepage - Karta",
+    "icon": "grid"
+  },
+  "options": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string"
+    },
+    "Text": {
+      "type": "string"
+    },
+    "Obrazek": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Obrazek_hover": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Odkaz": {
+      "type": "component",
+      "component": "elementy.odkaz",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

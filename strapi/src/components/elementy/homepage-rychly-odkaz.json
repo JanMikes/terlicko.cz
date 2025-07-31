@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_elementy_homepage_rychly_odkazs",
+  "info": {
+    "displayName": "Homepage - Rychlý odkaz",
+    "icon": "exit"
+  },
+  "options": {},
+  "attributes": {
+    "Nadpis": {
+      "type": "string"
+    },
+    "Obrazek": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Obrazek_hover": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Odkaz": {
+      "type": "component",
+      "component": "elementy.odkaz",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_elementy_slides",
+  "info": {
+    "displayName": "Slide",
+    "icon": "landscape"
+  },
+  "options": {},
+  "attributes": {
+    "Titulek": {
+      "type": "string"
+    },
+    "Nadpis": {
+      "type": "string"
+    },
+    "Text": {
+      "type": "richtext"
+    },
+    "Obrazek": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Tlacitko": {
+      "type": "component",
+      "component": "elementy.tlacitko",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}
