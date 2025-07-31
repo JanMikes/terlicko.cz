@@ -29,7 +29,7 @@ readonly final class ObrazekData
     public static function createFromStrapiResponse(array $data): self
     {
         return new self(
-            ImageData::createFromStrapiResponse($data['Obrazek']),
+            $data['Obrazek'] !== null ? ImageData::createFromStrapiResponse($data['Obrazek']) : null,
             $data['Odkaz'] !== null ? OdkazData::createFromStrapiResponse($data['Odkaz']) : null,
         );
     }
