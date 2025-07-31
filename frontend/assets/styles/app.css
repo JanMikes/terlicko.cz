@@ -409,16 +409,24 @@ hr.hr {
     border-style: dashed !important;
 }
 
-.button-style-1 a {
+.button-style-1 a, .btn.button-style-1 {
     text-decoration: none;
-    background: #1D5EFF;
-    padding: 9px 27px;
-    border-radius: 6px;
+    background: var(--bs-secondary);
+    padding: 9px 15px;
+    border-radius: 10px 0;
     color: #fff;
+    border: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.button-style-1 a:hover, .btn.button-style-1:hover {
+    background: #c5761f;
 }
 
 .button-style-2 a {
     color: var(--bs-secondary);
+    font-size: 18px;
 }
 
 .column-dlazdice {
