@@ -5,12 +5,20 @@ declare(strict_types=1);
 namespace Terlicko\Web\Services\Strapi;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 readonly final class StrapiApiClient
 {
     public function __construct(
         private HttpClientInterface $strapiClient,
+        private TagAwareCacheInterface $cache,
     ) {}
+
+    public function clearCache(): void
+    {
+        $this->cache->invalidateTags(['strapi']);
+    }
 
 
     /**
@@ -47,10 +55,17 @@ readonly final class StrapiApiClient
             $query['filters'] = $filters;
         }
 
-        $response = $this->strapiClient->request('GET', '/api/' . $resourceName, [
-            'query' => $query
-        ]);
+        $key = $resourceName . '?' . http_build_query($query);
 
-        return $response->toArray();
+        return $this->cache->get($key, function(ItemInterface $item) use ($resourceName, $query): array {
+            $item->tag('strapi');
+            $item->expiresAfter(3600 * 24); // 24 Hours
+
+            $response = $this->strapiClient->request('GET', '/api/' . $resourceName, [
+                'query' => $query
+            ]);
+
+            return $response->toArray();
+        });
     }
 }

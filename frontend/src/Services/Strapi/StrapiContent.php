@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Terlicko\Web\Services\Strapi;
 
+use DateTimeImmutable;
 use Psr\Clock\ClockInterface;
 use Terlicko\Web\Value\Content\Data\AktualitaData;
+use Terlicko\Web\Value\Content\Data\KalendarAkciData;
 use Terlicko\Web\Value\Content\Data\KategorieUredniDesky;
 use Terlicko\Web\Value\Content\Data\KategorieUredniDeskyData;
 use Terlicko\Web\Value\Content\Data\MenuData;
 use Terlicko\Web\Value\Content\Data\SekceData;
 use Terlicko\Web\Value\Content\Data\UredniDeskaData;
-use Terlicko\Web\Value\Content\Exception\InvalidKategorie;
 use Terlicko\Web\Value\Content\Exception\NotFound;
 use Terlicko\Web\Value\Content\Data\ClovekData;
 use Terlicko\Web\Value\Content\Data\DlazdiceData;
@@ -30,6 +31,7 @@ use Terlicko\Web\Value\Content\Data\TagData;
  * @phpstan-import-type TagDataArray from TagData
  * @phpstan-import-type UredniDeskaDataArray from UredniDeskaData
  * @phpstan-import-type KategorieUredniDeskyDataArray from KategorieUredniDeskyData
+ * @phpstan-import-type KalendarAkciDataArray from KalendarAkciData
  */
 readonly final class StrapiContent
 {
@@ -219,6 +221,56 @@ readonly final class StrapiContent
 
         return SekceData::createFromStrapiResponse(
             $strapiResponse['data'][0] ?? throw new NotFound
+        );
+    }
+
+    /**
+     * @return array<KalendarAkciData>
+     */
+    public function getRecentKalendarAkciData(): array
+    {
+        /** @var array{data: array<KalendarAkciDataArray>} $strapiResponse */
+        $strapiResponse = $this->strapiClient->getApiResource('kalendar-akcis',
+            filters: [
+                'Datum' => [
+                    '$gte' => $this->clock->now()->format('Y-m-d'),
+                ],
+            ],
+            pagination: [
+                'limit' => 6,
+                'start' => 0,
+            ],
+        );
+
+        return KalendarAkciData::createManyFromStrapiResponse(
+            $strapiResponse['data']
+        );
+    }
+
+    /**
+     * @return array<KalendarAkciData>
+     */
+    public function getKalendarAkciData(int $year, int $month): array
+    {
+        $firstDayOfMonth = (new DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month)))
+            ->format('Y-m-d');
+
+        $lastDayOfMonth = (new DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month)))
+            ->modify('last day of this month')
+            ->format('Y-m-d');
+
+        /** @var array{data: array<KalendarAkciDataArray>} $strapiResponse */
+        $strapiResponse = $this->strapiClient->getApiResource('kalendar-akcis',
+            filters: [
+                'Datum' => [
+                    '$gte' => $firstDayOfMonth,
+                    '$lte' => $lastDayOfMonth,
+                ],
+            ],
+        );
+
+        return KalendarAkciData::createManyFromStrapiResponse(
+            $strapiResponse['data']
         );
     }
 }
