@@ -284,7 +284,7 @@ readonly final class StrapiContent
     {
         try {
             /** @var array{data: HomepageDataArray} $strapiResponse */
-            $strapiResponse = $this->strapiClient->getApiResource('homepage');
+            $strapiResponse = $this->strapiClient->getApiResource('homepage', populateLevel: 6);
         } catch (ClientException $exception) {
             if ($exception->getResponse()->getStatusCode() === 404) {
                 return null;
@@ -302,7 +302,7 @@ readonly final class StrapiContent
     {
         try {
             /** @var array{data: FooterDataArray} $strapiResponse */
-            $strapiResponse = $this->strapiClient->getApiResource('paticka');
+            $strapiResponse = $this->strapiClient->getApiResource('paticka', populateLevel: 7);
         } catch (ClientException $exception) {
             if ($exception->getResponse()->getStatusCode() === 404) {
                 return null;

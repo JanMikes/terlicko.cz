@@ -1,3 +1,9 @@
-<a class="{{ attributes.render('class') }}" href="{{ this.link }}">
-    {% block content %}{% endblock %}
-</a>
+{% if computed.link %}
+    <a class="{{ attributes.render('class') }}" href="{{ computed.link }}">
+{% endif %}
+
+        {% block content %}{% endblock %}
+
+{% if computed.link %}
+    </a>
+{% endif %}

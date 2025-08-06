@@ -16,7 +16,7 @@ readonly final class Footer
     ) {
     }
 
-    public function getItems(): null|FooterData
+    public function getFooter(): null|FooterData
     {
         return $this->content->getFooterData();
     }

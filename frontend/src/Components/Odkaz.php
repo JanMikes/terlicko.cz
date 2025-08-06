@@ -18,9 +18,11 @@ final class Odkaz
     ) {
     }
 
-    public function getLink(): string
+    public function getLink(): null|string
     {
-        assert($this->data !== null);
+        if ($this->data === null) {
+            return null;
+        }
 
         if ($this->data->sekceSlug !== null) {
             return $this->strapiLinkHelper->getLinkForSlug($this->data->sekceSlug);
