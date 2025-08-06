@@ -240,6 +240,7 @@ readonly final class StrapiContent
                 'limit' => 6,
                 'start' => 0,
             ],
+            sort: ['Datum']
         );
 
         return KalendarAkciData::createManyFromStrapiResponse(

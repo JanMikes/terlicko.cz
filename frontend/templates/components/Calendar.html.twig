@@ -1,100 +1,129 @@
 <div {{ attributes }}>
-    {# — Header with month navigation — #}
-    <div class="calendar-header">
-        <button
-            type="button"
-            {{ live_action('previousMonth') }}
-            aria-label="Previous month"
-        >&laquo;</button>
+    <div class="events-calendar">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="calendar-header">
+                    <button
+                        type="button"
+                        {{ live_action('previousMonth') }}
+                        aria-label="Previous month"
+                    >&laquo;</button>
 
-        {# Display full month name and year #}
-        {% set firstOfMonth = date(year ~ '-' ~ month ~ '-01') %}
-        {% set czechMonths = ['Leden','Únor','Březen','Duben','Květen','Červen','Červenec','Srpen','Září','Říjen','Listopad','Prosinec'] %}
-        {% set monthName = czechMonths[month - 1] %}
+                    {# Display full month name and year #}
+                    {% set firstOfMonth = date(year ~ '-' ~ month ~ '-01') %}
+                    {% set czechMonths = ['Leden','Únor','Březen','Duben','Květen','Červen','Červenec','Srpen','Září','Říjen','Listopad','Prosinec'] %}
+                    {% set monthName = czechMonths[month - 1] %}
 
-        <span class="calendar-title">
-            {{ monthName }} {{ year }}
-        </span>
+                    <span class="calendar-title">{{ monthName }} {{ year }}</span>
 
-        <button
-            type="button"
-            {{ live_action('nextMonth') }}
-            aria-label="Next month"
-        >&raquo;</button>
-    </div>
+                    <button
+                        type="button"
+                        {{ live_action('nextMonth') }}
+                        aria-label="Next month"
+                    >&raquo;</button>
+                </div>
 
-    <table class="calendar-table">
-        <thead>
-            <tr>
-                <th>Po</th>
-                <th>Út</th>
-                <th>St</th>
-                <th>Čt</th>
-                <th>Pá</th>
-                <th>So</th>
-                <th>Ne</th>
-            </tr>
-        </thead>
-        <tbody>
-            {# Build a flat days array with null placeholders #}
-            {% set weekdayOfFirst = firstOfMonth.format('N') %}
-            {% set days = [] %}
+                <table class="calendar-table">
+                    <thead>
+                    <tr>
+                        <th>Po</th>
+                        <th>Út</th>
+                        <th>St</th>
+                        <th>Čt</th>
+                        <th>Pá</th>
+                        <th>So</th>
+                        <th>Ne</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {# Build a flat days array with null placeholders #}
+                    {% set weekdayOfFirst = firstOfMonth.format('N') %}
+                    {% set days = [] %}
 
-            {% for i in 1..(weekdayOfFirst - 1) %}
-                {% set days = days|merge([null]) %}
-            {% endfor %}
-
-            {% set daysInMonth = firstOfMonth.format('t') %}
-
-            {% for day in 1..daysInMonth %}
-                {% set days = days|merge([day]) %}
-            {% endfor %}
-
-            {% set remainder = days|length % 7 %}
-
-            {% if remainder > 0 %}
-                {% for i in 1..(7 - remainder) %}
-                    {% set days = days|merge([null]) %}
-                {% endfor %}
-            {% endif %}
-
-            {# Render each week as a row of 7 cells #}
-            {% for week in days|batch(7) %}
-                <tr>
-                    {% for day in week %}
-                        <td class="calendar-cell{% if day and selectedDay == day %} selected{% endif %}">
-                            {% if day %}
-                                <button
-                                    type="button"
-                                    {{ live_action('changeDay', { 'day': day }) }}
-                                >
-                                    {{ day }}
-
-                                    {% for daysCount in computed.events[day] ?? [] %}
-                                        X
-                                    {% endfor %}
-                                </button>
-                            {% endif %}
-                        </td>
+                    {% for i in 1..(weekdayOfFirst - 1) %}
+                        {% set days = days|merge([null]) %}
                     {% endfor %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
-    {# — Events for the selected day — #}
-    <div class="calendar-events">
-        {% if selectedDay and computed.events[selectedDay] ?? [] is not empty %}
-            {% for event in computed.events[selectedDay] %}
-                <div class="event-item">{{ event.Nazev }}</div>
-            {% endfor %}
-        {% else %}
-            {% if selectedDay %}
-                <div class="no-events">No events for {{ selectedDay }} {{ monthName }} {{ year }}.</div>
-            {% else %}
-                <div class="no-events">Please select a day to see events.</div>
-            {% endif %}
-        {% endif %}
+                    {% set daysInMonth = firstOfMonth.format('t') %}
+
+                    {% for day in 1..daysInMonth %}
+                        {% set days = days|merge([day]) %}
+                    {% endfor %}
+
+                    {% set remainder = days|length % 7 %}
+
+                    {% if remainder > 0 %}
+                        {% for i in 1..(7 - remainder) %}
+                            {% set days = days|merge([null]) %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {# Render each week as a row of 7 cells #}
+                    {% for week in days|batch(7) %}
+                        <tr>
+                            {% for day in week %}
+                                <td class="calendar-cell{% if day and selectedDay == day %} selected{% endif %}">
+                                    {% if day %}
+                                        <button
+                                            type="button"
+                                            {{ live_action('changeDay', { 'day': day }) }}
+                                        >
+                                            <span class="calendar-day">{{ day }}</span>
+
+                                            {% if computed.events[day] ?? [] %}
+                                                <div>
+                                                    {% for daysCount in computed.events[day] ?? [] %}
+                                                        <span class="day-event"></span>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </button>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <div class="calendar-events py-3 pe-3">
+                    {% if selectedDay and computed.events[selectedDay] ?? [] is not empty %}
+                        {% for event in computed.events[selectedDay] %}
+                            {% set monthName = czechMonths[event.Datum.format('m') - 1] %}
+
+                            <div class="calendar-event-item">
+                                {% if event.Aktualita %}
+                                <a href="{{ path('detail_aktuality', {'slug': event.Aktualita.slug}) }}" class="text-decoration-none">
+                                    {% endif %}
+                                    <div class="d-flex w-100 upcoming-event-item">
+                                        <div class="upcoming-event-date">
+                                            <span class="month-day">{{ event.Datum.format('j') }}</span>
+                                            <span class="month-name">{{ monthName }}</span>
+                                        </div>
+                                        <div class="upcoming-event-detail flex-grow-1">
+                                            <span class="upcoming-event-title">{{ event.Nazev }}</span>
+                                            {% if event.Poradatel %}
+                                                <br>
+                                                Typ akce: <span class="text-secondary fw-bold">{{ event.Poradatel }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% if event.Aktualita %}
+                                </a>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% if selectedDay %}
+                            <div class="no-events">Dne {{ selectedDay }}.{{ month }}.{{ year }} se nekonají žádné akce.</div>
+                        {% else %}
+                            <div class="no-events">Pro zobrazení akcí, zvolte den.</div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
-
 </div>
