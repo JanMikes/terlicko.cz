@@ -210,8 +210,8 @@ header.bg-dark {
     padding-top: 10px;
 }
 
-footer {
-    background: #32416C;
+.footer-background {
+    background: url('../images/footer.png') center bottom no-repeat #32416C;
     color: #fff;
 }
 
@@ -856,4 +856,18 @@ a:hover .upcoming-event-item {
     margin-top: 15px;
     padding-top: 15px;
     border-top: 1px solid #efefef;
+}
+
+.footer-outer {
+    color: var(--bs-primary);
+}
+
+@media (min-width: 576px) {
+    .border-sm-end {
+        border-inline-end: 1px solid var(--bs-secondary) !important;
+    }
+
+    .border-sm-start {
+        border-inline-start: 1px solid var(--bs-secondary) !important;
+    }
 }
