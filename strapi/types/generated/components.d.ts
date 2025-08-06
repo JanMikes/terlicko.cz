@@ -301,6 +301,18 @@ export interface ElementyTerminAkce extends Struct.ComponentSchema {
   };
 }
 
+export interface ElementyTextovyOdkaz extends Struct.ComponentSchema {
+  collectionName: 'components_elementy_textovy_odkazs';
+  info: {
+    displayName: 'Textov\u00FD odkaz';
+    icon: 'cursor';
+  };
+  attributes: {
+    Odkaz: Schema.Attribute.Component<'elementy.odkaz', false>;
+    Text: Schema.Attribute.String;
+  };
+}
+
 export interface ElementyTimelinePolozka extends Struct.ComponentSchema {
   collectionName: 'components_elementy_timeline_polozkas';
   info: {
@@ -687,6 +699,7 @@ declare module '@strapi/strapi' {
       'elementy.soubor': ElementySoubor;
       'elementy.telefon': ElementyTelefon;
       'elementy.termin-akce': ElementyTerminAkce;
+      'elementy.textovy-odkaz': ElementyTextovyOdkaz;
       'elementy.timeline-polozka': ElementyTimelinePolozka;
       'elementy.tlacitko': ElementyTlacitko;
       'elementy.vizitka': ElementyVizitka;

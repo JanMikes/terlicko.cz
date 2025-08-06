@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_elementy_textovy_odkazs",
+  "info": {
+    "displayName": "Textový odkaz",
+    "icon": "cursor"
+  },
+  "options": {},
+  "attributes": {
+    "Text": {
+      "type": "string"
+    },
+    "Odkaz": {
+      "type": "component",
+      "component": "elementy.odkaz",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

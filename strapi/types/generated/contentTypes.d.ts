@@ -663,6 +663,37 @@ export interface ApiMenuMenu extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPatickaPaticka extends Struct.SingleTypeSchema {
+  collectionName: 'patickas';
+  info: {
+    displayName: 'Pati\u010Dka';
+    pluralName: 'patickas';
+    singularName: 'paticka';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    Bannery: Schema.Attribute.Component<'elementy.banner', true>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Kontakt: Schema.Attribute.RichText;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::paticka.paticka'
+    > &
+      Schema.Attribute.Private;
+    Odkazy: Schema.Attribute.Component<'elementy.textovy-odkaz', true>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Uredni_hodiny: Schema.Attribute.RichText;
+  };
+}
+
 export interface ApiSekceSekce extends Struct.CollectionTypeSchema {
   collectionName: 'sekces';
   info: {
@@ -1321,6 +1352,7 @@ declare module '@strapi/strapi' {
       'api::kategorie-uredni-desky.kategorie-uredni-desky': ApiKategorieUredniDeskyKategorieUredniDesky;
       'api::lide.lide': ApiLideLide;
       'api::menu.menu': ApiMenuMenu;
+      'api::paticka.paticka': ApiPatickaPaticka;
       'api::sekce.sekce': ApiSekceSekce;
       'api::tagy.tagy': ApiTagyTagy;
       'api::uredni-deska.uredni-deska': ApiUredniDeskaUredniDeska;

@@ -6,7 +6,10 @@ namespace Terlicko\Web\Services\Strapi;
 
 use DateTimeImmutable;
 use Psr\Clock\ClockInterface;
+use Symfony\Component\HttpClient\Exception\ClientException;
 use Terlicko\Web\Value\Content\Data\AktualitaData;
+use Terlicko\Web\Value\Content\Data\FooterData;
+use Terlicko\Web\Value\Content\Data\HomepageData;
 use Terlicko\Web\Value\Content\Data\KalendarAkciData;
 use Terlicko\Web\Value\Content\Data\KategorieUredniDesky;
 use Terlicko\Web\Value\Content\Data\KategorieUredniDeskyData;
@@ -32,6 +35,8 @@ use Terlicko\Web\Value\Content\Data\TagData;
  * @phpstan-import-type UredniDeskaDataArray from UredniDeskaData
  * @phpstan-import-type KategorieUredniDeskyDataArray from KategorieUredniDeskyData
  * @phpstan-import-type KalendarAkciDataArray from KalendarAkciData
+ * @phpstan-import-type HomepageDataArray from HomepageData
+ * @phpstan-import-type FooterDataArray from FooterData
  */
 readonly final class StrapiContent
 {
@@ -271,6 +276,42 @@ readonly final class StrapiContent
         );
 
         return KalendarAkciData::createManyFromStrapiResponse(
+            $strapiResponse['data']
+        );
+    }
+
+    public function getHomepageData(): null|HomepageData
+    {
+        try {
+            /** @var array{data: HomepageDataArray} $strapiResponse */
+            $strapiResponse = $this->strapiClient->getApiResource('homepage');
+        } catch (ClientException $exception) {
+            if ($exception->getResponse()->getStatusCode() === 404) {
+                return null;
+            }
+
+            throw $exception;
+        }
+
+        return HomepageData::createFromStrapiResponse(
+            $strapiResponse['data']
+        );
+    }
+
+    public function getFooterData(): null|FooterData
+    {
+        try {
+            /** @var array{data: FooterDataArray} $strapiResponse */
+            $strapiResponse = $this->strapiClient->getApiResource('paticka');
+        } catch (ClientException $exception) {
+            if ($exception->getResponse()->getStatusCode() === 404) {
+                return null;
+            }
+
+            throw $exception;
+        }
+
+        return FooterData::createFromStrapiResponse(
             $strapiResponse['data']
         );
     }

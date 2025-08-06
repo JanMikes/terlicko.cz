@@ -864,10 +864,10 @@ a:hover .upcoming-event-item {
 
 @media (min-width: 576px) {
     .border-sm-end {
-        border-inline-end: 1px solid var(--bs-secondary) !important;
+        border-inline-end: 1px solid #434f7f !important;
     }
 
     .border-sm-start {
-        border-inline-start: 1px solid var(--bs-secondary) !important;
+        border-inline-start: 1px solid #434f7f !important;
     }
 }

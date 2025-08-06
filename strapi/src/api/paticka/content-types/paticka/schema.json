@@ -1,0 +1,31 @@
+{
+  "kind": "singleType",
+  "collectionName": "patickas",
+  "info": {
+    "singularName": "paticka",
+    "pluralName": "patickas",
+    "displayName": "Patička"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Kontakt": {
+      "type": "richtext"
+    },
+    "Uredni_hodiny": {
+      "type": "richtext"
+    },
+    "Bannery": {
+      "type": "component",
+      "component": "elementy.banner",
+      "repeatable": true
+    },
+    "Odkazy": {
+      "type": "component",
+      "component": "elementy.textovy-odkaz",
+      "repeatable": true
+    }
+  }
+}
