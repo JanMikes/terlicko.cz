@@ -59,7 +59,8 @@ readonly final class StrapiApiClient
 
         return $this->cache->get($key, function(ItemInterface $item) use ($resourceName, $query): array {
             $item->tag('strapi');
-            $item->expiresAfter(3600 * 24); // 24 Hours
+            // $item->expiresAfter(3600 * 24); // 24 Hours
+            $item->expiresAfter(15); // 24 Hours
 
             $response = $this->strapiClient->request('GET', '/api/' . $resourceName, [
                 'query' => $query
