@@ -15,7 +15,7 @@
 
             {% if karta.Text %}
                 <p class="mb-0 mt-3 small">
-                    {{ karta.Text|nl2br }}
+                    {{ karta.Text|markdown_to_html|newlines }}
                 </p>
             {% endif %}
 
