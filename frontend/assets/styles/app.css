@@ -306,10 +306,6 @@ header.bg-dark {
     opacity: 0;
 }
 
-.home-quick-link:hover .home-quick-link-image {
-    opacity: 0;
-}
-
 .home-quick-link:hover .home-quick-link-image-hover {
     opacity: 1;
 }
