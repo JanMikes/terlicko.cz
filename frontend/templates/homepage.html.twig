@@ -78,7 +78,7 @@
     {% if aktuality %}
         <div class="container">
             <section class="py-5">
-                <h2 class="mb-4"><span class="text-secondary">Příspěvky</span> <span class="fw-lighter">obce</span></h2>
+                <h2 class="mb-4">Příspěvky obce</h2>
 
                 <div class="row">
                     {% for aktualita in aktuality %}
@@ -116,7 +116,7 @@
     {% if uredni_deska %}
         <div class="container pt-3 pb-5">
             <section class="row">
-                <h2 class="mb-4"><span class="text-secondary">Úřední</span> <span class="fw-lighter">deska</span></h2>
+                <h2 class="mb-4">Úřední deska</h2>
 
                 {% for uredni_deska_dokument in uredni_deska %}
                     <article class="col-sm-6 col-md-4 my-4">
@@ -150,7 +150,7 @@
 
         {% if upcoming_events %}
         <div class="container pt-3 pb-5">
-            <h2 class="mb-4 mt-4"><span class="text-secondary">Nejbližší</span> <span class="fw-lighter">akce</span></h2>
+            <h2 class="mb-4 mt-4">Nejbližší akce</h2>
 
             {% set czechMonths = ['Leden','Únor','Březen','Duben','Květen','Červen','Červenec','Srpen','Září','Říjen','Listopad','Prosinec'] %}
 
@@ -163,7 +163,7 @@
                             <a href="{{ path('detail_aktuality', {'slug': event.Aktualita.slug}) }}" class="text-decoration-none">
                         {% endif %}
                             <div class="d-flex w-100 upcoming-event-item">
-                                <div class="upcoming-event-date">
+                                <div class="upcoming-event-date flex-shrink-0">
                                     <span class="month-day">{{ event.Datum.format('j') }}</span>
                                     <span class="month-name">{{ monthName }}</span>
                                 </div>
@@ -185,7 +185,7 @@
         {% endif %}
 
         <div class="container pt-3 pb-5">
-            <h2 class="mt-4 mb-4"><span class="text-secondary">Kalendář</span> <span class="fw-lighter">akcí</span></h2>
+            <h2 class="mt-4 mb-4">Kalendář akcí</h2>
 
             <twig:Calendar />
         </div>
