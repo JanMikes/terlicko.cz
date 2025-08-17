@@ -2,8 +2,8 @@
     {% for timeline in data.Polozky %}
         <div class="timeline-wrapper d-flex w-100 position-relative {{ not loop.first ? 'mt-4' }}">
             {% if timeline.Fotka %}
-                <a href="{{ timeline.Fotka.url }}" class="glightbox">
-                    <img src="{{ timeline.Fotka.thumbnail ? timeline.Fotka.thumbnail.url : timeline.Fotka.url }}" alt="{{ timeline.Nadpis }}" class="img-fluid me-4">
+                <a href="{{ timeline.Fotka.url }}" class="glightbox gallery-link">
+                    <img src="{{ timeline.Fotka.thumbnail ? timeline.Fotka.thumbnail.url : timeline.Fotka.url }}" alt="{{ timeline.Nadpis }}" class="img-fluid me-4 gallery-image">
                 </a>
             {% endif %}
 
