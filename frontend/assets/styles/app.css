@@ -837,10 +837,14 @@ a:hover .upcoming-event-item {
     background: #d5dfed;
 }
 
+.events-calendar .day-events {
+    min-height: 24px;
+}
+
 .events-calendar td .day-event {
     display: inline-block;
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: var(--bs-primary);
 }

@@ -70,13 +70,13 @@
                                         >
                                             <span class="calendar-day">{{ day }}</span>
 
-                                            {% if computed.events[day] ?? [] %}
-                                                <div>
+                                            <div class="day-events">
+                                                {% if computed.events[day] ?? [] %}
                                                     {% for daysCount in computed.events[day] ?? [] %}
                                                         <span class="day-event"></span>
                                                     {% endfor %}
-                                                </div>
-                                            {% endif %}
+                                                {% endif %}
+                                            </div>
                                         </button>
                                     {% endif %}
                                 </td>
