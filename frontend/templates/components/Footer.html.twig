@@ -28,14 +28,17 @@
     </div>
 
     <div class="py-3 text-center bg-white footer-outer">
-        {% if computed.footer.Odkazy %}
-            <p>
-                {% for odkaz in computed.footer.Odkazy %}
-                    <twig:Odkaz data="{{ odkaz.Odkaz }}" class="d-inline-block mx-2">{{ odkaz.Text }}</twig:Odkaz>
-                {% endfor %}
-            </p>
-        {% endif %}
-
-        web &amp; design <a href="https://www.wantoo.cz" target="_blank" class="fw-bold">WANTOO design</a> 2025
+        <div class="container py-2">
+            <div class="row">
+                <div class="col-sm-6 text-sm-start">
+                    web &amp; design <a href="https://www.wantoo.cz" target="_blank" class="fw-bold">WANTOO design</a> 2025
+                </div>
+                <div class="col-sm-6 text-sm-end">
+                    {% for odkaz in computed.footer.Odkazy %}
+                        <twig:Odkaz data="{{ odkaz.Odkaz }}" class="d-inline-block mx-2">{{ odkaz.Text }}</twig:Odkaz>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 </footer>
