@@ -3,30 +3,48 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-    <section class="home-hero">
-        <div class="home-hero-gradient">
-
+    {% if homepage and homepage.Slider %}
+        <div class="carousel-wrapper position-relative">
+            <div class="home-hero-gradient"></div>
+            <div id="home-carousel" class="carousel slide carousel-fade">
+                <div class="carousel-inner">
+                    {% for slide in homepage.Slider %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            {% if slide.Obrazek %}
+                                <img src="{{ slide.Obrazek.url }}" class="slide-image w-100 h-100" alt="{{ slide.Nadpis }}">
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#home-carousel" data-bs-slide="prev">
+                <i class="bi-chevron-left bi-large" aria-hidden="true"></i>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#home-carousel" data-bs-slide="next">
+                <i class="bi-chevron-right bi-large" aria-hidden="true"></i>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-    </section>
+    {% endif %}
 
     <section class="home-quick-links pb-4">
         <div class="container">
             <div class="d-flex flex-wrap justify-content-around home-quick-links-wrapper">
-                <a href="#" class="home-quick-link quick-link-sport">
-                    <span>Sport</span>
-                </a>
-                <a href="#" class="home-quick-link quick-link-volny-cas">
-                    <span>Volný čas</span>
-                </a>
-                <a href="#" class="home-quick-link quick-link-akce">
-                    <span>Akce</span>
-                </a>
-                <a href="#" class="home-quick-link quick-link-koupani">
-                    <span>Koupání</span>
-                </a>
-                <a href="#" class="home-quick-link quick-link-restaurace">
-                    <span>Restaurace</span>
-                </a>
+
+                {% if homepage %}
+                    {% for rychly_odkaz in homepage.RychleOdkazy %}
+                        <twig:Odkaz class="home-quick-link" data="{{ rychly_odkaz.Odkaz }}">
+                            {% if rychly_odkaz.Obrazek %}
+                                <span class="home-quick-link-image" style="background-image: url('{{ rychly_odkaz.Obrazek.url }}');"></span>
+                            {% endif %}
+                            {% if rychly_odkaz.ObrazekHover %}
+                                <span class="home-quick-link-image-hover" style="background-image: url('{{ rychly_odkaz.Obrazek.url }}');"></span>
+                            {% endif %}
+                            <span class="text">{{ rychly_odkaz.Nadpis }}</span>
+                        </twig:Odkaz>
+                    {% endfor %}
+                {% endif %}
             </div>
 
             <h2 class="mt-5 mb-4 text-white fw-bold">Tipy a aktivity v obci</h2>

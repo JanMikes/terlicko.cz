@@ -203,11 +203,55 @@ header.bg-dark {
 .home-hero-gradient {
     background: url('../images/home-hero-gradient.png') center top no-repeat;
     height: 551px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.slide-image {
+    object-fit: cover;
+    object-position: center;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    background: #fff;
+    color: #000;
+    font-size: 36px;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 50%;
+    top: 50%;
+    margin-top: -30px;
+    z-index: 15;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    color: #000;
+}
+
+.carousel-control-prev {
+    left: 40px;
+}
+
+.carousel-control-next {
+    right: 40px;
+}
+
+.carousel-item {
+    height: 733px;
+    background-color: #1E2648;
 }
 
 .home-quick-links {
     background: #21294C linear-gradient(to bottom, #2B355A, #21294C);
     padding-top: 10px;
+    z-index: 20;
+    position: relative;
 }
 
 .footer-background {
@@ -231,54 +275,45 @@ header.bg-dark {
     margin-top: -183px;
 }
 
-.home-quick-link span {
+.home-quick-link .text {
     position: absolute;
     width: 100%;
     left: 0;
     bottom: 15px;
 }
 
-.home-quick-link::before {
-    content: '';
+.home-quick-link-image {
     display: block;
     position: absolute;
     left: 0;
     top: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center top;
+    opacity: 1;
 }
 
-.quick-link-sport::before {
-    background: url('../images/home-sport.png') left top no-repeat;
-    width: 216px;
-    height: 211px;
+.home-quick-link-image-hover {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center top;
+    opacity: 0;
 }
 
-.quick-link-volny-cas::before {
-    background: url('../images/home-volny-cas.png') left top no-repeat;
-    width: 215px;
-    height: 171px;
-    top: 3px;
+.home-quick-link:hover .home-quick-link-image {
+    opacity: 0;
 }
 
-.quick-link-akce::before {
-    background: url('../images/home-akce.png') left top no-repeat;
-    width: 236px;
-    height: 149px;
-    top: 27px;
+.home-quick-link:hover .home-quick-link-image-hover {
+    opacity: 1;
 }
 
-.quick-link-koupani::before {
-    background: url('../images/home-koupani.png') left top no-repeat;
-    width: 215px;
-    height: 188px;
-    top: -1px;
-}
-
-.quick-link-restaurace::before {
-    background: url('../images/home-restaurace.png') left top no-repeat;
-    width: 188px;
-    height: 189px;
-    top: -10px;
-}
 
 .home-tip {
     text-decoration: none;
