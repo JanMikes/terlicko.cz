@@ -39,6 +39,9 @@
                     {# Build a flat days array with null placeholders #}
                     {% set weekdayOfFirst = firstOfMonth.format('N') %}
                     {% set days = [] %}
+                    {% set today = date() %}
+                    {% set isCurrentMonth = (year == today.format('Y')) and (month == today.format('n')) %}
+                    {% set todayDay = today.format('j') %}
 
                     {% for i in 1..(weekdayOfFirst - 1) %}
                         {% set days = days|merge([null]) %}
@@ -62,7 +65,7 @@
                     {% for week in days|batch(7) %}
                         <tr>
                             {% for day in week %}
-                                <td class="calendar-cell{% if day and selectedDay == day %} selected{% endif %}">
+                                <td class="calendar-cell{% if day and selectedDay == day %} selected{% endif %}{% if day and isCurrentMonth and day == todayDay %} today{% endif %}">
                                     {% if day %}
                                         <button
                                             type="button"

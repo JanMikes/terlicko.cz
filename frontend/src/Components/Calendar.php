@@ -37,6 +37,9 @@ final class Calendar
         $today = new DateTimeImmutable();
         $this->year = (int) $today->format('Y');
         $this->month = (int) $today->format('n');
+        
+        // Select today as initial day when viewing current month
+        $this->selectedDay = (int) $today->format('j');
     }
 
     #[LiveAction]
