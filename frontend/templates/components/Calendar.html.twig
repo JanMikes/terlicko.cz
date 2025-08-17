@@ -120,9 +120,15 @@
                         {% endfor %}
                     {% else %}
                         {% if selectedDay %}
-                            <div class="no-events">Dne {{ selectedDay }}.{{ month }}.{{ year }} se nekonají žádné akce.</div>
+                            <div class="no-events text-center pt-4">
+                                <p class="mb-2 fs-6">V tento den:</p>
+                                <h4>{{ selectedDay }}.{{ month }}.{{ year }}</h4>
+                                <h3>Se nekoná žádná akce</h3>
+                            </div>
                         {% else %}
-                            <div class="no-events">Pro zobrazení akcí, zvolte den.</div>
+                            <div class="no-events text-center pt-4">
+                                <h3>Pro zobrazení akcí, zvolte den.</h3>
+                            </div>
                         {% endif %}
                     {% endif %}
                 </div>

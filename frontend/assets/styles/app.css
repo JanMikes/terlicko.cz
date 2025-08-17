@@ -522,6 +522,10 @@ textarea:hover {
     font-weight: bold !important;
 }
 
+h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
 
 .column-karta {
     width: 306px;
