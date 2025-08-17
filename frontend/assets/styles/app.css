@@ -643,7 +643,7 @@ p img {
 
 .text-content h2, .text-content h3, .text-content h4, .text-content h5, .text-content h6 {
     margin-top: 3rem !important;
-    margin-bottom: 3rem !important;
+    margin-bottom: 1rem !important;
 }
 
 
