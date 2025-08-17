@@ -353,13 +353,15 @@ header.bg-dark {
     width: 100%;
     padding: 34px;
     position: relative;
+    background-position: center bottom;
+    background-repeat: no-repeat;
 }
 
-.home-tip:hover .background::after {
+.home-tip:hover .background-hover {
     opacity: 1;
 }
 
-.home-tip .background::after {
+.home-tip .background-hover {
     content: '';
     height: 100%;
     width: 100%;
@@ -371,37 +373,6 @@ header.bg-dark {
     transition: opacity .33s ease-in-out;
 }
 
-.home-tip.tip-1 .background {
-    background: url('../images/home-tip-1.png') center bottom no-repeat;
-}
-.home-tip.tip-2 .background {
-    background: url('../images/home-tip-2.png') center bottom no-repeat;
-}
-.home-tip.tip-3 .background {
-    background: url('../images/home-tip-3.png') center bottom no-repeat;
-}
-.home-tip.tip-4 .background {
-    background: url('../images/home-tip-4.png') center bottom no-repeat;
-}
-.home-tip.tip-5 .background {
-    background: url('../images/home-tip-5.png') center bottom no-repeat;
-}
-
-.home-tip.tip-1 .background::after {
-    background: url('../images/home-tip-1-hover.png') center bottom no-repeat;
-}
-.home-tip.tip-2 .background::after {
-    background: url('../images/home-tip-2-hover.png') center bottom no-repeat;
-}
-.home-tip.tip-3 .background::after {
-    background: url('../images/home-tip-3-hover.png') center bottom no-repeat;
-}
-.home-tip.tip-4 .background::after {
-    background: url('../images/home-tip-4-hover.png') center bottom no-repeat;
-}
-.home-tip.tip-5 .background::after {
-    background: url('../images/home-tip-5-hover.png') center bottom no-repeat;
-}
 
 .custom-badge {
     text-decoration: none;

@@ -11,8 +11,9 @@ namespace Terlicko\Web\Value\Content\Data;
  *     Nadpis: null|string,
  *     Text: null|string,
  *     Obrazek: null|ImageDataArray,
- *     ObrazekHover: null|ImageDataArray,
+ *     Obrazek_hover: null|ImageDataArray,
  *     Odkaz: null|OdkazDataArray,
+ *     index?: null|int,
  * }
  */
 readonly final class HomekageKartaData
@@ -26,6 +27,7 @@ readonly final class HomekageKartaData
         public null|ImageData $Obrazek,
         public null|ImageData $ObrazekHover,
         public null|OdkazData $Odkaz,
+        public null|int $index,
     ) {
     }
 
@@ -38,8 +40,9 @@ readonly final class HomekageKartaData
             Nadpis: $data['Nadpis'],
             Text: $data['Text'],
             Obrazek: $data['Obrazek'] !== null ? ImageData::createFromStrapiResponse($data['Obrazek']) : null,
-            ObrazekHover: $data['ObrazekHover'] !== null ? ImageData::createFromStrapiResponse($data['ObrazekHover']) : null,
+            ObrazekHover: $data['Obrazek_hover'] !== null ? ImageData::createFromStrapiResponse($data['Obrazek_hover']) : null,
             Odkaz: $data['Odkaz'] !== null ? OdkazData::createFromStrapiResponse($data['Odkaz']) : null,
+            index: $data['index'] ?? null,
         );
     }
 }

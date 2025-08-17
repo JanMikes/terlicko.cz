@@ -31,7 +31,6 @@
     <section class="home-quick-links pb-4">
         <div class="container">
             <div class="d-flex flex-wrap justify-content-around home-quick-links-wrapper">
-
                 {% if homepage %}
                     {% for rychly_odkaz in homepage.RychleOdkazy %}
                         <twig:Odkaz class="home-quick-link" data="{{ rychly_odkaz.Odkaz }}">
@@ -39,7 +38,7 @@
                                 <span class="home-quick-link-image" style="background-image: url('{{ rychly_odkaz.Obrazek.url }}');"></span>
                             {% endif %}
                             {% if rychly_odkaz.ObrazekHover %}
-                                <span class="home-quick-link-image-hover" style="background-image: url('{{ rychly_odkaz.Obrazek.url }}');"></span>
+                                <span class="home-quick-link-image-hover" style="background-image: url('{{ rychly_odkaz.ObrazekHover.url }}');"></span>
                             {% endif %}
                             <span class="text">{{ rychly_odkaz.Nadpis }}</span>
                         </twig:Odkaz>
@@ -50,51 +49,28 @@
             <h2 class="mt-5 mb-4 text-white fw-bold">Tipy a aktivity v obci</h2>
 
             <div class="d-flex flex-wrap flex-lg-nowrap justify-content-center">
-                <a href="#" class="home-tip tip-1">
-                    <div class="background">
-                        <span class="number">01</span>
-                        <span class="title mb-2">Cyklotrasy a cykloakce</span>
-                        <span class="description">Lorem ipsum</span>
-                    </div>
-                </a>
-
-                <a href="#" class="home-tip tip-2">
-                    <div class="background">
-                        <span class="number">02</span>
-                        <span class="title mb-2">Těrlická přehrada</span>
-                        <span class="description">Lorem ipsum</span>
-                    </div>
-                </a>
-
-                <a href="#" class="home-tip tip-3">
-                    <div class="background">
-                        <span class="number">03</span>
-                        <span class="title mb-2">Sportovní hala</span>
-                        <span class="description">Lorem ipsum</span>
-                    </div>
-                </a>
-
-                <a href="#" class="home-tip tip-4">
-                    <div class="background">
-                        <span class="number">04</span>
-                        <span class="title mb-2">Knihovna v Těrlicku</span>
-                        <span class="description">Lorem ipsum</span>
-                    </div>
-                </a>
-
-                <a href="#" class="home-tip tip-5">
-                    <div class="background">
-                        <span class="number">05</span>
-                        <span class="title mb-2">Těrlický filmový festival</span>
-                        <span class="description">Lorem ipsum</span>
-                    </div>
-                </a>
+                {% if homepage %}
+                    {% for tip in homepage.Tipy %}
+                        <twig:Odkaz class="home-tip" data="{{ tip.Odkaz }}">
+                            <div class="background" {% if tip.Obrazek %}style="background-image: url('{{ tip.Obrazek.url }}');"{% endif %}>
+                                {% if tip.ObrazekHover %}
+                                    <div class="background-hover" style="background-image: url('{{ tip.ObrazekHover.url }}');"></div>
+                                {% endif %}
+                                <span class="number">{{ "%02d"|format(tip.index) }}</span>
+                                <span class="title mb-2">{{ tip.Nadpis }}</span>
+                                <span class="description">{{ tip.Text }}</span>
+                            </div>
+                        </twig:Odkaz>
+                    {% endfor %}
+                {% endif %}
             </div>
 
             <p class="text-end mt-4">
-                <a href="#" class="text-white text-decoration-none">
-                    <span class="text-secondary">Všechny tipy</span> a <span class="text-secondary">aktivity &raquo;</span>
-                </a>
+                {% if homepage and homepage.TipyOdkaz %}
+                    <twig:Odkaz data="{{ homepage.TipyOdkaz }}" class="text-white text-decoration-none">
+                        <span class="text-secondary">Všechny tipy a aktivity &raquo;</span>
+                    </twig:Odkaz>
+                {% endif %}
             </p>
         </div>
     </section>

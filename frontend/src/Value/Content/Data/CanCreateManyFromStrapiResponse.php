@@ -21,7 +21,8 @@ trait CanCreateManyFromStrapiResponse
     {
         $objects = [];
 
-        foreach ($data as $singleObjectData) {
+        foreach ($data as $i => $singleObjectData) {
+            $singleObjectData['index'] = $i + 1;
             $objects[] = self::createFromStrapiResponse($singleObjectData);
         }
 
