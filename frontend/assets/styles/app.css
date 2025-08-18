@@ -954,3 +954,11 @@ a:hover .upcoming-event-item {
     font-size: 1rem;
     font-weight: normal;
 }
+
+.no-events {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}

@@ -39,7 +39,7 @@
                     {# Build a flat days array with null placeholders #}
                     {% set weekdayOfFirst = firstOfMonth.format('N') %}
                     {% set days = [] %}
-                    {% set today = date() %}
+                    {% set today = date('now', 'Europe/Prague') %}
                     {% set isCurrentMonth = (year == today.format('Y')) and (month == today.format('n')) %}
                     {% set todayDay = today.format('j') %}
 

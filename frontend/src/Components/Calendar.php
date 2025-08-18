@@ -34,7 +34,7 @@ final class Calendar
 
     public function mount(): void
     {
-        $today = new DateTimeImmutable();
+        $today = new DateTimeImmutable('now', new \DateTimeZone('Europe/Prague'));
         $this->year = (int) $today->format('Y');
         $this->month = (int) $today->format('n');
         
