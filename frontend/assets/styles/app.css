@@ -781,19 +781,39 @@ a:hover .upcoming-event-item {
 .calendar-header {
     background: #d6dfed;
     padding: 15px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .calendar-header .calendar-title {
     font-size: 36px;
     line-height: 61px;
     font-weight: bold;
+    text-align: center;
+    flex: 1;
 }
 
-.calendar-header button {
-    font-size: 30px;
-    color: var(--bs-primary);
-    padding: 8px;
+.calendar-nav-btn {
+    background: var(--bs-primary) !important;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.calendar-nav-btn:hover {
+    background: var(--bs-secondary) !important;
+}
+
+.calendar-nav-btn i {
+    font-size: 18px;
 }
 
 .events-calendar button {

@@ -5,9 +5,12 @@
                 <div class="calendar-header">
                     <button
                         type="button"
+                        class="calendar-nav-btn calendar-prev-btn"
                         {{ live_action('previousMonth') }}
                         aria-label="Previous month"
-                    >&laquo;</button>
+                    >
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
 
                     {# Display full month name and year #}
                     {% set firstOfMonth = date(year ~ '-' ~ month ~ '-01') %}
@@ -18,9 +21,12 @@
 
                     <button
                         type="button"
+                        class="calendar-nav-btn calendar-next-btn"
                         {{ live_action('nextMonth') }}
                         aria-label="Next month"
-                    >&raquo;</button>
+                    >
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
                 </div>
 
                 <table class="calendar-table">
