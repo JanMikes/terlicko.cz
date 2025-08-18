@@ -760,7 +760,7 @@ h5, .h5 { font-size: calc(0.72rem + 0.25vw); }
 
 .upcoming-event-detail {
     background: #fff;
-    padding: 20px 10px 0 20px;
+    padding: 20px 10px 20px 20px;
 }
 
 .upcoming-event-title {
