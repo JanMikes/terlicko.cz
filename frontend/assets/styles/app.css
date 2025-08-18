@@ -901,3 +901,56 @@ a:hover .upcoming-event-item {
     object-position: center;
     display: block;
 }
+
+/* Sitemap styles */
+.sitemap {
+    margin-top: 2rem;
+}
+
+.sitemap-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.sitemap-list--nested {
+    padding-left: 2rem;
+    margin-top: 0.5rem;
+    border-left: 2px solid var(--bs-primary-text-emphasis);
+}
+
+.sitemap-item {
+    margin-bottom: 0.75rem;
+    position: relative;
+}
+
+.sitemap-item::before {
+    content: "▶";
+    color: var(--bs-primary);
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+.sitemap-list--nested .sitemap-item::before {
+    content: "▸";
+    color: var(--bs-primary-text-emphasis);
+}
+
+.sitemap-link {
+    color: var(--bs-primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+}
+
+.sitemap-link:hover {
+    color: var(--bs-secondary);
+    text-decoration: underline;
+}
+
+.sitemap-list--nested .sitemap-link {
+    font-size: 1rem;
+    font-weight: normal;
+}

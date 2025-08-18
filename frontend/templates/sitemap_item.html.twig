@@ -1,0 +1,10 @@
+<li class="sitemap-item">
+    <a href="{{ item.link }}" class="sitemap-link">{{ item.section.Nazev }}</a>
+    {% if item.children %}
+        <ul class="sitemap-list sitemap-list--nested">
+            {% for childSlug, childItem in item.children %}
+                {% include 'sitemap_item.html.twig' with {'item': childItem} %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>
