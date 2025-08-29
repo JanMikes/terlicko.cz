@@ -152,7 +152,7 @@
         <div class="container pt-3 pb-5">
             <h2 class="mb-4 mt-4">Nejbližší akce</h2>
 
-            {% set czechMonths = ['Leden','Únor','Březen','Duben','Květen','Červen','Červenec','Srpen','Září','Říjen','Listopad','Prosinec'] %}
+            {% set czechMonths = ['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'] %}
 
             <div class="row">
                 {% for event in upcoming_events %}
@@ -164,8 +164,18 @@
                         {% endif %}
                             <div class="d-flex w-100 upcoming-event-item">
                                 <div class="upcoming-event-date flex-shrink-0">
-                                    <span class="month-day">{{ event.Datum.format('j') }}</span>
-                                    <span class="month-name">{{ monthName }}</span>
+                                    {% if event.Datum and event.DatumDo and event.DatumDo.format('Y-m-d') != event.Datum.format('Y-m-d') %}
+                                        {% set endMonthName = czechMonths[event.DatumDo.format('m') - 1] %}
+                                        <span class="month-day">{{ event.Datum.format('d') }}-{{ event.DatumDo.format('d') }}</span>
+                                        {% if monthName != endMonthName %}
+                                            <span class="month-name">{{ monthName }}-{{ endMonthName }}</span>
+                                        {% else %}
+                                            <span class="month-name">{{ monthName }}</span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="month-day">{{ event.Datum.format('d') }}</span>
+                                        <span class="month-name">{{ monthName }}</span>
+                                    {% endif %}
                                 </div>
                                 <div class="upcoming-event-detail flex-grow-1">
                                     <span class="upcoming-event-title">{{ event.Nazev }}</span>

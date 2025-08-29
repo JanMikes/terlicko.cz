@@ -729,11 +729,12 @@ h5, .h5 { font-size: calc(0.72rem + 0.25vw); }
 }
 
 .upcoming-event-date {
-    width: 100px;
-    height: 100px;
+    min-width: 100px;
+    min-height: 100px;
     background: var(--bs-primary);
     color: #91a7d7;
     text-align: center;
+    padding: 0 13px;
 }
 
 .upcoming-event-date .month-day {
@@ -748,9 +749,8 @@ h5, .h5 { font-size: calc(0.72rem + 0.25vw); }
     display: block;
     color: #fff;
     border-top: 2px solid #fff;
-    margin: 5px 10px 0 10px;
+    margin: 5px 0 0 0;
     font-size: 14px;
-    padding: 5px 0 0 0;
 }
 
 .background-accent {

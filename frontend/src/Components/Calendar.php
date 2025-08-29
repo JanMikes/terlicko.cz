@@ -11,6 +11,7 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use DateTimeImmutable;
 use Terlicko\Web\Services\Strapi\StrapiContent;
+use Terlicko\Web\Value\Content\Data\DatumData;
 use Terlicko\Web\Value\Content\Data\KalendarAkciData;
 
 #[AsLiveComponent]
@@ -87,7 +88,16 @@ final class Calendar
                 continue;
             }
 
-            $perDay[$event->Datum->format('j')][] = $event;
+            $startDate = $event->Datum;
+            $endDate = $event->DatumDo ?? $event->Datum;
+
+            $currentDate = $startDate;
+            while ($currentDate <= $endDate) {
+                if ($currentDate->format('Y') == $this->year && $currentDate->format('n') == $this->month) {
+                    $perDay[(int)$currentDate->format('j')][] = $event;
+                }
+                $currentDate = $currentDate->modify('+1 day');
+            }
         }
 
         return $perDay;

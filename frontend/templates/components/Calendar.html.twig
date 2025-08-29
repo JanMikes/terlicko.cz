@@ -14,10 +14,10 @@
 
                     {# Display full month name and year #}
                     {% set firstOfMonth = date(year ~ '-' ~ month ~ '-01') %}
-                    {% set czechMonths = ['Leden','Únor','Březen','Duben','Květen','Červen','Červenec','Srpen','Září','Říjen','Listopad','Prosinec'] %}
+                    {% set czechMonths = ['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'] %}
                     {% set monthName = czechMonths[month - 1] %}
 
-                    <span class="calendar-title">{{ monthName }} {{ year }}</span>
+                    <span class="calendar-title">{{ monthName|capitalize }} {{ year }}</span>
 
                     <button
                         type="button"
@@ -104,23 +104,36 @@
 
                             <div class="calendar-event-item">
                                 {% if event.Aktualita %}
-                                <a href="{{ path('detail_aktuality', {'slug': event.Aktualita.slug}) }}" class="text-decoration-none">
-                                    {% endif %}
-                                    <div class="d-flex w-100 upcoming-event-item">
-                                        <div class="upcoming-event-date">
-                                            <span class="month-day">{{ event.Datum.format('j') }}</span>
-                                            <span class="month-name">{{ monthName }}</span>
-                                        </div>
-                                        <div class="upcoming-event-detail flex-grow-1">
-                                            <span class="upcoming-event-title">{{ event.Nazev }}</span>
-                                            {% if event.Poradatel %}
-                                                <br>
-                                                Pořadatel: <span class="text-secondary fw-bold">{{ event.Poradatel }}</span>
+                                    <a href="{{ path('detail_aktuality', {'slug': event.Aktualita.slug}) }}" class="text-decoration-none">
+                                {% endif %}
+
+                                <div class="d-flex w-100 upcoming-event-item">
+                                    <div class="upcoming-event-date">
+                                        {% if event.Datum and event.DatumDo and event.DatumDo.format('Y-m-d') != event.Datum.format('Y-m-d') %}
+                                            {% set endMonthName = czechMonths[event.DatumDo.format('m') - 1] %}
+                                            <span class="month-day">{{ event.Datum.format('d') }}-{{ event.DatumDo.format('d') }}</span>
+                                            {% if monthName != endMonthName %}
+                                                <span class="month-name">{{ monthName }}-{{ endMonthName }}</span>
+                                            {% else %}
+                                                <span class="month-name">{{ monthName }}</span>
                                             {% endif %}
-                                        </div>
+                                        {% else %}
+                                            <span class="month-day">{{ event.Datum.format('d') }}</span>
+                                            <span class="month-name">{{ monthName }}</span>
+                                        {% endif %}
                                     </div>
-                                    {% if event.Aktualita %}
-                                </a>
+
+                                    <div class="upcoming-event-detail flex-grow-1">
+                                        <span class="upcoming-event-title">{{ event.Nazev }}</span>
+                                        {% if event.Poradatel %}
+                                            <br>
+                                            Pořadatel: <span class="text-secondary fw-bold">{{ event.Poradatel }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                {% if event.Aktualita %}
+                                    </a>
                                 {% endif %}
                             </div>
                         {% endfor %}

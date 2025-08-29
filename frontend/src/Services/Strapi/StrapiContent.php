@@ -268,9 +268,27 @@ readonly final class StrapiContent
         /** @var array{data: array<KalendarAkciDataArray>} $strapiResponse */
         $strapiResponse = $this->strapiClient->getApiResource('kalendar-akcis',
             filters: [
-                'Datum' => [
-                    '$gte' => $firstDayOfMonth,
-                    '$lte' => $lastDayOfMonth,
+                '$or' => [
+                    [
+                        'Datum' => [
+                            '$gte' => $firstDayOfMonth,
+                            '$lte' => $lastDayOfMonth,
+                        ],
+                    ],
+                    [
+                        'Datum_do' => [
+                            '$gte' => $firstDayOfMonth,
+                            '$lte' => $lastDayOfMonth,
+                        ],
+                    ],
+                    [
+                        'Datum' => [
+                            '$lt' => $firstDayOfMonth,
+                        ],
+                        'Datum_do' => [
+                            '$gt' => $lastDayOfMonth,
+                        ],
+                    ],
                 ],
             ],
         );
