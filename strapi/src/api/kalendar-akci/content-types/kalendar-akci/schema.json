@@ -14,6 +14,9 @@
     "Datum": {
       "type": "datetime"
     },
+    "Datum_do": {
+      "type": "datetime"
+    },
     "Nazev": {
       "type": "string"
     },

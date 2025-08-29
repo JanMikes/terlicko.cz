@@ -15,9 +15,9 @@ readonly final class StrapiApiClient
         private TagAwareCacheInterface $cache,
     ) {}
 
-    public function clearCache(): void
+    public function clearCache(): bool
     {
-        $this->cache->invalidateTags(['strapi']);
+        return $this->cache->invalidateTags(['strapi']);
     }
 
 
@@ -59,8 +59,7 @@ readonly final class StrapiApiClient
 
         return $this->cache->get($key, function(ItemInterface $item) use ($resourceName, $query): array {
             $item->tag('strapi');
-            // $item->expiresAfter(3600 * 24); // 24 Hours
-            $item->expiresAfter(15); // 24 Hours
+            $item->expiresAfter(3600 * 24 * 7); // 7 days
 
             $response = $this->strapiClient->request('GET', '/api/' . $resourceName, [
                 'query' => $query

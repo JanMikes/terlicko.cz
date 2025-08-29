@@ -549,6 +549,7 @@ export interface ApiKalendarAkciKalendarAkci
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     Datum: Schema.Attribute.DateTime;
+    Datum_do: Schema.Attribute.DateTime;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
