@@ -30,6 +30,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'type' => 'sentry',
                 'level' => 'warning',
                 'hub_id' => HubInterface::class,
+                'fill_extra_context' => true,
             ],
         ],
     ]);
