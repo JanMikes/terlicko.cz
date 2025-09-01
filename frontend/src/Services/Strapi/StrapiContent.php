@@ -256,18 +256,19 @@ readonly final class StrapiContent
     /**
      * @return array<KalendarAkciData>
      */
-    public function getKalendarAkciData(int $year, int $month): array
+    public function getKalendarAkciData(int|null $year = null, int|null $month = null): array
     {
-        $firstDayOfMonth = (new DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month)))
-            ->format('Y-m-d');
+        $filters = [];
 
-        $lastDayOfMonth = (new DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month)))
-            ->modify('last day of this month')
-            ->format('Y-m-d');
+        if ($year !== null && $month !== null) {
+            $firstDayOfMonth = (new DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month)))
+                ->format('Y-m-d');
 
-        /** @var array{data: array<KalendarAkciDataArray>} $strapiResponse */
-        $strapiResponse = $this->strapiClient->getApiResource('kalendar-akcis',
-            filters: [
+            $lastDayOfMonth = (new DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month)))
+                ->modify('last day of this month')
+                ->format('Y-m-d');
+
+            $filters = [
                 '$or' => [
                     [
                         'Datum' => [
@@ -290,7 +291,13 @@ readonly final class StrapiContent
                         ],
                     ],
                 ],
-            ],
+            ];
+        }
+
+        /** @var array{data: array<KalendarAkciDataArray>} $strapiResponse */
+        $strapiResponse = $this->strapiClient->getApiResource('kalendar-akcis',
+            filters: $filters,
+            sort: ['Datum']
         );
 
         return KalendarAkciData::createManyFromStrapiResponse(
