@@ -258,8 +258,6 @@ readonly final class StrapiContent
      */
     public function getKalendarAkciData(int|null $year = null, int|null $month = null): array
     {
-        $filters = [];
-
         if ($year !== null && $month !== null) {
             $firstDayOfMonth = (new DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month)))
                 ->format('Y-m-d');
@@ -290,6 +288,12 @@ readonly final class StrapiContent
                             '$gt' => $lastDayOfMonth,
                         ],
                     ],
+                ],
+            ];
+        } else {
+            $filters = [
+                'Datum' => [
+                    '$gte' => $this->clock->now()->format('Y-m-d'),
                 ],
             ];
         }
