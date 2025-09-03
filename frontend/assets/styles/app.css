@@ -557,12 +557,43 @@ h2, h3, h4, h5, h6 {
 
 
 .column-karta {
-    width: 306px;
+    width: 100%; /* Full width within grid cell */
     border: 2.5px solid var(--bs-primary);
     padding: 15px;
     border-radius: 4px;
     text-decoration: none;
     color: var(--bs-primary);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Grid container for karty */
+.karty-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(1, minmax(0, 1fr)); /* Mobile: 1 column, equal width */
+}
+
+/* Small and Medium screens: 2 columns per row */
+@media (min-width: 576px) {
+    .karty-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Large screens: 3 columns per row */
+@media (min-width: 992px) {
+    .karty-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* Extra large screens and up: 4 columns per row */
+@media (min-width: 1200px) {
+    .karty-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
 }
 
 .event-date {
@@ -636,7 +667,8 @@ p img {
 .custon-badge-btn-full {
     width: 100% !important;
     border-radius: 0 !important;
-    padding: 6px 10px !important;
+    padding: 10px 12px !important;
+    font-size: 16px;
 }
 
 .img-wrapper {
