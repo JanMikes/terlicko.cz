@@ -458,6 +458,34 @@ a.column-dlazdice:hover {
     background: var(--bs-secondary);
 }
 
+/* Mobile responsiveness for column-dlazdice */
+@media (max-width: 575px) {
+    .column-dlazdice {
+        width: 100%;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        flex-wrap: nowrap !important;
+    }
+    
+    .column-dlazdice img {
+        margin-bottom: 0 !important;
+        margin-right: 15px;
+        width: 60px;
+        height: auto;
+        flex-shrink: 0;
+    }
+    
+    .column-dlazdice .divider {
+        width: 4px;
+        height: 30px;
+        margin: 0 15px;
+        flex-shrink: 0;
+    }
+}
+
 .form-label {
     color: var(--bs-primary);
     font-weight: bold;
