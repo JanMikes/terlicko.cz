@@ -653,12 +653,21 @@ p img {
 
 
 /* Responsive headings: fluid mobile, static desktop */
-h1, .h1 { font-size: calc(1.1rem + 0.8vw); }
-h2, .h2 { font-size: calc(0.95rem + 0.7vw); }
-h3, .h3 { font-size: calc(0.9rem + 0.5vw); }
-h4, .h4 { font-size: calc(0.8rem + 0.3vw); }
-h5, .h5 { font-size: calc(0.72rem + 0.25vw); }
-/* h6, .h6 { font-size: calc(0.62rem + 0.18vw); } */
+h1, .h1 { font-size: calc(1.5rem + 0.5vw); }
+h2, .h2 { font-size: calc(1.25rem + 0.4vw); }
+h3, .h3 { font-size: calc(1.1rem + 0.3vw); }
+h4, .h4 { font-size: calc(1rem + 0.2vw); }
+h5, .h5 { font-size: calc(0.9rem + 0.15vw); }
+/* h6, .h6 { font-size: calc(0.8rem + 0.1vw); } */
+
+@media (min-width: 768px) {
+    h1, .h1 { font-size: calc(1.75rem + 0.6vw); }
+    h2, .h2 { font-size: calc(1.4rem + 0.5vw); }
+    h3, .h3 { font-size: calc(1.2rem + 0.4vw); }
+    h4, .h4 { font-size: calc(1.05rem + 0.25vw); }
+    h5, .h5 { font-size: calc(0.95rem + 0.2vw); }
+/*    h6, .h6 { font-size: calc(0.85rem + 0.15vw); } */
+}
 
 @media (min-width: 1200px) {
     h1, .h1 { font-size: 3rem; }
