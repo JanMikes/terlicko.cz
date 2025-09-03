@@ -14,13 +14,23 @@
     <h1 class="fw-bolder mb-4 mb-md-5">Aktuality</h1>
 
     {% if tagy %}
-        <p class="tags">
-            {% for Tag in tagy %}
-                <a href="{{ path('aktuality_tag_filter', {'tag': Tag.slug}) }}" class="custom-badge {% if Tag.slug == active_tag %}active_tag{% endif %}">
-                    {{ Tag.Tag }}
-                </a>
-            {% endfor %}
-        </p>
+        <div class="tags" data-controller="tags-visibility" data-tags-visibility-initial-count-value="10">
+            <p class="d-inline">
+                {% for Tag in tagy %}
+                    <a href="{{ path('aktuality_tag_filter', {'tag': Tag.slug}) }}" 
+                       class="me-2 mb-2 custom-badge {% if Tag.slug == active_tag %}active_tag{% endif %}"
+                       data-tags-visibility-target="tag">
+                        {{ Tag.Tag }}
+                    </a>
+                {% endfor %}
+                <button type="button" 
+                        class="btn btn-link text-decoration-none p-0 ms-2 d-none"
+                        data-tags-visibility-target="showMore"
+                        data-action="click->tags-visibility#showAll">
+                    Zobrazit více
+                </button>
+            </p>
+        </div>
     {% endif %}
 
     <div class="row">
