@@ -14,21 +14,24 @@
     <h1 class="fw-bolder mb-4 mb-md-5">Aktuality</h1>
 
     {% if tagy %}
-        <div class="tags" data-controller="tags-visibility" data-tags-visibility-initial-count-value="10">
+        {% set initial_count = 10 %}
+        <div class="tags" data-controller="tags-visibility" data-tags-visibility-initial-count-value="{{ initial_count }}">
             <p class="d-inline">
                 {% for Tag in tagy %}
                     <a href="{{ path('aktuality_tag_filter', {'tag': Tag.slug}) }}" 
-                       class="me-2 mb-2 custom-badge {% if Tag.slug == active_tag %}active_tag{% endif %}"
+                       class="me-2 mb-2 custom-badge {% if Tag.slug == active_tag %}active_tag{% endif %} {% if loop.index0 >= initial_count %}d-none{% endif %}"
                        data-tags-visibility-target="tag">
                         {{ Tag.Tag }}
                     </a>
                 {% endfor %}
-                <button type="button" 
-                        class="btn btn-link text-decoration-none p-0 ms-2 d-none"
-                        data-tags-visibility-target="showMore"
-                        data-action="click->tags-visibility#showAll">
-                    Zobrazit více
-                </button>
+                {% if tagy|length > initial_count %}
+                    <button type="button" 
+                            class="btn btn-link text-decoration-none p-0 ms-2"
+                            data-tags-visibility-target="showMore"
+                            data-action="click->tags-visibility#showAll">
+                        Zobrazit více
+                    </button>
+                {% endif %}
             </p>
         </div>
     {% endif %}
@@ -36,24 +39,22 @@
     <div class="row">
         {% for aktualita in aktuality %}
             <div class="col-sm-6 col-md-4 col-lg-3 my-3">
-                <a href="{{ path('detail_aktuality', {'slug': aktualita.slug}) }}" class="text-decoration-none">
-                    {% if aktualita.Obrazek %}
-                        <img class="img-fluid mb-2" src="{{ aktualita.Obrazek.url }}" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
-                    {% endif %}
+                <a href="{{ path('detail_aktuality', {'slug': aktualita.slug}) }}" class="text-decoration-none pb-4 pb-sm-0 border-bottom-sm-only d-block">
+                    <time class="small text-primary-emphasis">{{ aktualita.DatumZverejneni|date('d.m.Y') }}</time>
+
+                    <h3 class="h5 mt-0 fw-bold">{{ aktualita.Nadpis }}</h3>
 
                     {% if aktualita.Tagy %}
-                        <span class="d-block text-secondary">
-                                    {% for Tag in aktualita.Tagy %}
-                                        {% if not loop.first %}
-                                            |
-                                        {% endif %}
-                                        {{ Tag.Tag }}
-                                    {% endfor %}
-                                </span>
+                        <p class="mb-0">
+                            {% for Tag in aktualita.Tagy %}
+                                <span class="custom-badge me-2 mb-2">{{ Tag.Tag }}</span>
+                            {% endfor %}
+                        </p>
                     {% endif %}
 
-                    <h3 class="h5 border-top mt-2 pt-2 fw-bold">{{ aktualita.Nadpis }}</h3>
-                    <time class="small text-primary-emphasis">{{ aktualita.DatumZverejneni|date('d.m.Y') }}</time>
+                    {% if aktualita.Obrazek %}
+                        <img class="img-fluid" src="{{ aktualita.Obrazek.url }}" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
+                    {% endif %}
                 </a>
             </div>
         {% endfor %}

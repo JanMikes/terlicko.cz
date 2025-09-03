@@ -969,7 +969,16 @@ a:hover .upcoming-event-item {
     color: var(--bs-primary);
 }
 
+/* Border utilities that show border-bottom only on small screens */
+.border-bottom-sm-only {
+    border-bottom: 1px solid #dee2e6;
+}
+
 @media (min-width: 576px) {
+    .border-bottom-sm-only {
+        border-bottom: none !important;
+    }
+    
     .border-sm-end {
         border-inline-end: 1px solid #434f7f !important;
     }
