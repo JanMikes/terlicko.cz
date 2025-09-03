@@ -243,7 +243,8 @@ header.bg-dark {
 }
 
 .carousel-item {
-    height: 733px;
+    height: 77vh;
+    max-height: 733px;
     background-color: #1E2648;
 }
 
@@ -981,4 +982,42 @@ a:hover .upcoming-event-item {
     justify-content: center;
     align-items: center;
     min-height: 400px;
+}
+
+/* Gallery Grid */
+.gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.gallery-item {
+    flex: 1 1 calc(50% - 0.5rem); /* Mobile: 2 per row */
+    max-width: calc(50% - 0.5rem);
+    min-width: calc(50% - 0.5rem);
+}
+
+@media (min-width: 768px) {
+    .gallery-item {
+        flex: 1 1 calc(25% - 0.75rem); /* Tablet: 4 per row */
+        max-width: calc(25% - 0.75rem);
+        min-width: calc(25% - 0.75rem);
+    }
+}
+
+@media (min-width: 992px) {
+    .gallery-item {
+        flex: 1 1 calc(16.666% - 0.833rem); /* Desktop: 6 per row */
+        max-width: calc(16.666% - 0.833rem);
+        min-width: 150px; /* Minimum width before wrapping */
+    }
+    /* When fewer items, they expand to fill */
+    .gallery-grid:has(.gallery-item:last-child:nth-child(1)) .gallery-item,
+    .gallery-grid:has(.gallery-item:last-child:nth-child(2)) .gallery-item,
+    .gallery-grid:has(.gallery-item:last-child:nth-child(3)) .gallery-item,
+    .gallery-grid:has(.gallery-item:last-child:nth-child(4)) .gallery-item,
+    .gallery-grid:has(.gallery-item:last-child:nth-child(5)) .gallery-item {
+        flex: 1 1 auto;
+        max-width: calc(33.333% - 0.666rem); /* Max 3 per row when fewer items */
+    }
 }
