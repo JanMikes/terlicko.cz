@@ -1,26 +1,15 @@
 <div class="row gx-4 my-5">
     {% for vizitka in data.Vizitky %}
-        <div class="col-sm-6 col-lg-4">
+        <div class="col-sm-6 col-lg-4 mb-3">
             <div class="card-doctor p-4">
-
                 <h4>
                     {% for lekar in vizitka.Lekari %}
                         {% if not loop.first %}<br>{% endif %}{{ lekar.Jmeno }}
                     {% endfor %}
                 </h4>
 
-                {% if vizitka.Adresa %}
-                    <p>
-                        {% if vizitka.OdkazNaMapu %}
-                            <a href="{{ vizitka.OdkazNaMapu }}">{{ vizitka.Adresa }}</a>
-                        {% else %}
-                            {{ vizitka.Adresa }}
-                        {% endif %}
-                    </p>
-                {% endif %}
-
                 {% if vizitka.Telefony|length > 0 %}
-                    <p>
+                    <p class="small">
                         {% for telefon in vizitka.Telefony %}
                             {% if not loop.first %}<br>{% endif %}
 
@@ -30,6 +19,16 @@
 
                             {{ telefon.Telefon }}
                         {% endfor %}
+                    </p>
+                {% endif %}
+
+                {% if vizitka.Adresa %}
+                    <p class="small">
+                        {% if vizitka.OdkazNaMapu %}
+                            <a href="{{ vizitka.OdkazNaMapu }}">{{ vizitka.Adresa }}</a>
+                        {% else %}
+                            {{ vizitka.Adresa }}
+                        {% endif %}
                     </p>
                 {% endif %}
 
@@ -44,7 +43,7 @@
                     </div>
                     <div id="{{ collapseId }}" class="collapse">
                         <div class="pt-2">
-                            {{ vizitka.OteviraciDoba|nl2br }}
+                            {{ vizitka.OteviraciDoba|newlines }}
                         </div>
                     </div>
                 {% endif %}

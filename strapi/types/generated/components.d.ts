@@ -185,6 +185,7 @@ export interface ElementyOdkaz extends Struct.ComponentSchema {
     icon: 'code';
   };
   attributes: {
+    Kotva: Schema.Attribute.String;
     sekce: Schema.Attribute.Relation<'oneToOne', 'api::sekce.sekce'>;
     Soubor: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     URL: Schema.Attribute.String;
@@ -453,7 +454,9 @@ export interface KomponentyNadpis extends Struct.ComponentSchema {
     icon: 'bold';
   };
   attributes: {
+    Kotva: Schema.Attribute.String;
     Nadpis: Schema.Attribute.String & Schema.Attribute.Required;
+    Odkaz: Schema.Attribute.Component<'elementy.odkaz', false>;
     Typ: Schema.Attribute.Enumeration<['h2', 'h3', 'h4', 'h5']> &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'h2'>;

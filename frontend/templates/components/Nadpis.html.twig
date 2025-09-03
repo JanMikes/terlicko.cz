@@ -1,1 +1,8 @@
-<{{ data.Typ }} class="mt-5 mb-5">{{ data.Nadpis }}</{{ data.Typ }}>
+{% if data.Odkaz %}
+    <twig:Odkaz data="{{ data.Odkaz }}" parentData="{{ data }}">
+        <{{ parentData.Typ }} class="mt-5 mb-5" {% if parentData.Kotva %}id="{{ parentData.Kotva }}"{% endif %}>{{ parentData.Nadpis }}</{{ parentData.Typ }}>
+    </twig:Odkaz>
+{% else %}
+    <{{ data.Typ }} class="mt-5 mb-5" {% if data.Kotva %}id="{{ data.Kotva }}"{% endif %}>{{ data.Nadpis }}</{{ data.Typ }}>
+{% endif %}
+

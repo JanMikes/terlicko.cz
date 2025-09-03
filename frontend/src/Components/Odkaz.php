@@ -24,10 +24,22 @@ final class Odkaz
             return null;
         }
 
-        if ($this->data->sekceSlug !== null) {
-            return $this->strapiLinkHelper->getLinkForSlug($this->data->sekceSlug);
+        if ($this->data->Soubor !== null) {
+            return $this->data->Soubor->url;
         }
 
-        return $this->data->url ?? '#';
+        if ($this->data->sekceSlug !== null) {
+            $url = $this->strapiLinkHelper->getLinkForSlug($this->data->sekceSlug);
+        } else {
+            $url = $this->data->url ?? '#';
+        }
+
+        if ($this->data->Kotva !== null) {
+            $url .= '#' . $this->data->Kotva;
+        }
+
+        $url = str_replace('##', '#', $url);
+
+        return $url;
     }
 }

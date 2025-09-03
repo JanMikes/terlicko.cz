@@ -12,18 +12,21 @@
       "relation": "oneToOne",
       "target": "api::sekce.sekce"
     },
+    "Kotva": {
+      "type": "string"
+    },
     "URL": {
       "type": "string"
     },
     "Soubor": {
+      "type": "media",
+      "multiple": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     }
   }
 }

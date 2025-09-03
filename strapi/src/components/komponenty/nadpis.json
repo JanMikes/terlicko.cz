@@ -13,14 +13,22 @@
     },
     "Typ": {
       "type": "enumeration",
+      "required": true,
+      "default": "h2",
       "enum": [
         "h2",
         "h3",
         "h4",
         "h5"
-      ],
-      "default": "h2",
-      "required": true
+      ]
+    },
+    "Kotva": {
+      "type": "string"
+    },
+    "Odkaz": {
+      "type": "component",
+      "component": "elementy.odkaz",
+      "repeatable": false
     }
   }
 }
