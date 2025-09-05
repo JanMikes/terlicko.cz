@@ -2,13 +2,8 @@
     <div class="gallery-grid">
         {% for obrazek in data.Obrazek %}
             <div class="gallery-item {{ loop.index > data.Pocet_zobrazenych ? 'd-none' }}" data-gallery-target="item">
-                {#
-                <a href="{{ obrazek.Obrazek.large.url ? obrazek.Obrazek.large.url : obrazek.Obrazek.url }}" class="glightbox">
-                    <img class="img-fluid" style="width: 100%;" src="{{ obrazek.Obrazek.thumbnail ? obrazek.Obrazek.thumbnail.url : obrazek.Obrazek.url }}" alt="{{ obrazek.Popis }}" title="{{ obrazek.Popis }}">
-                </a>
-                #}
-                <a href="{{ obrazek.Obrazek.url }}" class="glightbox gallery-link d-block" style="height: 250px; overflow: hidden;">
-                    <img class="img-fluid gallery-image" style="width: 100%; height: 100%; object-fit: cover; object-position: center center;" src="{{ obrazek.Obrazek.url }}" alt="{{ obrazek.Popis }}" title="{{ obrazek.Popis }}">
+                <a href="{{ obrazek.Obrazek.url }}" class="glightbox gallery-link d-block">
+                    <img class="img-fluid gallery-image" src="{{ obrazek.Obrazek.url }}" alt="{{ obrazek.Popis }}" title="{{ obrazek.Popis }}">
                 </a>
             </div>
         {% endfor %}

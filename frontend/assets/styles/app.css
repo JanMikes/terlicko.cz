@@ -739,8 +739,40 @@ h5, .h5 { font-size: calc(0.9rem + 0.15vw); }
 }
 
 .column-karta-s-argumenty {
-    flex: 1 1 calc((100% - 6rem) / 5);
-    width: 100%;
+    flex: 0 0 100%; /* xs: 1 column */
+    max-width: 100%;
+}
+
+/* Small screens: 2 columns */
+@media (min-width: 576px) {
+    .column-karta-s-argumenty {
+        flex: 0 0 calc(50% - 1.5rem);
+        max-width: calc(50% - 1.5rem);
+    }
+}
+
+/* Medium screens: 3 columns */
+@media (min-width: 768px) {
+    .column-karta-s-argumenty {
+        flex: 0 0 calc(33.333% - 2rem);
+        max-width: calc(33.333% - 2rem);
+    }
+}
+
+/* Large screens: 4 columns */
+@media (min-width: 992px) {
+    .column-karta-s-argumenty {
+        flex: 0 0 calc(25% - 2.25rem);
+        max-width: calc(25% - 2.25rem);
+    }
+}
+
+/* Extra large screens: 5 columns */
+@media (min-width: 1200px) {
+    .column-karta-s-argumenty {
+        flex: 0 0 calc(20% - 2.4rem);
+        max-width: calc(20% - 2.4rem);
+    }
 }
 
 .column-tipy-na-vylet {
@@ -991,11 +1023,12 @@ a:hover .upcoming-event-item {
 .gallery-link {
     display: block;
     overflow: hidden;
+    aspect-ratio: 4 / 3;
 }
 
 .gallery-image {
     width: 100%;
-    height: 200px;
+    height: 100%;
     object-fit: cover;
     object-position: center;
     display: block;
