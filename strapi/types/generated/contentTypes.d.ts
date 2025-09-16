@@ -557,6 +557,10 @@ export interface ApiKalendarAkciKalendarAkci
     > &
       Schema.Attribute.Private;
     Nazev: Schema.Attribute.String;
+    Popis: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 150;
+      }>;
     Poradatel: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;

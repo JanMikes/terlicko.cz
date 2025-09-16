@@ -27,6 +27,10 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::aktuality.aktuality"
+    },
+    "Popis": {
+      "type": "text",
+      "maxLength": 150
     }
   }
 }

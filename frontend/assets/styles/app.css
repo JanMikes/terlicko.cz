@@ -613,6 +613,33 @@ h2, h3, h4, h5, h6 {
     font-size: 26px;
 }
 
+.event-description {
+    color: var(--bs-primary);
+}
+
+.upcoming-event-delimiter {
+    width: 16px;
+    text-align: center;
+    padding-top: 46px;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--bs-primary);
+}
+
+.event-link {
+    width: 25px;
+    text-align: center;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #fff;
+    background: var(--bs-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .event-live-stream {
     border-radius: 4px;
     background: var(--bs-primary);
@@ -869,6 +896,7 @@ h5, .h5 { font-size: calc(0.9rem + 0.15vw); }
     color: var(--bs-primary);
     font-size: 20px;
     font-weight: bold;
+    line-height: 22px;
 }
 
 a:hover .upcoming-event-item {

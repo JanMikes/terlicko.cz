@@ -15,6 +15,7 @@ use DateTimeZone;
  *     Nazev: null|string,
  *     Poradatel: null|string,
  *     Aktualita: null|AktualitaDataArray,
+ *     Popis: null|string,
  * }
  */
 readonly final class KalendarAkciData
@@ -28,6 +29,7 @@ readonly final class KalendarAkciData
         public null|string $Nazev,
         public null|string $Poradatel,
         public null|AktualitaData $Aktualita,
+        public null|string $Popis,
     ) {
     }
 
@@ -55,6 +57,7 @@ readonly final class KalendarAkciData
             Nazev: $data['Nazev'],
             Poradatel: $data['Poradatel'],
             Aktualita: $data['Aktualita'] !== null ? AktualitaData::createFromStrapiResponse($data['Aktualita']) : null,
+            Popis: $data['Popis'],
         );
     }
 }
