@@ -140,6 +140,13 @@ readonly final class StrapiContent
             ];
         }
 
+        if ($year !== null) {
+            $filters['Datum_zverejneni'] = [
+                '$gte' => $year . '-01-01',
+                '$lte' => $year . '-12-31',
+            ];
+        }
+
         if (is_string($category)) {
             $filters['categories'] = ['slug' => ['$eq' => $category]];
         }
@@ -167,6 +174,84 @@ readonly final class StrapiContent
         );
 
         return UredniDeskaData::createManyFromStrapiResponse($strapiResponse['data']);
+    }
+
+    /**
+     * @param string|array<string>|null $category
+     */
+    public function getUredniDeskaFirstYear(
+        string|array|null $category = null,
+    ): null|int {
+        $filters = [];
+
+        if (is_string($category)) {
+            $filters['categories'] = ['slug' => ['$eq' => $category]];
+        }
+
+        if (is_array($category)) {
+            foreach ($category as $categoryName) {
+                $filters['categories']['slug']['$in'][] = $categoryName;
+            }
+        }
+
+        $pagination = [
+            'limit' => 1,
+            'start' => 0,
+        ];
+
+        /** @var array{data: array<UredniDeskaDataArray>} $strapiResponse */
+        $strapiResponse = $this->strapiClient->getApiResource('uredni-deskas',
+            filters: $filters,
+            pagination: $pagination,
+            sort: ['Datum_zverejneni:asc'],
+        );
+
+        $deska = UredniDeskaData::createManyFromStrapiResponse($strapiResponse['data']);
+
+        if (count($deska) > 0) {
+            return (int) $deska[0]->Datum_zverejneni->format('Y');
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string|array<string>|null $category
+     */
+    public function getUredniDeskaLastYear(
+        string|array|null $category = null,
+    ): null|int {
+        $filters = [];
+
+        if (is_string($category)) {
+            $filters['categories'] = ['slug' => ['$eq' => $category]];
+        }
+
+        if (is_array($category)) {
+            foreach ($category as $categoryName) {
+                $filters['categories']['slug']['$in'][] = $categoryName;
+            }
+        }
+
+        $pagination = [
+            'limit' => 1,
+            'start' => 0,
+        ];
+
+        /** @var array{data: array<UredniDeskaDataArray>} $strapiResponse */
+        $strapiResponse = $this->strapiClient->getApiResource('uredni-deskas',
+            filters: $filters,
+            pagination: $pagination,
+            sort: ['Datum_zverejneni:desc'],
+        );
+
+        $deska = UredniDeskaData::createManyFromStrapiResponse($strapiResponse['data']);
+
+        if (count($deska) > 0) {
+            return (int) $deska[0]->Datum_zverejneni->format('Y');
+        }
+
+        return null;
     }
 
     public function getUredniDeskaData(string $slug): UredniDeskaData

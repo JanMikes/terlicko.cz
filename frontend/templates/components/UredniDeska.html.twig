@@ -11,7 +11,16 @@
                     <span class="article-icon me-3"></span>
                     <div>
                         <a href="{{ path('detail_uredni_desky', {'slug': uredni_deska_dokument.slug}) }}" class="text-decoration-none">
-                            <time class="text-secondary fw-bold">{{ uredni_deska_dokument.Datum_zverejneni|date('d.m.Y') }}</time> {% if uredni_deska_dokument.Datum_stazeni %}- <time class="text-secondary fw-bold">{{ uredni_deska_dokument.Datum_stazeni|date('d.m.Y') }}</time>{% endif %}
+                            <time class="fw-bold">
+                                {% if uredni_deska_dokument.Datum_stazeni %}
+                                    <span class="text-primary">Od</span>
+                                {% endif %}
+                                <span class="text-secondary">{{ uredni_deska_dokument.Datum_zverejneni|date('d.m.Y') }}</span>
+                                {% if uredni_deska_dokument.Datum_stazeni %}
+                                    <span class="text-primary">do</span> <span class="text-secondary">{{ uredni_deska_dokument.Datum_stazeni|date('d.m.Y') }}</span>
+                                {% endif %}
+                            </time>
+
                             <h2 class="h6 mt-1 fw-bold">{{ uredni_deska_dokument.Nadpis }}</h2>
                         </a>
                     </div>

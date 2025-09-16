@@ -13,31 +13,28 @@
 
         <h1 class="fw-bolder mb-4 mb-md-5">Úřední deska</h1>
 
-        {#
-        <p class="my-4">
-            <span class="fw-bold me-3">Zobrazit rok:</span>
+        {% if first_year != last_year %}
+            <p class="my-4">
+                <span class="fw-bold me-3">Zobrazit rok:</span>
 
-            <a class="custom-badge custom-badge-secondary me-2" href="#">2025</a>
-            <a class="custom-badge custom-badge-secondary me-2" href="#">2024</a>
-            <a class="custom-badge custom-badge-secondary me-2" href="#">2023</a>
+                {% for year in first_year..last_year %}
+                    {% set year_params = app.request.query.all|merge({'rok': year}) %}
+                    <a class="custom-badge {% if app.request.query.get('rok') == year %}custom-badge-primary{% else %}custom-badge-secondary{% endif %} me-2" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(year_params)) }}">{{ year }}</a>
+                {% endfor %}
 
-            <a href="#">Zrušit filtrování</a>
-        </p>
-        #}
+                {% set clear_params = app.request.query.all %}
+                {% set clear_params = clear_params|filter((v, k) => k != 'rok') %}
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(clear_params)) }}">Zrušit filtrování</a>
+            </p>
+        {% endif %}
 
         {% if kategorie_uredni_desky %}
             <p class="mt-n">
                 {% for kategorie in kategorie_uredni_desky %}
-                    <a class="custom-badge small mb-1 {% if kategorie.slug == active_kategorie %}active_tag{% endif %}" href="{{ path('uredni_deska_kategorie_filter', {'kategorie': kategorie.slug}) }}">{{ kategorie.Nazev }}</a>
+                    <a class="custom-badge small mb-1 me-1 {% if kategorie.slug == active_kategorie %}active_tag{% endif %}" href="{{ path('uredni_deska_kategorie_filter', {'kategorie': kategorie.slug}) }}">{{ kategorie.Nazev }}</a>
                 {% endfor %}
             </p>
         {% endif %}
-
-        {#
-        {% for Kategorie in uredni_deska.Kategorie %}
-            <a class="custom-badge small" href="{{ path('uredni_deska_kategorie_filter', {'kategorie': Kategorie.slug}) }}">{{ Kategorie.Nazev }}</a>
-        {% endfor %}
-        #}
 
         <section class="row">
             {% for uredni_deska in uredni_desky %}
@@ -58,17 +55,14 @@
                                 <h2 class="h6 mt-1 fw-bold">{{ uredni_deska.Nadpis }}</h2>
                             </a>
 
-                            {#
                             {% for Kategorie in uredni_deska.Kategorie %}
-                                <a class="custom-badge small" href="{{ path('uredni_deska_kategorie_filter', {'kategorie': Kategorie.slug}) }}">{{ Kategorie.Nazev }}</a>
+                                <a class="custom-badge small mb-1 me-1" href="{{ path('uredni_deska_kategorie_filter', {'kategorie': Kategorie.slug}) }}">{{ Kategorie.Nazev }}</a>
                             {% endfor %}
-                            #}
                         </div>
                     </div>
                 </article>
             {% endfor %}
         </section>
-
 
     </div>
 {% endblock %}

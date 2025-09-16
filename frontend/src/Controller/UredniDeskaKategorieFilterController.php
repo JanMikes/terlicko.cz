@@ -22,11 +22,19 @@ final class UredniDeskaKategorieFilterController extends AbstractController
     #[Route('/uredni-deska/kategorie/{kategorie}', name: 'uredni_deska_kategorie_filter')]
     public function __invoke(string $kategorie, Request $request): Response
     {
+        $rok = $request->query->get('rok');
+        $year = $rok !== null ? (int) $rok : null;
+
         try {
+            $firstYear = $this->content->getUredniDeskaFirstYear(category: $kategorie);
+            $lastYear = $this->content->getUredniDeskaLastYear(category: $kategorie);
+
             return $this->render('uredni_deska.html.twig', [
-                'uredni_desky' => $this->content->getUredniDeskyData(category: $kategorie, shouldHideIfExpired: true),
+                'uredni_desky' => $this->content->getUredniDeskyData(category: $kategorie, year: $year, shouldHideIfExpired: $year === null),
                 'kategorie_uredni_desky' => $this->content->getKategorieUredniDesky(),
                 'active_kategorie' => $kategorie,
+                'first_year' => $firstYear,
+                'last_year' => $lastYear,
             ]);
         } catch (InvalidKategorie) {
             throw $this->createNotFoundException();
