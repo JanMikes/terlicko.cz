@@ -24,6 +24,15 @@ final class SectionController extends AbstractController
         $breadcrumbLinks = [];
         $breadcrumbs = explode('/', $path);
         $currentSectionSlug = array_pop($breadcrumbs);
+
+        // Build the correct full URL path from Strapi data
+        $correctPath = ltrim($this->strapiLinkHelper->getLinkForSlug($currentSectionSlug), '/');
+
+        // If the paths don't match, redirect to the correct URL
+        if ($path !== $correctPath) {
+            return $this->redirectToRoute('section', ['path' => $correctPath], 301);
+        }
+
         $sections = $this->strapiLinkHelper->getSections();
 
         foreach ($breadcrumbs as $slug) {
