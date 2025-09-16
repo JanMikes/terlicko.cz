@@ -36,22 +36,26 @@
                 </p>
             {% endif %}
 
+            {% if uredni_deska.Popis %}
+                {{ uredni_deska.Popis|markdown_to_html }}
+            {% endif %}
+
             {% if uredni_deska.Soubory %}
-                <ul class="files-list">
+                <ul class="files-list list-unstyled">
                     {% for file in uredni_deska.Soubory %}
-                        <li>
-                            <a class="file-link" href="{{ file.url }}">
-                                <span class="file-caption">{{ file.caption}}</span>
+                        <li class="mt-2">
+                            <a class="file-link text-decoration-none d-inline-block" href="{{ file.url }}">
+                                <span class="file-name text-decoration-underline">{{ file.name }}</span>
                                 <span class="file-info">({{ file.size }}kb)</span>
-                                <span class="icon-download"></span>
+                                <span class="bi bi-download"></span>
+                                {% if file.caption %}
+                                    <br>
+                                    <span class="file-caption small">{{ file.caption }}</span>
+                                {% endif %}
                             </a>
                         </li>
                     {% endfor %}
                 </ul>
-            {% endif %}
-
-            {% if uredni_deska.Popis %}
-                {{ uredni_deska.Popis|markdown_to_html }}
             {% endif %}
         </section>
     </div>
