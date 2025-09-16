@@ -41,15 +41,18 @@
 
         <section class="row">
             {% for uredni_deska in uredni_desky %}
-                <article class="col-sm-6 col-md-4 my-4">
+                <article class="col-12 my-2">
                     <div class="d-flex">
                         <span class="article-icon me-3"></span>
                         <div>
                             <a href="{{ path('detail_uredni_desky', {'slug': uredni_deska.slug}) }}" class="text-decoration-none">
-                                <time class="text-secondary fw-bold">
-                                    {{ uredni_deska.Datum_zverejneni|date('d.m.Y') }}
+                                <time class="fw-bold">
                                     {% if uredni_deska.Datum_stazeni %}
-                                        - {{ uredni_deska.Datum_stazeni|date('d.m.Y') }}
+                                        <span class="text-primary">Od</span>
+                                    {% endif %}
+                                    <span class="text-secondary">{{ uredni_deska.Datum_zverejneni|date('d.m.Y') }}</span>
+                                    {% if uredni_deska.Datum_stazeni %}
+                                        <span class="text-primary">do</span> <span class="text-secondary">{{ uredni_deska.Datum_stazeni|date('d.m.Y') }}</span>
                                     {% endif %}
                                 </time>
                                 <h2 class="h6 mt-1 fw-bold">{{ uredni_deska.Nadpis }}</h2>
