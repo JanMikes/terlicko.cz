@@ -1143,12 +1143,28 @@ a:hover .upcoming-event-item {
         min-width: 150px; /* Minimum width before wrapping */
     }
     /* When fewer than 6 items, they expand to fill one row */
-    .gallery-grid:has(.gallery-item:last-child:nth-child(1)) .gallery-item,
-    .gallery-grid:has(.gallery-item:last-child:nth-child(2)) .gallery-item,
-    .gallery-grid:has(.gallery-item:last-child:nth-child(3)) .gallery-item,
-    .gallery-grid:has(.gallery-item:last-child:nth-child(4)) .gallery-item,
+    .gallery-grid:has(.gallery-item:last-child:nth-child(1)) .gallery-item {
+        flex: 1 1 calc(100% - 0rem);
+        max-width: calc(100% - 0rem);
+    }
+
+    .gallery-grid:has(.gallery-item:last-child:nth-child(2)) .gallery-item {
+        flex: 1 1 calc(50% - 0.5rem);
+        max-width: calc(50% - 0.5rem);
+    }
+
+    .gallery-grid:has(.gallery-item:last-child:nth-child(3)) .gallery-item {
+        flex: 1 1 calc(33.333% - 0.666rem);
+        max-width: calc(33.333% - 0.666rem);
+    }
+
+    .gallery-grid:has(.gallery-item:last-child:nth-child(4)) .gallery-item {
+        flex: 1 1 calc(25% - 0.75rem);
+        max-width: calc(25% - 0.75rem);
+    }
+
     .gallery-grid:has(.gallery-item:last-child:nth-child(5)) .gallery-item {
-        flex: 1 1 auto;
-        max-width: none; /* Allow expansion beyond container if needed */
+        flex: 1 1 calc(20% - 0.8rem);
+        max-width: calc(20% - 0.8rem);
     }
 }
