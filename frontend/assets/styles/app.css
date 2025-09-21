@@ -892,6 +892,11 @@ h5, .h5 { font-size: calc(0.9rem + 0.15vw); }
     padding: 20px 10px 20px 20px;
 }
 
+.upcoming-event-detail .small {
+    color: #000;
+}
+
+
 .upcoming-event-title {
     color: var(--bs-primary);
     font-size: 20px;
@@ -1008,21 +1013,8 @@ a:hover .upcoming-event-item {
     background: var(--bs-primary);
 }
 
-.calendar-event-item .upcoming-event-date {
-    background: #fff;
-    border: 1px solid #e9e9e9;
-    color: var(--bs-primary);
-}
-
-.calendar-event-item .month-name {
-    color: var(--bs-primary);
-    border-color: #d5dfee;
-}
-
 .calendar-event-item + .calendar-event-item {
     margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #efefef;
 }
 
 .footer-outer {

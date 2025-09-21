@@ -148,14 +148,11 @@
                                                 <span class="upcoming-event-title">{{ event.Nazev }}</span>
                                                 {% if event.Popis %}
                                                     <br>
-                                                    <span class="small event-description">
-                                                {{ event.Popis }}
-                                            </span>
+                                                    <span class="small event-description">{{ event.Popis }}</span>
                                                 {% endif %}
                                                 {% if event.Poradatel %}
                                                     <br>
-                                                    <span class="small">
-                                            Pořadatel: <span class="text-secondary fw-bold">{{ event.Poradatel }}</span>
+                                                    <span class="small">Pořadatel: <span class="text-secondary fw-bold">{{ event.Poradatel }}</span>
                                         </span>
                                                 {% endif %}
                                             </div>
