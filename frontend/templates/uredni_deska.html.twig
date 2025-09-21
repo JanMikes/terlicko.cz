@@ -43,13 +43,13 @@
                         <span class="article-icon me-3"></span>
                         <div>
                             <a href="{{ path('detail_uredni_desky', {'slug': uredni_deska.slug}) }}" class="text-decoration-none">
-                                <time class="fw-bold">
+                                <time class="small text-primary-emphasis">
                                     {% if uredni_deska.Datum_stazeni %}
-                                        <span class="text-primary">Od</span>
+                                        Od
                                     {% endif %}
-                                    <span class="text-secondary">{{ uredni_deska.Datum_zverejneni|date('d.m.Y') }}</span>
+                                    {{ uredni_deska.Datum_zverejneni|date('d.m.Y') }}
                                     {% if uredni_deska.Datum_stazeni %}
-                                        <span class="text-primary">do</span> <span class="text-secondary">{{ uredni_deska.Datum_stazeni|date('d.m.Y') }}</span>
+                                        {{ uredni_deska.Datum_stazeni|date('d.m.Y') }}
                                     {% endif %}
                                 </time>
                                 <h2 class="h6 mt-1 fw-bold">{{ uredni_deska.Nadpis }}</h2>

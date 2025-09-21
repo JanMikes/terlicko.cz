@@ -122,13 +122,13 @@
                             <span class="article-icon me-3"></span>
                             <div>
                                 <a href="{{ path('detail_uredni_desky', {'slug': uredni_deska_dokument.slug}) }}" class="text-decoration-none">
-                                    <time class="fw-bold">
+                                    <time class="small text-primary-emphasis">
                                         {% if uredni_deska_dokument.Datum_stazeni %}
-                                            <span class="text-primary">Od</span>
+                                            Od
                                         {% endif %}
-                                        <span class="text-secondary">{{ uredni_deska_dokument.Datum_zverejneni|date('d.m.Y') }}</span>
+                                        {{ uredni_deska_dokument.Datum_zverejneni|date('d.m.Y') }}
                                         {% if uredni_deska_dokument.Datum_stazeni %}
-                                            <span class="text-primary">do</span> <span class="text-secondary">{{ uredni_deska_dokument.Datum_stazeni|date('d.m.Y') }}</span>
+                                            do {{ uredni_deska_dokument.Datum_stazeni|date('d.m.Y') }}
                                         {% endif %}
                                     </time>
 
