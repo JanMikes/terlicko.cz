@@ -49,9 +49,11 @@
                     {% set isCurrentMonth = (year == today.format('Y')) and (month == today.format('n')) %}
                     {% set todayDay = today.format('j') %}
 
-                    {% for i in 1..(weekdayOfFirst - 1) %}
-                        {% set days = days|merge([null]) %}
-                    {% endfor %}
+                    {% if weekdayOfFirst > 1 %}
+                        {% for i in 1..(weekdayOfFirst - 1) %}
+                            {% set days = days|merge([null]) %}
+                        {% endfor %}
+                    {% endif %}
 
                     {% set daysInMonth = firstOfMonth.format('t') %}
 
