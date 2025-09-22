@@ -11,10 +11,13 @@ use Terlicko\Web\Value\Content\Data\TagData;
 use Terlicko\Web\Value\Content\Data\UredniDeskaData;
 
 #[AsTwigComponent]
-readonly final class UredniDeska
+final class UredniDeska
 {
+    /** @var array<string, array<UredniDeskaData>> */
+    private array $cache = [];
+
     public function __construct(
-        private StrapiContent $content,
+        private readonly StrapiContent $content,
     ) {
     }
 
@@ -35,6 +38,12 @@ readonly final class UredniDeska
             $hideExpired = false;
         }
 
-        return $this->content->getUredniDeskyData(category: $categorySlugs, limit: $Pocet, shouldHideIfExpired: $hideExpired);
+        $cacheKey = md5(serialize([$Pocet, $categorySlugs, $hideExpired]));
+
+        if (!isset($this->cache[$cacheKey])) {
+            $this->cache[$cacheKey] = $this->content->getUredniDeskyData(category: $categorySlugs, limit: $Pocet, shouldHideIfExpired: $hideExpired);
+        }
+
+        return $this->cache[$cacheKey];
     }
 }
