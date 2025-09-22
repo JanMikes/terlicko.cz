@@ -29,6 +29,12 @@ readonly final class UredniDeska
             $categorySlugs[] = $category->slug;
         }
 
-        return $this->content->getUredniDeskyData(category: $categorySlugs, limit: $Pocet, shouldHideIfExpired: true);
+        $hideExpired = true;
+
+        if (count($kategorie) > 0) {
+            $hideExpired = false;
+        }
+
+        return $this->content->getUredniDeskyData(category: $categorySlugs, limit: $Pocet, shouldHideIfExpired: $hideExpired);
     }
 }
