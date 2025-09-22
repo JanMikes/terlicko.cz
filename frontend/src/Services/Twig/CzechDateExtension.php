@@ -39,6 +39,6 @@ final class CzechDateExtension extends AbstractExtension
     {
         $monthNumber = (int) $date->format('n');
 
-        return self::CZECH_MONTHS[$monthNumber] ?? '';
+        return self::CZECH_MONTHS[$monthNumber];
     }
 }
