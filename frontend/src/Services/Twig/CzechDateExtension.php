@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Terlicko\Web\Services\Twig;
 
-use DateTime;
+use DateTimeInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -35,7 +35,7 @@ final class CzechDateExtension extends AbstractExtension
         ];
     }
 
-    public function getCzechMonth(DateTime $date): string
+    public function getCzechMonth(DateTimeInterface $date): string
     {
         $monthNumber = (int) $date->format('n');
 
