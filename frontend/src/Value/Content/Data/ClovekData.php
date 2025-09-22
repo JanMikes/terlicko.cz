@@ -11,7 +11,7 @@ namespace Terlicko\Web\Value\Content\Data;
  *     Email: null|string,
  *     Telefon: null|string,
  *     Pohlavi: string,
- *     Fotka: null|ImageDataArray,
+ *     Fotka?: null|ImageDataArray,
  *  }
  */
 readonly final class ClovekData
@@ -45,7 +45,7 @@ readonly final class ClovekData
             $data['Email'],
             $data['Telefon'],
             $data['Pohlavi'],
-            $data['Fotka'] !== null ? ImageData::createFromStrapiResponse($data['Fotka']) : null,
+            ($data['Fotka'] ?? null) !== null ? ImageData::createFromStrapiResponse($data['Fotka']) : null,
         );
     }
 }
