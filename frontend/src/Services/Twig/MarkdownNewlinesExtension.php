@@ -16,7 +16,7 @@ final class MarkdownNewlinesExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('newlines', [$this, 'formatNewlines'], ['is_safe' => ['all']]),
+            new TwigFilter('newlines', $this->formatNewlines(...), ['is_safe' => ['all']]),
         ];
     }
 

@@ -5,7 +5,7 @@
                 {% if termin.Termin %}
                     <time class="event-date me-3">
                         <span class="fw-bold">{{ termin.Termin|date('d') }}</span><br>
-                        {{ termin.Termin|date('M') }}
+                        {{ termin.Termin|czech_month }}
                     </time>
                 {% endif %}
                 <div class="flex-fill">
