@@ -857,13 +857,36 @@ h5, .h5 { font-size: calc(0.9rem + 0.15vw); }
     max-width: 750px;
 }
 
+.upcoming-event-date-wrapper {
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.upcoming-event-date-wrapper.multiday {
+    @media (min-width: 576px) {
+        display: flex;
+        width: 216px;
+    }
+}
+
+.upcoming-event-date-to {
+    border-top: 1px solid #fff;
+
+    @media (min-width: 576px) {
+        border-top: 0;
+    }
+}
+
 .upcoming-event-date {
-    min-width: 100px;
+    width: 100px;
     min-height: 100px;
     background: var(--bs-primary);
     color: #91a7d7;
     text-align: center;
     padding: 0 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .upcoming-event-date .month-day {
@@ -871,7 +894,6 @@ h5, .h5 { font-size: calc(0.9rem + 0.15vw); }
     font-weight: bold;
     line-height: 100%;
     display: inline-block;
-    margin-top: 12px;
 }
 
 .upcoming-event-date .month-name {

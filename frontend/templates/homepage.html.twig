@@ -176,39 +176,25 @@
                             <a href="{{ path('detail_aktuality', {'slug': event.Aktualita.slug}) }}" class="text-decoration-none">
                         {% endif %}
                             <div class="d-flex w-100 upcoming-event-item position-relative">
+                                <div class="upcoming-event-date-wrapper {% if event.DatumDo and (not event.Datum or event.DatumDo.format('Y-m-d') != event.Datum.format('Y-m-d')) %}multiday{% endif %}">
+                                    {% if event.Datum %}
+                                        <div class="upcoming-event-date flex-shrink-0">
+                                            <span class="month-day">{{ event.Datum.format('d') }}</span>
+                                            <span class="month-name">{{ czechMonths[event.Datum.format('m') - 1] }}</span>
+                                        </div>
+                                    {% endif %}
 
-                                <div class="upcoming-event-date flex-shrink-0 d-sm-none">
-                                    {% if event.Datum and event.DatumDo and event.DatumDo.format('Y-m-d') != event.Datum.format('Y-m-d') %}
-                                        {% set endMonthName = czechMonths[event.DatumDo.format('m') - 1] %}
-                                        <span class="month-day">{{ event.Datum.format('d') }}-{{ event.DatumDo.format('d') }}</span>
-                                        {% if monthName != endMonthName %}
-                                            <span class="month-name">{{ monthName }}-{{ endMonthName }}</span>
-                                        {% else %}
-                                            <span class="month-name">{{ monthName }}</span>
-                                        {% endif %}
-                                    {% else %}
-                                        <span class="month-day">{{ event.Datum.format('d') }}</span>
-                                        <span class="month-name">{{ monthName }}</span>
+                                    {% if event.DatumDo and (not event.Datum or event.DatumDo.format('Y-m-d') != event.Datum.format('Y-m-d')) %}
+                                        <div class="upcoming-event-delimiter flex-grow-0 d-none d-sm-block">
+                                            -
+                                        </div>
+
+                                        <div class="upcoming-event-date upcoming-event-date-to flex-shrink-0">
+                                            <span class="month-day">{{ event.DatumDo.format('d') }}</span>
+                                            <span class="month-name">{{ czechMonths[event.DatumDo.format('m') - 1] }}</span>
+                                        </div>
                                     {% endif %}
                                 </div>
-
-                                {% if event.Datum %}
-                                    <div class="upcoming-event-date flex-shrink-0 d-none d-sm-block">
-                                        <span class="month-day">{{ event.Datum.format('d') }}</span>
-                                        <span class="month-name">{{ czechMonths[event.Datum.format('m') - 1] }}</span>
-                                    </div>
-                                {% endif %}
-
-                                {% if event.DatumDo and (not event.Datum or event.DatumDo.format('Y-m-d') != event.Datum.format('Y-m-d')) %}
-                                    <div class="upcoming-event-delimiter flex-grow-0 d-none d-sm-block">
-                                        -
-                                    </div>
-
-                                    <div class="upcoming-event-date flex-shrink-0 d-none d-sm-block">
-                                        <span class="month-day">{{ event.DatumDo.format('d') }}</span>
-                                        <span class="month-name">{{ czechMonths[event.DatumDo.format('m') - 1] }}</span>
-                                    </div>
-                                {% endif %}
 
                                 <div class="upcoming-event-detail flex-grow-1">
                                     <span class="upcoming-event-title">{{ event.Nazev }}</span>
