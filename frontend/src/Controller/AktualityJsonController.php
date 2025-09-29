@@ -48,7 +48,7 @@ final class AktualityJsonController extends AbstractController
                 'perex' => $this->textProcessor->createPerex($aktualita->Popis),
                 'category' => $category,
                 'date_published' => $aktualita->DatumZverejneni->format('d.m.Y'),
-                'author' => $aktualita->Zverejnil?->Jmeno ?? '',
+                'author' => $aktualita->Zverejnil->Jmeno ?? '',
                 'image' => $imageUrl,
                 'href' => $detailUrl,
                 'content' => $this->textProcessor->markdownToHtml($aktualita->Popis),
