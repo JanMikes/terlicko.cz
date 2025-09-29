@@ -27,12 +27,12 @@ final class UredniDeskaJsonController extends AbstractController
         $jsonData = [];
         
         foreach ($uredniDeskyData as $uredniDeska) {
-            $category = null;
+            $category = '';
             if (!empty($uredniDeska->Kategorie)) {
                 $category = $uredniDeska->Kategorie[0]->Nazev;
             }
             
-            $detailUrl = null;
+            $detailUrl = '';
             if ($uredniDeska->slug !== null) {
                 $detailUrl = $this->generateUrl('detail_uredni_desky', ['slug' => $uredniDeska->slug], UrlGeneratorInterface::ABSOLUTE_URL);
             }
@@ -43,8 +43,6 @@ final class UredniDeskaJsonController extends AbstractController
                 $files[] = [
                     'file_title' => $file->caption ?? $file->name,
                     'file_url' => $baseUrl . $file->url,
-                    'file_data' => null,
-                    'file_ext' => null,
                 ];
             }
             
@@ -54,10 +52,9 @@ final class UredniDeskaJsonController extends AbstractController
                 'category' => $category,
                 'date_published' => $uredniDeska->Datum_zverejneni->format('d.m.Y'),
                 'date_valid' => $uredniDeska->Datum_stazeni?->format('d.m.Y'),
-                'note' => null,
                 'href' => $detailUrl,
                 'files' => $files,
-                'content' => $uredniDeska->Popis,
+                'content' => $this->textProcessor->markdownToHtml($uredniDeska->Popis ?? ''),
             ];
         }
         

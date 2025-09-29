@@ -16,6 +16,11 @@ readonly final class TextProcessor
         $this->markdownRuntime = new MarkdownRuntime(new DefaultMarkdown());
     }
 
+    public function markdownToHtml(string $text): string
+    {
+        return $this->markdownRuntime->convert($text);
+    }
+
     public function createPerex(string $text): string
     {
         // Convert markdown to HTML

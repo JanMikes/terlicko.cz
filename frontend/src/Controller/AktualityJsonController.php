@@ -22,23 +22,23 @@ final class AktualityJsonController extends AbstractController
     #[Route('/aktuality.json', name: 'aktuality_json')]
     public function __invoke(Request $request): JsonResponse
     {
-        $aktualityData = $this->content->getAktualityData();
+        $aktualityData = $this->content->getAktualityData(limit: 30);
         
         $jsonData = [];
         
         foreach ($aktualityData as $aktualita) {
-            $category = null;
+            $category = '';
             if (!empty($aktualita->Tagy)) {
                 $category = $aktualita->Tagy[0]->Tag;
             }
             
-            $imageUrl = null;
+            $imageUrl = '';
             if ($aktualita->Obrazek !== null) {
                 $baseUrl = $request->getSchemeAndHttpHost();
                 $imageUrl = $baseUrl . $aktualita->Obrazek->url;
             }
             
-            $detailUrl = null;
+            $detailUrl = '';
             if ($aktualita->slug !== null) {
                 $detailUrl = $this->generateUrl('detail_aktuality', ['slug' => $aktualita->slug], UrlGeneratorInterface::ABSOLUTE_URL);
             }
@@ -48,10 +48,10 @@ final class AktualityJsonController extends AbstractController
                 'perex' => $this->textProcessor->createPerex($aktualita->Popis),
                 'category' => $category,
                 'date_published' => $aktualita->DatumZverejneni->format('d.m.Y'),
-                'author' => $aktualita->Zverejnil?->Jmeno,
+                'author' => $aktualita->Zverejnil?->Jmeno ?? '',
                 'image' => $imageUrl,
                 'href' => $detailUrl,
-                'content' => $aktualita->Popis,
+                'content' => $this->textProcessor->markdownToHtml($aktualita->Popis),
             ];
         }
         

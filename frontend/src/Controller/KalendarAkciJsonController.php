@@ -15,12 +15,6 @@ use Terlicko\Web\Value\Content\Data\KalendarAkciData;
 
 final class KalendarAkciJsonController extends AbstractController
 {
-    private const array CZECH_MONTHS = [
-        1 => 'ledna', 2 => 'února', 3 => 'března', 4 => 'dubna',
-        5 => 'května', 6 => 'června', 7 => 'července', 8 => 'srpna',
-        9 => 'září', 10 => 'října', 11 => 'listopadu', 12 => 'prosince'
-    ];
-
     private const array CZECH_DAYS = [
         1 => 'pondělí', 2 => 'úterý', 3 => 'středa', 4 => 'čtvrtek',
         5 => 'pátek', 6 => 'sobota', 7 => 'neděle'
@@ -39,11 +33,11 @@ final class KalendarAkciJsonController extends AbstractController
         $jsonData = [];
         
         foreach ($kalendarAkciData as $kalendarAkce) {
-            $category = null;
+            $category = '';
             $perex = '';
             $content = '';
-            $imageUrl = null;
-            $detailUrl = null;
+            $imageUrl = '';
+            $detailUrl = '';
             
             if ($kalendarAkce->Aktualita !== null) {
                 $perex = $this->textProcessor->createPerex($kalendarAkce->Aktualita->Popis);
@@ -67,23 +61,20 @@ final class KalendarAkciJsonController extends AbstractController
             }
             
             $actionDate = $this->formatActionDate($kalendarAkce->Datum, $kalendarAkce->DatumDo);
-            $actionDateOrder = $kalendarAkce->Datum?->format('Y-m-d');
+            $actionDateOrder = ($kalendarAkce->DatumDo ?? $kalendarAkce->Datum)?->format('Y-m-d');
             $calendarUrl = $this->generateGoogleCalendarUrl($kalendarAkce);
             
             $jsonData[] = [
-                'title' => $kalendarAkce->Nazev,
+                'title' => $kalendarAkce->Nazev ?? '',
                 'perex' => $perex,
                 'category' => $category,
-                'action_date' => $actionDate,
-                'action_date_order' => $actionDateOrder,
-                'organizer' => $kalendarAkce->Poradatel,
-                'place' => null,
-                'price' => null,
-                'print_priority' => null,
+                'action_date' => $actionDate ?? '',
+                'action_date_order' => $actionDateOrder ?? '',
+                'organizer' => $kalendarAkce->Poradatel ?? '',
                 'image' => $imageUrl,
                 'href' => $detailUrl,
-                'action_calendar_url' => $calendarUrl,
-                'content' => $content,
+                'action_calendar_url' => $calendarUrl ?? '',
+                'content' => $this->textProcessor->markdownToHtml($content),
             ];
         }
         
@@ -97,21 +88,32 @@ final class KalendarAkciJsonController extends AbstractController
         }
 
         $dayName = self::CZECH_DAYS[(int) $datum->format('N')];
-        $day = $datum->format('j');
-        $month = self::CZECH_MONTHS[(int) $datum->format('n')];
-        $year = $datum->format('Y');
+        $startDate = $datum->format('j.n.Y');
         $time = $datum->format('H:i');
 
-        $formattedDate = "{$dayName} {$day}. {$month} {$year}";
+        $formattedDate = $dayName . ' ' . $startDate;
 
         if ($time !== '00:00') {
-            $formattedDate .= " od {$time}";
+            $formattedDate .= ' od ' . $time;
         }
 
         if ($datumDo !== null) {
             $endTime = $datumDo->format('H:i');
-            if ($endTime !== '00:00') {
-                $formattedDate .= " do {$endTime}";
+            $endDate = $datumDo->format('j.n.Y');
+
+            // Check if it's a multiday event
+            if ($datum->format('Y-m-d') !== $datumDo->format('Y-m-d')) {
+                $endDayName = self::CZECH_DAYS[(int) $datumDo->format('N')];
+                if ($endTime !== '00:00') {
+                    $formattedDate .= ' do ' . $endDayName . ' ' . $endDate . ' ' . $endTime;
+                } else {
+                    $formattedDate .= ' do ' . $endDayName . ' ' . $endDate;
+                }
+            } else {
+                // Same day event
+                if ($endTime !== '00:00') {
+                    $formattedDate .= ' do ' . $endTime;
+                }
             }
         }
 
