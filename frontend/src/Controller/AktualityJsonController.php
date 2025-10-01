@@ -31,18 +31,27 @@ final class AktualityJsonController extends AbstractController
             if (!empty($aktualita->Tagy)) {
                 $category = $aktualita->Tagy[0]->Tag;
             }
-            
+
             $imageUrl = '';
             if ($aktualita->Obrazek !== null) {
                 $baseUrl = $request->getSchemeAndHttpHost();
                 $imageUrl = $baseUrl . $aktualita->Obrazek->url;
             }
-            
+
             $detailUrl = '';
             if ($aktualita->slug !== null) {
                 $detailUrl = $this->generateUrl('detail_aktuality', ['slug' => $aktualita->slug], UrlGeneratorInterface::ABSOLUTE_URL);
             }
-            
+
+            $baseUrl = $request->getSchemeAndHttpHost();
+            $files = [];
+            foreach ($aktualita->Soubory as $file) {
+                $files[] = [
+                    'file_title' => $file->caption ?? $file->name,
+                    'file_url' => $baseUrl . $file->url,
+                ];
+            }
+
             $jsonData[] = [
                 'title' => $aktualita->Nadpis,
                 'perex' => $this->textProcessor->createPerex($aktualita->Popis),
@@ -51,6 +60,7 @@ final class AktualityJsonController extends AbstractController
                 'author' => $aktualita->Zverejnil->Jmeno ?? '',
                 'image' => $imageUrl,
                 'href' => $detailUrl,
+                'files' => $files,
                 'content' => $this->textProcessor->markdownToHtml($aktualita->Popis),
             ];
         }
