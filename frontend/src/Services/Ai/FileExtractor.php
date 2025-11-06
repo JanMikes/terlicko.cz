@@ -29,43 +29,27 @@ readonly final class FileExtractor
      */
     public function extractAllPdfFiles(): array
     {
-        // Get all files from Strapi upload API
-        // Using pagination to get all files (max 100 per page)
+        // Get all PDF files from Strapi upload API
+        /** @var array<array{id: int, name: string, alternativeText: string|null, caption: string|null, ext: string, mime: string, size: float, url: string, createdAt: string}> $files */
+        $files = $this->strapiApiClient->getApiResource(
+            'upload/files',
+            0,
+            null,
+            [
+                'ext' => ['$eq' => '.pdf'],
+            ],
+        );
+
         $allFiles = [];
-        $start = 0;
-        $limit = 100;
-
-        do {
-            /** @var array{data: array<array{id: int, name: string, alternativeText: string|null, caption: string|null, ext: string, mime: string, size: float, url: string, createdAt: string}>} $response */
-            $response = $this->strapiApiClient->getApiResource(
-                'upload/files',
-                0,
-                null,
-                [
-                    'ext' => ['$eq' => '.pdf'],
-                ],
-                [
-                    'start' => $start,
-                    'limit' => $limit,
-                ],
-            );
-
-            $files = $response['data'];
-
-            foreach ($files as $file) {
-                $allFiles[] = [
-                    'url' => $file['url'],
-                    'name' => $file['name'],
-                    'caption' => $file['caption'] ?? $file['alternativeText'] ?? null,
-                    'size' => (int) ($file['size'] * 1024), // Convert KB to bytes
-                    'created_at' => new DateTimeImmutable($file['createdAt']),
-                ];
-            }
-
-            $start += $limit;
-
-            // Continue if we got a full page (might be more)
-        } while (count($files) === $limit);
+        foreach ($files as $file) {
+            $allFiles[] = [
+                'url' => $file['url'],
+                'name' => $file['name'],
+                'caption' => $file['caption'] ?? $file['alternativeText'] ?? null,
+                'size' => (int) ($file['size'] * 1024), // Convert KB to bytes
+                'created_at' => new DateTimeImmutable($file['createdAt']),
+            ];
+        }
 
         return $allFiles;
     }

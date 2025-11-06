@@ -55,7 +55,8 @@ readonly final class StrapiApiClient
             $query['filters'] = $filters;
         }
 
-        $key = $resourceName . '?' . http_build_query($query);
+        // Create cache key without reserved characters
+        $key = 'strapi_' . md5($resourceName . '?' . http_build_query($query));
 
         return $this->cache->get($key, function(ItemInterface $item) use ($resourceName, $query): array {
             $item->tag('strapi');
