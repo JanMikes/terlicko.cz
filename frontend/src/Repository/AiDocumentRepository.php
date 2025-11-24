@@ -23,6 +23,7 @@ final class AiDocumentRepository extends ServiceEntityRepository
      */
     public function findBySourceUrl(string $sourceUrl): ?AiDocument
     {
+        /** @var AiDocument|null */
         return $this->createQueryBuilder('d')
             ->where('d.sourceUrl = :sourceUrl')
             ->setParameter('sourceUrl', $sourceUrl)

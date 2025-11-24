@@ -49,7 +49,7 @@ final class SendMessageController extends AbstractController
         $messagesLimiter = $this->aiChatMessagesLimiter->create($guestId->toString());
         if (!$messagesLimiter->consume(1)->isAccepted()) {
             throw new TooManyRequestsHttpException(
-                $messagesLimiter->consume(0)->getRetryAfter()?->getTimestamp(),
+                $messagesLimiter->consume(0)->getRetryAfter()->getTimestamp(),
                 'Příliš mnoho zpráv. Zkuste to prosím za chvíli.'
             );
         }
@@ -77,6 +77,7 @@ final class SendMessageController extends AbstractController
         }
 
         // Get user message
+        /** @var array{message?: string} $data */
         $data = json_decode($request->getContent(), true);
         $userMessage = $data['message'] ?? '';
 

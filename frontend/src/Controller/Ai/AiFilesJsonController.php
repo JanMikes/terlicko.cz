@@ -20,12 +20,22 @@ final class AiFilesJsonController extends AbstractController
 
     public function __invoke(): Response
     {
-        $files = $this->fileExtractor->extractPdfFiles();
+        $files = $this->fileExtractor->extractAllPdfFiles();
+
+        $items = [];
+        foreach ($files as $file) {
+            $items[] = [
+                'source_url' => 'http://localhost:8080' . $file['url'],
+                'title' => $file['caption'] ?? $file['name'],
+                'size_bytes' => $file['size'],
+                'published_at' => $file['created_at']->format(\DateTimeInterface::ATOM),
+            ];
+        }
 
         return new JsonResponse([
             'generated_at' => (new \DateTimeImmutable())->format(\DateTimeInterface::ATOM),
-            'count' => count($files),
-            'files' => $files,
+            'count' => count($items),
+            'items' => $items,
         ]);
     }
 }

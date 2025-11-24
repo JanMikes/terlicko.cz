@@ -28,6 +28,7 @@ readonly final class EmbeddingService
             ],
         ]);
 
+        /** @var array{data: array<array{embedding: array<float>}>, model: string, usage: array{total_tokens: int}} $data */
         $data = $response->toArray();
 
         if (!isset($data['data'][0]['embedding'])) {
@@ -41,7 +42,7 @@ readonly final class EmbeddingService
             'embedding' => $embedding,
             'model' => $data['model'],
             'dimensions' => $dimensions,
-            'tokens' => $data['usage']['total_tokens'] ?? 0,
+            'tokens' => $data['usage']['total_tokens'],
         ];
     }
 
@@ -65,11 +66,8 @@ readonly final class EmbeddingService
             ],
         ]);
 
+        /** @var array{data: array<array{embedding: array<float>}>, model: string} $data */
         $data = $response->toArray();
-
-        if (!isset($data['data']) || !is_array($data['data'])) {
-            throw new \RuntimeException('Invalid response from OpenAI embeddings API');
-        }
 
         $results = [];
         foreach ($data['data'] as $item) {

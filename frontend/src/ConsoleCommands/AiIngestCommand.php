@@ -46,13 +46,13 @@ final class AiIngestCommand extends Command
 
         $totalProcessed = 0;
         $totalChunks = 0;
-        $errors = [];
 
         // Ingest PDF documents
         if (!$contentOnly) {
             $io->section('Processing PDF Documents');
 
             $filesResponse = $this->httpClient->request('GET', $this->baseUrl . '/ai/files.json');
+            /** @var array{items: array<array{source_url: string, title: string, size_bytes: int, published_at: string}>} $filesData */
             $filesData = $filesResponse->toArray();
 
             $filesCount = count($filesData['items']);
@@ -79,6 +79,7 @@ final class AiIngestCommand extends Command
             $io->section('Processing Web Content');
 
             $contentResponse = $this->httpClient->request('GET', $this->baseUrl . '/ai/content.json');
+            /** @var array{items: array<array{url: string, title: string, content: array{format: string, normalized_text: string}}>} $contentData */
             $contentData = $contentResponse->toArray();
 
             $pagesCount = count($contentData['items']);
@@ -107,12 +108,6 @@ final class AiIngestCommand extends Command
             $totalProcessed,
             $totalChunks
         ));
-
-        if (!empty($errors)) {
-            $io->warning('Some documents failed to process:');
-            $io->listing($errors);
-            return Command::FAILURE;
-        }
 
         return Command::SUCCESS;
     }

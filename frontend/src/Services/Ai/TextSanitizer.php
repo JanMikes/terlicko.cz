@@ -14,10 +14,15 @@ final class TextSanitizer
         // First, try to convert to UTF-8 if it's in a different encoding
         $encoding = mb_detect_encoding($text, ['UTF-8', 'ISO-8859-1', 'Windows-1252'], true);
         if ($encoding !== false && $encoding !== 'UTF-8') {
-            $text = mb_convert_encoding($text, 'UTF-8', $encoding);
+            $converted = mb_convert_encoding($text, 'UTF-8', $encoding);
+            if ($converted !== false) {
+                $text = $converted;
+            }
         }
 
         // Remove any remaining invalid UTF-8 sequences
-        return mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+        $result = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+
+        return $result !== false ? $result : $text;
     }
 }

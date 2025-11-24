@@ -64,6 +64,7 @@ readonly final class OpenAiChatService
             ],
         ]);
 
+        /** @var array{choices: array<array{message: array{content: string}}>, model: string, usage: array{prompt_tokens: int, completion_tokens: int, total_tokens: int}} $data */
         $data = $response->toArray();
 
         if (!isset($data['choices'][0]['message']['content'])) {
@@ -74,9 +75,9 @@ readonly final class OpenAiChatService
             'content' => $data['choices'][0]['message']['content'],
             'model' => $data['model'],
             'tokens' => [
-                'prompt' => $data['usage']['prompt_tokens'] ?? 0,
-                'completion' => $data['usage']['completion_tokens'] ?? 0,
-                'total' => $data['usage']['total_tokens'] ?? 0,
+                'prompt' => $data['usage']['prompt_tokens'],
+                'completion' => $data['usage']['completion_tokens'],
+                'total' => $data['usage']['total_tokens'],
             ],
         ];
     }
@@ -124,9 +125,10 @@ readonly final class OpenAiChatService
                         break;
                     }
 
+                    /** @var array{choices?: array<array{delta?: array{content?: string}}>}|null $parsed */
                     $parsed = json_decode($jsonData, true);
                     if (isset($parsed['choices'][0]['delta']['content'])) {
-                        yield $parsed['choices'][0]['delta']['content'];
+                        yield (string) $parsed['choices'][0]['delta']['content'];
                     }
                 }
             }

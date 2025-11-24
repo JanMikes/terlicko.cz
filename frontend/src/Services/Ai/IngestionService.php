@@ -71,7 +71,7 @@ readonly final class IngestionService
                     'pages' => $pdfData['pages'],
                     'size' => $fileData['size_bytes'],
                     'pdf_metadata' => $pdfData['metadata'],
-                ]),
+                ], JSON_THROW_ON_ERROR),
             );
             $this->entityManager->persist($document);
         }

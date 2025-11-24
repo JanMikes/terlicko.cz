@@ -26,6 +26,7 @@ readonly final class ModerationService
             ],
         ]);
 
+        /** @var array{results: array<array{flagged: bool, categories: array<string, bool>}>} $data */
         $data = $response->toArray();
 
         if (!isset($data['results'][0])) {
@@ -36,7 +37,7 @@ readonly final class ModerationService
 
         return [
             'flagged' => $result['flagged'],
-            'categories' => $result['categories'] ?? [],
+            'categories' => $result['categories'],
         ];
     }
 

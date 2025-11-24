@@ -24,6 +24,7 @@ final class AiConversationRepository extends ServiceEntityRepository
      */
     public function findActiveByGuestId(UuidInterface $guestId): ?AiConversation
     {
+        /** @var AiConversation|null */
         return $this->createQueryBuilder('c')
             ->where('c.guestId = :guestId')
             ->andWhere('c.endedAt IS NULL')
@@ -39,6 +40,7 @@ final class AiConversationRepository extends ServiceEntityRepository
      */
     public function findByIdAndGuestId(UuidInterface $conversationId, UuidInterface $guestId): ?AiConversation
     {
+        /** @var AiConversation|null */
         return $this->createQueryBuilder('c')
             ->where('c.id = :conversationId')
             ->andWhere('c.guestId = :guestId')

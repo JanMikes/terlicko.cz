@@ -52,6 +52,7 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
             'limit' => $limit,
         ]);
 
+        /** @var array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, distance: float}> */
         return $result->fetchAllAssociative();
     }
 
@@ -113,6 +114,7 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
             'limit' => $limit,
         ]);
 
+        /** @var array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, distance: float, keyword_rank: float, combined_score: float}> */
         return $result->fetchAllAssociative();
     }
 

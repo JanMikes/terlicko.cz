@@ -100,7 +100,9 @@ readonly final class ConversationManager
      */
     public function getConversationHistory(AiConversation $conversation, int $maxMessages = 10): array
     {
+        /** @var array<AiMessage> $messages */
         $messages = $conversation->getMessages()->slice(-$maxMessages);
+        /** @var array<array{role: string, content: string}> $history */
         $history = [];
 
         foreach ($messages as $message) {
