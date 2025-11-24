@@ -181,12 +181,16 @@ export default class extends Controller {
                                 messageElement = this.addMessage('assistant', '');
                             }
 
-                            // Append content
+                            // Append content (don't show sources yet - wait for completion)
                             assistantMessage += data.content;
-                            this.updateMessage(messageElement, assistantMessage, sources);
+                            this.updateMessage(messageElement, assistantMessage, [], false);
                         } else if (currentEventType === 'done') {
                             console.log('Stream complete');
                             this.hideLoading();
+                            // Now show sources if appropriate (final update)
+                            if (messageElement) {
+                                this.updateMessage(messageElement, assistantMessage, sources, true);
+                            }
                         } else if (currentEventType === 'error') {
                             this.showError(data.error || 'Nastala chyba při generování odpovědi.');
                             this.hideLoading();
@@ -246,14 +250,16 @@ export default class extends Controller {
         return messageDiv;
     }
 
-    updateMessage(messageElement, content, sources = []) {
+    updateMessage(messageElement, content, sources = [], isFinal = false) {
         const contentDiv = messageElement.querySelector('.message-content');
         if (!contentDiv) return;
 
-        contentDiv.innerHTML = this.escapeHtml(content);
+        // Convert newlines to <br> for proper formatting
+        contentDiv.innerHTML = this.formatContent(content);
 
-        // Add sources if provided
-        if (sources.length > 0) {
+        // Only show sources when response is final and AI actually used them
+        // Don't show sources if AI says it doesn't have the information
+        if (isFinal && sources.length > 0 && this.shouldShowSources(content)) {
             let citationsDiv = messageElement.querySelector('.citations');
             if (!citationsDiv) {
                 citationsDiv = document.createElement('div');
@@ -282,6 +288,33 @@ export default class extends Controller {
         }
 
         this.scrollToBottom();
+    }
+
+    /**
+     * Check if sources should be shown based on AI response content
+     */
+    shouldShowSources(content) {
+        const lowerContent = content.toLowerCase();
+        const noInfoPhrases = [
+            'nemám k dispozici',
+            'nemám informaci',
+            'tuto informaci bohužel',
+            'informaci nemám',
+            'nejsem schopen',
+            'nemohu odpovědět',
+            'nemám dostatek informací',
+            'nemám žádné informace'
+        ];
+
+        return !noInfoPhrases.some(phrase => lowerContent.includes(phrase));
+    }
+
+    /**
+     * Format content with proper line breaks
+     */
+    formatContent(content) {
+        // First escape HTML, then convert newlines to <br>
+        return this.escapeHtml(content).replace(/\n/g, '<br>');
     }
 
     showLoading() {
@@ -407,9 +440,12 @@ export default class extends Controller {
             for (const message of data.messages) {
                 const messageElement = this.addMessage(message.role, message.content);
 
-                // Add citations if present
-                if (message.role === 'assistant' && message.citations && message.citations.length > 0) {
-                    this.updateMessage(messageElement, message.content, message.citations);
+                // Add citations if present (for assistant messages, check if should show sources)
+                if (message.role === 'assistant') {
+                    const sourcesToShow = (message.citations && message.citations.length > 0 && this.shouldShowSources(message.content))
+                        ? message.citations
+                        : [];
+                    this.updateMessage(messageElement, message.content, sourcesToShow, true);
                 }
             }
 
