@@ -16,7 +16,7 @@ jobs:
 
     services:
       postgres:
-          image: postgres:17.0
+          image: pgvector/pgvector:pg17
           env:
               POSTGRES_PASSWORD: postgres
           options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -72,7 +72,7 @@ jobs:
       container: ghcr.io/thedevs-cz/php:8.3
       services:
           postgres:
-              image: postgres:17.0
+              image: pgvector/pgvector:pg17
               env:
                   POSTGRES_PASSWORD: postgres
                   POSTGRES_DB: terlicko_test
