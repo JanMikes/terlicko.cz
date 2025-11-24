@@ -97,7 +97,7 @@ final class SendMessageController extends AbstractController
         $this->conversationManager->addMessage($conversation, 'user', $userMessage);
 
         // Search for relevant context
-        $searchResults = $this->vectorSearchService->hybridSearch($userMessage, 5);
+        $searchResults = $this->vectorSearchService->hybridSearch($userMessage, 10);
         $contextData = $this->contextBuilder->buildContext($searchResults);
 
         // Get conversation history
