@@ -71,7 +71,7 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
     {
         $vectorString = '[' . implode(',', $queryVector) . ']';
 
-        // Extract significant words (4+ chars) for ILIKE matching
+        // Extract significant words for ILIKE matching
         $keywordPatterns = $this->extractKeywordPatterns($keywords);
 
         // Build ILIKE conditions for keyword matching
@@ -190,6 +190,22 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
             return [];
         }
 
+        // Important domain-specific terms that should always be included (even if short)
+        $alwaysInclude = [
+            // Sports
+            'sport', 'tj', 'sk', 'fc', 'hc', 'fotbal', 'hokej', 'tenis', 'golf', 'volejbal', 'házená',
+            // Places
+            'hala', 'bazén', 'hřiště', 'stadion', 'les', 'park', 'přehrada',
+            // Services
+            'škola', 'školka', 'lékař', 'pošta', 'banka', 'obchod', 'knihovna',
+            // Administration
+            'úřad', 'starosta', 'rada', 'odbor', 'matrika',
+            // Events
+            'akce', 'ples', 'koncert', 'trhy', 'festival',
+            // Utilities
+            'voda', 'plyn', 'elektřina', 'odpad', 'svoz',
+        ];
+
         // Comprehensive Czech stop words list
         $stopWords = [
             // Single-letter prepositions and conjunctions
@@ -205,12 +221,13 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
             // Other common words
             'tedy', 'však', 'což', 'přece', 'sice', 'zda', 'neboť', 'protože', 'pokud', 'kdyby', 'když', 'jestli',
             // Municipality-specific (too common in this context)
-            'obci', 'obce', 'obecní', 'úřad', 'úřadu',
+            'obci', 'obce', 'obecní',
         ];
 
         return array_values(array_filter(
             $words,
-            fn(string $word) => mb_strlen($word) >= 3 && !in_array($word, $stopWords, true)
+            fn(string $word) => in_array($word, $alwaysInclude, true) ||
+                (mb_strlen($word) >= 3 && !in_array($word, $stopWords, true))
         ));
     }
 

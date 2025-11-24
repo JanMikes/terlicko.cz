@@ -122,6 +122,9 @@ readonly final class IngestionService
         // Final flush
         $this->entityManager->flush();
 
+        // Clear entity manager to free memory after processing document
+        $this->entityManager->clear();
+
         return [
             'status' => $existingDocument ? 'updated' : 'created',
             'message' => sprintf('Processed %d chunks', $chunksCreated),
@@ -217,6 +220,9 @@ readonly final class IngestionService
 
         // Final flush
         $this->entityManager->flush();
+
+        // Clear entity manager to free memory after processing document
+        $this->entityManager->clear();
 
         return [
             'status' => $existingDocument ? 'updated' : 'created',
