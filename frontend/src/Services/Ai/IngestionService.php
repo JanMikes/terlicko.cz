@@ -9,6 +9,7 @@ use Terlicko\Web\Entity\AiChunk;
 use Terlicko\Web\Entity\AiDocument;
 use Terlicko\Web\Entity\AiEmbedding;
 use Terlicko\Web\Repository\AiDocumentRepository;
+use Terlicko\Web\Value\Ai\AiContentItem;
 
 readonly final class IngestionService
 {
@@ -30,11 +31,13 @@ readonly final class IngestionService
      */
     public function ingestPdfDocument(array $fileData): array
     {
-        $sourceUrl = str_replace('localhost:8080', 'frontend:80', $fileData['source_url']);
+        $sourceUrl = $fileData['source_url'];
+        // Internal URL for downloading PDF content within Docker network
+        $downloadUrl = str_replace('https://terlicko.cz', 'http://frontend:80', $sourceUrl);
         $title = $fileData['title'];
 
-        // Calculate content hash
-        $contentHash = $this->documentHasher->hashUrl($sourceUrl);
+        // Calculate content hash using internal URL for download
+        $contentHash = $this->documentHasher->hashUrl($downloadUrl);
 
         // Check if document exists and hasn't changed
         $existingDocument = $this->documentRepository->findBySourceUrl($sourceUrl);
@@ -47,8 +50,8 @@ readonly final class IngestionService
             ];
         }
 
-        // Parse PDF
-        $pdfData = $this->pdfParser->extractText($sourceUrl);
+        // Parse PDF using internal Docker URL
+        $pdfData = $this->pdfParser->extractText($downloadUrl);
         $cleanedText = $this->pdfParser->cleanText($pdfData['text']);
 
         // If document exists but changed, remove old chunks
@@ -133,7 +136,7 @@ readonly final class IngestionService
      */
     public function ingestWebpage(array $pageData): array
     {
-        $sourceUrl = str_replace('localhost:8080', 'frontend:80', $pageData['url']);
+        $sourceUrl = $pageData['url'];
         $title = $pageData['title'];
         $content = $pageData['content']['normalized_text'];
 
@@ -218,5 +221,22 @@ readonly final class IngestionService
             'message' => sprintf('Processed %d chunks', $chunksCreated),
             'chunks_created' => $chunksCreated,
         ];
+    }
+
+    /**
+     * Ingest an AiContentItem directly
+     *
+     * @return array{status: string, message: string, chunks_created: int}
+     */
+    public function ingestContentItem(AiContentItem $item): array
+    {
+        return $this->ingestWebpage([
+            'url' => $item->url,
+            'title' => $item->title,
+            'content' => [
+                'format' => 'text',
+                'normalized_text' => $item->normalizedText,
+            ],
+        ]);
     }
 }

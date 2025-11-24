@@ -10,7 +10,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Terlicko\Web\Services\Ai\AiContentExtractor;
+use Terlicko\Web\Services\Ai\FileExtractor;
 use Terlicko\Web\Services\Ai\IngestionService;
 
 #[AsCommand(
@@ -20,9 +21,9 @@ use Terlicko\Web\Services\Ai\IngestionService;
 final class AiIngestCommand extends Command
 {
     public function __construct(
-        private readonly HttpClientInterface $httpClient,
         private readonly IngestionService $ingestionService,
-        private readonly string $baseUrl = 'http://frontend:80', // we run this within container -> port 80
+        private readonly AiContentExtractor $contentExtractor,
+        private readonly FileExtractor $fileExtractor,
     ) {
         parent::__construct();
     }
@@ -47,23 +48,28 @@ final class AiIngestCommand extends Command
         $totalProcessed = 0;
         $totalChunks = 0;
 
-        // Ingest PDF documents
+        // Ingest PDF documents (directly from Strapi, no HTTP needed)
         if (!$contentOnly) {
             $io->section('Processing PDF Documents');
+            $io->comment('Extracting PDF files directly from Strapi...');
 
-            $filesResponse = $this->httpClient->request('GET', $this->baseUrl . '/ai/files.json');
-            /** @var array{items: array<array{source_url: string, title: string, size_bytes: int, published_at: string}>} $filesData */
-            $filesData = $filesResponse->toArray();
-
-            $filesCount = count($filesData['items']);
+            $files = $this->fileExtractor->extractAllPdfFiles();
+            $filesCount = count($files);
 
             $io->comment(sprintf('Found %d PDF files', $filesCount));
 
             $progressBar = $io->createProgressBar($filesCount);
             $progressBar->start();
 
-            foreach ($filesData['items'] as $file) {
-                $result = $this->ingestionService->ingestPdfDocument($file);
+            foreach ($files as $file) {
+                $fileData = [
+                    'source_url' => 'https://terlicko.cz' . $file['url'],
+                    'title' => $file['caption'] ?? $file['name'],
+                    'size_bytes' => $file['size'],
+                    'published_at' => $file['created_at']->format(\DateTimeInterface::ATOM),
+                ];
+
+                $result = $this->ingestionService->ingestPdfDocument($fileData);
                 $totalProcessed++;
                 $totalChunks += $result['chunks_created'];
 
@@ -74,23 +80,22 @@ final class AiIngestCommand extends Command
             $io->newLine(2);
         }
 
-        // Ingest web content
+        // Ingest web content (directly from Strapi, no HTTP timeout issues)
         if (!$pdfOnly) {
             $io->section('Processing Web Content');
+            $io->comment('Extracting content directly from Strapi...');
 
-            $contentResponse = $this->httpClient->request('GET', $this->baseUrl . '/ai/content.json');
-            /** @var array{items: array<array{url: string, title: string, content: array{format: string, normalized_text: string}}>} $contentData */
-            $contentData = $contentResponse->toArray();
+            // Collect all items first for progress bar
+            $contentItems = iterator_to_array($this->contentExtractor->extractAll());
+            $pagesCount = count($contentItems);
 
-            $pagesCount = count($contentData['items']);
-
-            $io->comment(sprintf('Found %d pages', $pagesCount));
+            $io->comment(sprintf('Found %d content items (aktuality, sekce, uredni deska, kalendar akci)', $pagesCount));
 
             $progressBar = $io->createProgressBar($pagesCount);
             $progressBar->start();
 
-            foreach ($contentData['items'] as $page) {
-                $result = $this->ingestionService->ingestWebpage($page);
+            foreach ($contentItems as $item) {
+                $result = $this->ingestionService->ingestContentItem($item);
                 $totalProcessed++;
                 $totalChunks += $result['chunks_created'];
 

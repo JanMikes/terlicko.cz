@@ -12,6 +12,7 @@ services:
         volumes:
             - ./frontend:/app
             - ./frontend/docker-entrypoint.sh:/usr/local/bin/docker-php-entrypoint
+            - ./frontend/conf.d/php.ini:/usr/local/etc/php/conf.d/php-custom.ini
             - ./strapi/public/uploads:/app/public/uploads
             - caddy_data:/data
             - caddy_config:/config
