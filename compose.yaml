@@ -2,6 +2,7 @@ volumes:
     caddy_data:
     caddy_config:
     postgres_data:
+    redis_data:
 
 services:
     frontend:
@@ -17,7 +18,10 @@ services:
         ports:
             - "8080:80"
         depends_on:
-            - postgres
+            postgres:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
         environment:
             XDEBUG_CONFIG: "client_host=host.docker.internal"
             XDEBUG_MODE: debug
@@ -44,7 +48,7 @@ services:
             - postgres
 
     postgres:
-        image: postgres:17.0
+        image: pgvector/pgvector:pg17
         environment:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
@@ -53,6 +57,24 @@ services:
             - postgres_data:/var/lib/postgresql/data
         ports:
             - "5432:5432"
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    redis:
+        image: redis:7-alpine
+        restart: unless-stopped
+        volumes:
+            - redis_data:/data
+        ports:
+            - "6379:6379"
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 10s
+            timeout: 3s
+            retries: 5
 
     adminer:
         image: adminer:5.3.0

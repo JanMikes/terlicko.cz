@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(composer:*)",
-      "Bash(docker compose:*)"
+      "Bash(docker compose:*)",
+      "Bash(cat:*)",
+      "Bash(:)",
+      "Bash(/Users/janmikes/www/terlicko/frontend/var/log/dev.log)"
     ],
     "deny": [],
     "ask": []

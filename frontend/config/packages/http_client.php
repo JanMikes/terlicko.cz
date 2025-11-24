@@ -12,4 +12,10 @@ return static function (FrameworkConfig $framework): void {
         ->authBearer(param('strapi.api_key'))
         ->baseUri(param('strapi.api_uri'))
         ->header('Accept', 'application/json');
+
+    $httpClientConfig->scopedClient('openai.client')
+        ->authBearer(param('openai.api_key'))
+        ->baseUri('https://api.openai.com/v1/')
+        ->header('Content-Type', 'application/json')
+        ->timeout(60.0);
 };

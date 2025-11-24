@@ -130,7 +130,6 @@ It uses a **Retrieval-Augmented Generation (RAG)** architecture built around the
     - `OPENAI_API_KEY`
     - `DATABASE_URL`
     - `REDIS_HOST` / `REDIS_PORT`
-    - `AI_DOCUMENTS_URL` / `AI_CONTENT_URL`
 
 ---
 

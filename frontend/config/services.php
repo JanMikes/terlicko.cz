@@ -21,6 +21,15 @@ return static function(ContainerConfigurator $configurator): void
     $parameters->set('strapi.api_uri', env('STRAPI_API_URL'));
     $parameters->set('strapi.api_key', env('STRAPI_API_KEY'));
 
+    # AI Chatbot parameters
+    $parameters->set('openai.api_key', env('OPENAI_API_KEY'));
+    $parameters->set('redis.host', env('REDIS_HOST'));
+    $parameters->set('redis.port', env('REDIS_PORT'));
+    $parameters->set('ai.embedding_model', env('AI_EMBEDDING_MODEL'));
+    $parameters->set('ai.chat_model', env('AI_CHAT_MODEL'));
+    $parameters->set('ai.chunk_size', env('AI_CHUNK_SIZE')->int());
+    $parameters->set('ai.chunk_overlap', env('AI_CHUNK_OVERLAP')->int());
+
     $services = $configurator->services();
 
     $services->defaults()
@@ -35,6 +44,27 @@ return static function(ContainerConfigurator $configurator): void
 
     $services->set(PsrLogMessageProcessor::class)
         ->tag('monolog.processor');
+
+    $services->set(\Smalot\PdfParser\Parser::class);
+
+    $services->set(\Terlicko\Web\Services\Ai\TextChunker::class)
+        ->autowire(false)
+        ->arg('$chunkSize', '%ai.chunk_size%')
+        ->arg('$chunkOverlap', '%ai.chunk_overlap%');
+
+    $services->set(\Terlicko\Web\Services\Ai\EmbeddingService::class)
+        ->autowire(false)
+        ->arg('$openaiClient', service('openai.client'))
+        ->arg('$embeddingModel', '%ai.embedding_model%');
+
+    $services->set(\Terlicko\Web\Services\Ai\OpenAiChatService::class)
+        ->autowire(false)
+        ->arg('$openaiClient', service('openai.client'))
+        ->arg('$chatModel', '%ai.chat_model%');
+
+    $services->set(\Terlicko\Web\Services\Ai\ModerationService::class)
+        ->autowire(false)
+        ->arg('$openaiClient', service('openai.client'));
 
     // Controllers
     $services->load('Terlicko\\Web\\Controller\\', __DIR__ . '/../src/Controller/**/{*.php}');
@@ -57,8 +87,14 @@ return static function(ContainerConfigurator $configurator): void
     // Validators
     $services->load('Terlicko\\Web\\Validation\\', __DIR__ . '/../src/Validation/**/{*Validator.php}');
 
-    // Services
-    $services->load('Terlicko\\Web\\Services\\', __DIR__ . '/../src/Services/**/{*.php}');
+    // Services (exclude manually configured AI services)
+    $services->load('Terlicko\\Web\\Services\\', __DIR__ . '/../src/Services/**/{*.php}')
+        ->exclude([
+            __DIR__ . '/../src/Services/Ai/TextChunker.php',
+            __DIR__ . '/../src/Services/Ai/EmbeddingService.php',
+            __DIR__ . '/../src/Services/Ai/OpenAiChatService.php',
+            __DIR__ . '/../src/Services/Ai/ModerationService.php',
+        ]);
     $services->load('Terlicko\\Web\\Query\\', __DIR__ . '/../src/Query/**/{*.php}');
 
     /** @see https://github.com/doctrine/migrations/issues/1406 */
