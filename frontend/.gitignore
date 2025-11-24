@@ -24,3 +24,5 @@ node_modules/
 /assets/vendor/
 ###< symfony/asset-mapper ###
 
+
+.phpunit.cache

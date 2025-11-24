@@ -38,17 +38,21 @@ function bootstrapDatabase(string $cacheFilePath): void
     $application = new Application($kernel);
     $application->setAutoExit(false);
 
-    if (is_file($cacheFilePath)) {
-        $application->run(new ArrayInput([
-            'command' => 'doctrine:database:drop',
-            '--if-exists' => 1,
-            '--force' => 1,
-        ]));
-    }
+    // Always drop and recreate database to ensure clean state
+    $application->run(new ArrayInput([
+        'command' => 'doctrine:database:drop',
+        '--if-exists' => 1,
+        '--force' => 1,
+    ]));
 
     $application->run(new ArrayInput([
         'command' => 'doctrine:database:create',
-        '--if-not-exists' => 1
+    ]));
+
+    // Enable pgvector extension (required for ai_embeddings table)
+    $application->run(new ArrayInput([
+        'command' => 'dbal:run-sql',
+        'sql' => 'CREATE EXTENSION IF NOT EXISTS vector',
     ]));
 
     // Faster than running migrations

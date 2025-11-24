@@ -28,7 +28,7 @@ class AiEmbedding
      * Vector embedding stored as pgvector
      * Format: [1.0, 2.0, 3.0, ...]
      */
-    #[ORM\Column(type: Types::TEXT, columnDefinition: 'vector(1536)')]
+    #[ORM\Column(type: 'vector', options: ['dimensions' => 1536])]
     private string $vector;
 
     #[ORM\Column(type: Types::STRING, length: 100)]

@@ -16,7 +16,9 @@ final class VectorType extends Type
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        $dimensions = $column['dimensions'] ?? 1536; // Default for text-embedding-3-small
+        $dimensions = isset($column['dimensions']) && is_numeric($column['dimensions'])
+            ? (int) $column['dimensions']
+            : 1536; // Default for text-embedding-3-small
         return sprintf('vector(%d)', $dimensions);
     }
 
@@ -25,14 +27,26 @@ final class VectorType extends Type
         return self::VECTOR;
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?string
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?string
     {
-        return $value;
+        if ($value === null) {
+            return null;
+        }
+
+        assert(is_string($value) || is_numeric($value));
+
+        return (string) $value;
     }
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
-        return $value;
+        if ($value === null) {
+            return null;
+        }
+
+        assert(is_string($value) || is_numeric($value));
+
+        return (string) $value;
     }
 
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
