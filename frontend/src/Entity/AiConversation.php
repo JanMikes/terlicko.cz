@@ -13,9 +13,9 @@ use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity(repositoryClass: \Terlicko\Web\Repository\AiConversationRepository::class)]
 #[ORM\Table(name: 'ai_conversations')]
-#[ORM\Index(columns: ['guest_id'], name: 'idx_ai_conversations_guest')]
-#[ORM\Index(columns: ['started_at'], name: 'idx_ai_conversations_started')]
-#[ORM\Index(columns: ['ended_at'], name: 'idx_ai_conversations_ended')]
+#[ORM\Index(name: 'idx_ai_conversations_guest', columns: ['guest_id'])]
+#[ORM\Index(name: 'idx_ai_conversations_started', columns: ['started_at'])]
+#[ORM\Index(name: 'idx_ai_conversations_ended', columns: ['ended_at'])]
 class AiConversation
 {
     #[ORM\Id]

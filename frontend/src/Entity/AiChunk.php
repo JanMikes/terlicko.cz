@@ -11,7 +11,7 @@ use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'ai_chunks')]
-#[ORM\Index(columns: ['document_id'], name: 'idx_ai_chunks_document')]
+#[ORM\Index(name: 'idx_ai_chunks_document', columns: ['document_id'])]
 class AiChunk
 {
     #[ORM\Id]

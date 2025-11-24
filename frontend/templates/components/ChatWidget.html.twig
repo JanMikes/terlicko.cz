@@ -69,7 +69,7 @@
                         </svg>
                         AI Asistent Těrlicka
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-action="click->chat#close" data-bs-dismiss="modal" aria-label="Zavřít"></button>
+                    <button type="button" class="btn-close" data-action="click->chat#close" data-bs-dismiss="modal" aria-label="Zavřít"></button>
                 </div>
 
                 {# Modal Body - Messages #}
@@ -85,7 +85,7 @@
                     </div>
 
                     {# Messages Container #}
-                    <div class="px-3 pb-3" data-chat-target="messages"></div>
+                    <div class="p-3" data-chat-target="messages"></div>
 
                     {# Loading Indicator #}
                     <div class="px-3 pb-3 d-none" data-chat-target="loading">
@@ -119,49 +119,49 @@
                             <strong>Omezení:</strong> Dosáhli jste limitu zpráv. Zkuste to prosím za <span data-chat-target="rateLimitTime"></span>.
                         </div>
                     </div>
-                </div>
 
-                {# Modal Footer - Input Form #}
-                <div class="modal-footer flex-column align-items-stretch p-3 bg-light">
-                    <form data-action="submit->chat#sendMessage" data-chat-target="form">
-                        <div class="input-group">
-                            <input
-                                type="text"
-                                class="form-control"
-                                placeholder="Napište svou zprávu..."
-                                data-chat-target="input"
-                                required
-                                maxlength="500"
-                            >
+                    {# Modal Footer - Input Form #}
+                    <div class="modal-footer flex-column align-items-stretch p-3 bg-light">
+                        <form data-action="submit->chat#sendMessage" data-chat-target="form">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Napište svou zprávu..."
+                                    data-chat-target="input"
+                                    required
+                                    maxlength="500"
+                                >
+                                <button
+                                    class="btn btn-primary"
+                                    type="submit"
+                                    data-chat-target="submitButton"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                                        <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="form-text mt-2">
+                                <small class="text-muted">
+                                    Odpovědi jsou generovány AI na základě oficiálních dokumentů města.
+                                </small>
+                            </div>
+                        </form>
+
+                        <div class="mt-2">
                             <button
-                                class="btn btn-primary"
-                                type="submit"
-                                data-chat-target="submitButton"
+                                type="button"
+                                class="btn btn-sm btn-outline-secondary"
+                                data-action="click->chat#endConversation"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
-                                    <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle me-1" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                                 </svg>
+                                Ukončit konverzaci
                             </button>
                         </div>
-                        <div class="form-text mt-2">
-                            <small class="text-muted">
-                                Odpovědi jsou generovány AI na základě oficiálních dokumentů města.
-                            </small>
-                        </div>
-                    </form>
-
-                    <div class="mt-2">
-                        <button
-                            type="button"
-                            class="btn btn-sm btn-outline-secondary"
-                            data-action="click->chat#endConversation"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle me-1" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                            </svg>
-                            Ukončit konverzaci
-                        </button>
                     </div>
                 </div>
             </div>

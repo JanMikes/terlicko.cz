@@ -11,8 +11,8 @@ use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'ai_messages')]
-#[ORM\Index(columns: ['conversation_id'], name: 'idx_ai_messages_conversation')]
-#[ORM\Index(columns: ['created_at'], name: 'idx_ai_messages_created')]
+#[ORM\Index(name: 'idx_ai_messages_conversation', columns: ['conversation_id'])]
+#[ORM\Index(name: 'idx_ai_messages_created', columns: ['created_at'])]
 class AiMessage
 {
     #[ORM\Id]

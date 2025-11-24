@@ -11,7 +11,7 @@ use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity(repositoryClass: \Terlicko\Web\Repository\AiEmbeddingRepository::class)]
 #[ORM\Table(name: 'ai_embeddings')]
-#[ORM\Index(columns: ['chunk_id'], name: 'idx_ai_embeddings_chunk')]
+#[ORM\Index(name: 'idx_ai_embeddings_chunk', columns: ['chunk_id'])]
 class AiEmbedding
 {
     #[ORM\Id]

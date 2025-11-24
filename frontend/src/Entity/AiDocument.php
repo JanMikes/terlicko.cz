@@ -13,9 +13,9 @@ use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'ai_documents')]
-#[ORM\Index(columns: ['source_url'], name: 'idx_ai_documents_source_url')]
-#[ORM\Index(columns: ['content_hash'], name: 'idx_ai_documents_content_hash')]
-#[ORM\Index(columns: ['updated_at'], name: 'idx_ai_documents_updated_at')]
+#[ORM\Index(name: 'idx_ai_documents_source_url', columns: ['source_url'])]
+#[ORM\Index(name: 'idx_ai_documents_content_hash', columns: ['content_hash'])]
+#[ORM\Index(name: 'idx_ai_documents_updated_at', columns: ['updated_at'])]
 class AiDocument
 {
     #[ORM\Id]
