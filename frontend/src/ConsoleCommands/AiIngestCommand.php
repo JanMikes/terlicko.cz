@@ -42,8 +42,13 @@ final class AiIngestCommand extends Command
 
         $io->title('AI Document Ingestion');
 
+        $force = (bool) $input->getOption('force');
         $pdfOnly = $input->getOption('pdf-only');
         $contentOnly = $input->getOption('content-only');
+
+        if ($force) {
+            $io->warning('Force mode enabled - all documents will be re-ingested');
+        }
 
         $totalProcessed = 0;
         $totalChunks = 0;
@@ -69,7 +74,7 @@ final class AiIngestCommand extends Command
                     'published_at' => $file['created_at']->format(\DateTimeInterface::ATOM),
                 ];
 
-                $result = $this->ingestionService->ingestPdfDocument($fileData);
+                $result = $this->ingestionService->ingestPdfDocument($fileData, $force);
                 $totalProcessed++;
                 $totalChunks += $result['chunks_created'];
 
@@ -95,7 +100,7 @@ final class AiIngestCommand extends Command
             $progressBar->start();
 
             foreach ($contentItems as $item) {
-                $result = $this->ingestionService->ingestContentItem($item);
+                $result = $this->ingestionService->ingestContentItem($item, $force);
                 $totalProcessed++;
                 $totalChunks += $result['chunks_created'];
 

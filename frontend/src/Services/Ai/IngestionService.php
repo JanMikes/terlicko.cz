@@ -27,9 +27,10 @@ readonly final class IngestionService
      * Ingest a PDF document
      *
      * @param array{source_url: string, title: string, size_bytes: int, published_at: string} $fileData
+     * @param bool $force Force re-ingestion even if document is unchanged
      * @return array{status: string, message: string, chunks_created: int}
      */
-    public function ingestPdfDocument(array $fileData): array
+    public function ingestPdfDocument(array $fileData, bool $force = false): array
     {
         $sourceUrl = $fileData['source_url'];
         // Internal URL for downloading PDF content within Docker network
@@ -39,10 +40,10 @@ readonly final class IngestionService
         // Calculate content hash using internal URL for download
         $contentHash = $this->documentHasher->hashUrl($downloadUrl);
 
-        // Check if document exists and hasn't changed
+        // Check if document exists and hasn't changed (skip if not forcing)
         $existingDocument = $this->documentRepository->findBySourceUrl($sourceUrl);
 
-        if ($existingDocument && $existingDocument->getContentHash() === $contentHash) {
+        if (!$force && $existingDocument && $existingDocument->getContentHash() === $contentHash) {
             return [
                 'status' => 'skipped',
                 'message' => 'Document unchanged',
@@ -132,9 +133,10 @@ readonly final class IngestionService
      * Ingest a webpage/content
      *
      * @param array{url: string, title: string, content: array{format: string, normalized_text: string}} $pageData
+     * @param bool $force Force re-ingestion even if document is unchanged
      * @return array{status: string, message: string, chunks_created: int}
      */
-    public function ingestWebpage(array $pageData): array
+    public function ingestWebpage(array $pageData, bool $force = false): array
     {
         $sourceUrl = $pageData['url'];
         $title = $pageData['title'];
@@ -143,10 +145,10 @@ readonly final class IngestionService
         // Calculate content hash
         $contentHash = $this->documentHasher->hashContent($content);
 
-        // Check if document exists and hasn't changed
+        // Check if document exists and hasn't changed (skip if not forcing)
         $existingDocument = $this->documentRepository->findBySourceUrl($sourceUrl);
 
-        if ($existingDocument && $existingDocument->getContentHash() === $contentHash) {
+        if (!$force && $existingDocument && $existingDocument->getContentHash() === $contentHash) {
             return [
                 'status' => 'skipped',
                 'message' => 'Document unchanged',
@@ -226,9 +228,10 @@ readonly final class IngestionService
     /**
      * Ingest an AiContentItem directly
      *
+     * @param bool $force Force re-ingestion even if document is unchanged
      * @return array{status: string, message: string, chunks_created: int}
      */
-    public function ingestContentItem(AiContentItem $item): array
+    public function ingestContentItem(AiContentItem $item, bool $force = false): array
     {
         return $this->ingestWebpage([
             'url' => $item->url,
@@ -237,6 +240,6 @@ readonly final class IngestionService
                 'format' => 'text',
                 'normalized_text' => $item->normalizedText,
             ],
-        ]);
+        ], $force);
     }
 }
