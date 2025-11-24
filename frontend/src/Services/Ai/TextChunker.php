@@ -19,8 +19,9 @@ readonly final class TextChunker
      */
     public function chunkText(string $text): array
     {
-        // Simple token estimation: ~4 characters per token
-        $estimatedTokens = (int) (strlen($text) / 4);
+        // Token estimation for Czech text: ~2 characters per token
+        // Czech uses diacritics (2 bytes each in UTF-8) and tends to have longer words
+        $estimatedTokens = $this->estimateTokens($text);
 
         if ($estimatedTokens <= $this->chunkSize) {
             // Text fits in one chunk
@@ -85,13 +86,14 @@ readonly final class TextChunker
     }
 
     /**
-     * Estimate token count (rough approximation)
+     * Estimate token count for Czech text
+     *
+     * Uses mb_strlen for accurate character count (Czech diacritics are multi-byte).
+     * Czech text averages ~2 characters per token due to longer words and diacritics.
      */
     private function estimateTokens(string $text): int
     {
-        // Rough estimation: ~4 characters per token for English text
-        // This is a simplification; for production you might want to use tiktoken
-        return max(1, (int) (strlen($text) / 4));
+        return max(1, (int) (mb_strlen($text) / 2));
     }
 
     /**
@@ -99,25 +101,26 @@ readonly final class TextChunker
      */
     private function getOverlapText(string $text, int $overlapTokens): string
     {
-        $estimatedChars = $overlapTokens * 4;
-        $textLength = strlen($text);
+        // ~2 characters per token for Czech text
+        $estimatedChars = $overlapTokens * 2;
+        $textLength = mb_strlen($text);
 
         if ($textLength <= $estimatedChars) {
             return $text;
         }
 
         // Get last N characters, but try to break at sentence boundary
-        $overlapText = substr($text, -$estimatedChars);
+        $overlapText = mb_substr($text, -$estimatedChars);
 
         // Try to find the start of a sentence
         $sentenceStart = max(
-            strrpos($overlapText, '. '),
-            strrpos($overlapText, '! '),
-            strrpos($overlapText, '? ')
+            mb_strrpos($overlapText, '. ') ?: 0,
+            mb_strrpos($overlapText, '! ') ?: 0,
+            mb_strrpos($overlapText, '? ') ?: 0
         );
 
-        if ($sentenceStart !== false) {
-            $overlapText = substr($overlapText, $sentenceStart + 2);
+        if ($sentenceStart > 0) {
+            $overlapText = mb_substr($overlapText, $sentenceStart + 2);
         }
 
         return trim($overlapText);

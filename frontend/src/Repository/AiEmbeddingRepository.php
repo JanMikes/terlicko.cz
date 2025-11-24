@@ -129,7 +129,7 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
                 FROM ai_embeddings e
                 INNER JOIN ai_chunks c ON c.id = e.chunk_id
                 ORDER BY distance
-                LIMIT 50
+                LIMIT 100
             ),
             keyword_search AS (
                 SELECT
@@ -138,7 +138,7 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
                     ROW_NUMBER() OVER (ORDER BY ({$matchCountExpr}) DESC) as rank
                 FROM ai_chunks c
                 WHERE {$ilikeWhere}
-                LIMIT 50
+                LIMIT 100
             )
             SELECT
                 COALESCE(vs.chunk_id, ks.chunk_id) as chunk_id,
@@ -150,7 +150,9 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
                 c.metadata as chunk_metadata,
                 COALESCE(vs.distance, 999) as distance,
                 COALESCE(ks.keyword_rank, 0) as keyword_rank,
-                (COALESCE(1.0 / (vs.rank + 10), 0) + COALESCE(1.0 / (ks.rank + 10), 0)) as combined_score
+                -- Weighted scoring: 60% semantic (vector), 40% keyword
+                -- Lower k value (10) gives more weight to top results
+                (0.6 * COALESCE(1.0 / (vs.rank + 10), 0) + 0.4 * COALESCE(1.0 / (ks.rank + 10), 0)) as combined_score
             FROM vector_search vs
             FULL OUTER JOIN keyword_search ks ON vs.chunk_id = ks.chunk_id
             INNER JOIN ai_chunks c ON c.id = COALESCE(vs.chunk_id, ks.chunk_id)
@@ -188,12 +190,27 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
             return [];
         }
 
-        // Czech stop words to exclude
-        $stopWords = ['jsou', 'jaké', 'jaká', 'jaký', 'kde', 'kdy', 'jak', 'kdo', 'nebo', 'ale', 'tak', 'jen', 'již', 'jako', 'jeho', 'její', 'jsem', 'jste', 'jsme', 'být', 'mít', 'mám', 'máte', 'máme', 'pro', 'pod', 'nad', 'mezi', 'před', 'za', 'při', 'bez', 'toto', 'tato', 'tyto', 'této', 'tohoto', 'těchto', 'které', 'která', 'který', 'kterou', 'kterým', 'obci', 'obce'];
+        // Comprehensive Czech stop words list
+        $stopWords = [
+            // Single-letter prepositions and conjunctions
+            'a', 'i', 'k', 'o', 's', 'u', 'v', 'z',
+            // Two-letter prepositions and common words
+            'do', 'ke', 'ku', 'na', 'od', 'po', 've', 'za', 'ze', 'se', 'si', 'by', 'to', 'co', 'je', 'že', 'ta', 'tu', 'ty',
+            // Three-letter words
+            'ale', 'ani', 'asi', 'jak', 'kde', 'kdy', 'kdo', 'než', 'pod', 'pro', 'tak', 'ten', 'při', 'být', 'mít', 'jen', 'již', 'pak', 'dne',
+            // Common function words
+            'nebo', 'jako', 'jeho', 'její', 'jsem', 'jste', 'jsme', 'jsou', 'mám', 'máte', 'máme', 'mezi', 'před', 'toto', 'tato', 'tyto', 'této', 'tohoto', 'těchto',
+            // Question words (keep some for intent)
+            'jaké', 'jaká', 'jaký', 'které', 'která', 'který', 'kterou', 'kterým',
+            // Other common words
+            'tedy', 'však', 'což', 'přece', 'sice', 'zda', 'neboť', 'protože', 'pokud', 'kdyby', 'když', 'jestli',
+            // Municipality-specific (too common in this context)
+            'obci', 'obce', 'obecní', 'úřad', 'úřadu',
+        ];
 
         return array_values(array_filter(
             $words,
-            fn(string $word) => mb_strlen($word) >= 4 && !in_array($word, $stopWords, true)
+            fn(string $word) => mb_strlen($word) >= 3 && !in_array($word, $stopWords, true)
         ));
     }
 

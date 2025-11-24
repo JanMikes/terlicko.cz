@@ -195,7 +195,18 @@ readonly final class ContentNormalizer
         $text = '';
 
         foreach ($data->Dlazdice as $dlazdice) {
-            $text .= "### " . $dlazdice->Nadpis_dlazdice . "\n\n";
+            $text .= "- " . $dlazdice->Nadpis_dlazdice;
+
+            // Include link target for additional context
+            if ($dlazdice->Odkaz->sekceSlug !== null) {
+                $text .= " (sekce: " . $dlazdice->Odkaz->sekceSlug . ")";
+            }
+
+            $text .= "\n";
+        }
+
+        if (count($data->Dlazdice) > 0) {
+            $text .= "\n";
         }
 
         return $text;

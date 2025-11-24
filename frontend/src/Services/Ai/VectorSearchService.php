@@ -35,9 +35,10 @@ readonly final class VectorSearchService
      * Hybrid search combining vector similarity and keyword matching
      *
      * @param float $distanceThreshold Maximum cosine distance (0-2, lower = more similar). Results above this threshold are filtered out.
+     * @param int $minResults Minimum number of results to return even if above threshold (for better UX)
      * @return array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, distance: float, keyword_rank: float, combined_score: float}>
      */
-    public function hybridSearch(string $query, int $limit = 10, float $distanceThreshold = 0.7): array
+    public function hybridSearch(string $query, int $limit = 10, float $distanceThreshold = 0.5, int $minResults = 3): array
     {
         // Generate embedding for the query
         $embeddingData = $this->embeddingService->generateEmbedding($query);
@@ -49,10 +50,24 @@ readonly final class VectorSearchService
             $limit
         );
 
-        // Filter out results with distance above threshold (not relevant enough)
-        return array_values(array_filter(
-            $results,
-            static fn(array $result): bool => (float) $result['distance'] <= $distanceThreshold
-        ));
+        // Separate results by relevance threshold
+        $relevant = [];
+        $belowThreshold = [];
+
+        foreach ($results as $result) {
+            if ((float) $result['distance'] <= $distanceThreshold) {
+                $relevant[] = $result;
+            } else {
+                $belowThreshold[] = $result;
+            }
+        }
+
+        // Ensure minimum results: if we have fewer relevant results, include top below-threshold ones
+        if (count($relevant) < $minResults && count($belowThreshold) > 0) {
+            $needed = $minResults - count($relevant);
+            $relevant = array_merge($relevant, array_slice($belowThreshold, 0, $needed));
+        }
+
+        return $relevant;
     }
 }
