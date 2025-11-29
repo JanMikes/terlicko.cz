@@ -17,6 +17,7 @@ readonly final class IngestionService
         private EntityManagerInterface $entityManager,
         private AiDocumentRepository $documentRepository,
         private PdfParser $pdfParser,
+        private ImageOcrService $imageOcrService,
         private TextChunker $textChunker,
         private EmbeddingService $embeddingService,
         private DocumentHasher $documentHasher,
@@ -82,6 +83,124 @@ readonly final class IngestionService
 
         // Chunk the text
         $chunks = $this->textChunker->chunkText($cleanedText);
+
+        // Create chunks and embeddings
+        $chunksCreated = 0;
+        foreach ($chunks as $chunkData) {
+            // Create chunk entity
+            $text = $chunkData['text'];
+            $chunk = new AiChunk(
+                document: $document,
+                content: $text,
+                chunkIndex: $chunkData['index'],
+                tokenCount: $chunkData['token_count'],
+                metadata: null,
+            );
+            $this->entityManager->persist($chunk);
+            $document->addChunk($chunk);
+
+            // Generate embedding
+            $embeddingData = $this->embeddingService->generateEmbedding($text);
+
+            // Create embedding entity
+            $embedding = new AiEmbedding(
+                chunk: $chunk,
+                vectorArray: $embeddingData['embedding'],
+                model: $embeddingData['model'],
+                dimensions: $embeddingData['dimensions'],
+            );
+            $this->entityManager->persist($embedding);
+            $chunk->setEmbedding($embedding);
+
+            $chunksCreated++;
+
+            // Flush every 10 chunks to avoid memory issues
+            if ($chunksCreated % 10 === 0) {
+                $this->entityManager->flush();
+            }
+        }
+
+        // Final flush
+        $this->entityManager->flush();
+
+        // Clear entity manager to free memory after processing document
+        $this->entityManager->clear();
+
+        return [
+            'status' => $existingDocument ? 'updated' : 'created',
+            'message' => sprintf('Processed %d chunks', $chunksCreated),
+            'chunks_created' => $chunksCreated,
+        ];
+    }
+
+    /**
+     * Ingest an image document using OCR
+     *
+     * @param array{source_url: string, title: string, size_bytes: int, published_at: string, ext: string} $fileData
+     * @param bool $force Force re-ingestion even if document is unchanged
+     * @return array{status: string, message: string, chunks_created: int}
+     */
+    public function ingestImageDocument(array $fileData, bool $force = false): array
+    {
+        $sourceUrl = $fileData['source_url'];
+        $title = $fileData['title'];
+
+        // Calculate content hash using file URL (image content hash)
+        $downloadUrl = str_replace('https://terlicko.cz', 'http://frontend:80', $sourceUrl);
+        $contentHash = $this->documentHasher->hashUrl($downloadUrl);
+
+        // Check if document exists and hasn't changed (skip if not forcing)
+        $existingDocument = $this->documentRepository->findBySourceUrl($sourceUrl);
+
+        if (!$force && $existingDocument && $existingDocument->getContentHash() === $contentHash) {
+            return [
+                'status' => 'skipped',
+                'message' => 'Document unchanged',
+                'chunks_created' => 0,
+            ];
+        }
+
+        // Extract text from image using OCR (use public URL for OpenAI Vision)
+        $ocrResult = $this->imageOcrService->extractText($sourceUrl);
+        $extractedText = trim($ocrResult['text']);
+
+        // Skip if no text was extracted
+        if ($extractedText === '') {
+            return [
+                'status' => 'skipped',
+                'message' => 'No text found in image',
+                'chunks_created' => 0,
+            ];
+        }
+
+        // If document exists but changed, remove old chunks
+        if ($existingDocument) {
+            foreach ($existingDocument->getChunks() as $chunk) {
+                $this->entityManager->remove($chunk);
+            }
+            $this->entityManager->flush();
+
+            $existingDocument->updateContentHash($contentHash);
+            $document = $existingDocument;
+        } else {
+            // Create new document
+            $document = new AiDocument(
+                sourceUrl: $sourceUrl,
+                title: $title,
+                type: 'image',
+                contentHash: $contentHash,
+                metadata: json_encode([
+                    'size' => $fileData['size_bytes'],
+                    'extension' => $fileData['ext'],
+                    'ocr_model' => $ocrResult['model'],
+                    'ocr_tokens' => $ocrResult['tokens'],
+                ], JSON_THROW_ON_ERROR),
+            );
+            $this->entityManager->persist($document);
+        }
+
+        // Chunk the text
+        $chunks = $this->textChunker->chunkText($extractedText);
 
         // Create chunks and embeddings
         $chunksCreated = 0;

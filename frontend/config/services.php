@@ -66,6 +66,11 @@ return static function(ContainerConfigurator $configurator): void
         ->autowire(false)
         ->arg('$openaiClient', service('openai.client'));
 
+    $services->set(\Terlicko\Web\Services\Ai\ImageOcrService::class)
+        ->autowire(false)
+        ->arg('$openaiClient', service('openai.client'))
+        ->arg('$visionModel', '%ai.chat_model%');
+
     // Controllers
     $services->load('Terlicko\\Web\\Controller\\', __DIR__ . '/../src/Controller/**/{*.php}');
 
@@ -94,6 +99,7 @@ return static function(ContainerConfigurator $configurator): void
             __DIR__ . '/../src/Services/Ai/EmbeddingService.php',
             __DIR__ . '/../src/Services/Ai/OpenAiChatService.php',
             __DIR__ . '/../src/Services/Ai/ModerationService.php',
+            __DIR__ . '/../src/Services/Ai/ImageOcrService.php',
         ]);
     $services->load('Terlicko\\Web\\Query\\', __DIR__ . '/../src/Query/**/{*.php}');
 
