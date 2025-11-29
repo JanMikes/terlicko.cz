@@ -65,7 +65,7 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
      * @param array<float> $queryVector
      * @param string $keywords
      * @param int $limit
-     * @return array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, distance: float, keyword_rank: float, combined_score: float}>
+     * @return array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, document_type: string, distance: float, keyword_rank: float, combined_score: float}>
      */
     public function findSimilarChunksHybrid(array $queryVector, string $keywords, int $limit = 10): array
     {
@@ -117,7 +117,7 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
                 'limit' => $limit,
             ]);
 
-            /** @var array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, distance: float, keyword_rank: float, combined_score: float}> */
+            /** @var array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, document_type: string, distance: float, keyword_rank: float, combined_score: float}> */
             return $result->fetchAllAssociative();
         }
 
@@ -177,7 +177,7 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
         );
         $result = $conn->executeQuery($sql, $params);
 
-        /** @var array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, distance: float, keyword_rank: float, combined_score: float}> */
+        /** @var array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, document_type: string, distance: float, keyword_rank: float, combined_score: float}> */
         return $result->fetchAllAssociative();
     }
 

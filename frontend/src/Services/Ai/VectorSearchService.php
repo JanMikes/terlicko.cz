@@ -63,7 +63,7 @@ readonly final class VectorSearchService
      *
      * @param float $distanceThreshold Maximum cosine distance (0-2, lower = more similar). Results above this threshold are filtered out.
      * @param int $minResults Minimum number of results to return even if above threshold (for better UX)
-     * @return array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, distance: float, keyword_rank: float, combined_score: float}>
+     * @return array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, document_type: string, distance: float, keyword_rank: float, combined_score: float}>
      */
     public function hybridSearch(string $query, int $limit = 15, float $distanceThreshold = 0.65, int $minResults = 5): array
     {

@@ -41,33 +41,39 @@ This starts all services:
 
 ## Common Development Commands
 
+**IMPORTANT: All commands must be executed inside Docker containers using `docker compose exec`. Never run commands directly on the host machine.**
+
 ### Frontend (Symfony)
-From the `frontend/` directory:
 
 ```bash
 # Run PHPStan static analysis
-composer phpstan
+docker compose exec frontend composer phpstan
 
 # Run tests
-vendor/bin/phpunit
+docker compose exec frontend vendor/bin/phpunit
 
 # Symfony console commands
-bin/console cache:clear
-bin/console doctrine:migrations:migrate
+docker compose exec frontend bin/console cache:clear
+docker compose exec frontend bin/console doctrine:migrations:migrate
+
+# Install dependencies
+docker compose exec frontend composer install
 ```
 
 ### Strapi
-From the `strapi/` directory:
 
 ```bash
-# Start development server
-npm run develop
+# Start development server (usually runs automatically)
+docker compose exec strapi npm run develop
 
 # Build for production
-npm run build
+docker compose exec strapi npm run build
 
 # Start production server
-npm run start
+docker compose exec strapi npm run start
+
+# Install dependencies
+docker compose exec strapi npm install
 ```
 
 ## Key Architecture Patterns

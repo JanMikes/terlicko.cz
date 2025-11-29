@@ -33,13 +33,14 @@ final class AiSearchTestCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $query = $input->getArgument('query');
+        \assert(\is_string($query));
 
         $io->title("Search Results for: \"$query\"");
 
         $results = $this->vectorSearchService->hybridSearch($query, 20);
 
         foreach ($results as $i => $result) {
-            $io->section(sprintf('#%d [%s] %s', $i + 1, $result['document_type'] ?? 'unknown', $result['title']));
+            $io->section(sprintf('#%d [%s] %s', $i + 1, $result['document_type'], $result['title']));
             $io->text([
                 sprintf('URL: %s', $result['source_url']),
                 sprintf('Distance: %.4f | Score: %.4f', $result['distance'], $result['combined_score']),
@@ -47,8 +48,8 @@ final class AiSearchTestCommand extends Command
             ]);
         }
 
-        $pdfCount = count(array_filter($results, fn($r) => ($r['document_type'] ?? '') === 'pdf'));
-        $webpageCount = count(array_filter($results, fn($r) => ($r['document_type'] ?? '') === 'webpage'));
+        $pdfCount = count(array_filter($results, fn($r) => $r['document_type'] === 'pdf'));
+        $webpageCount = count(array_filter($results, fn($r) => $r['document_type'] === 'webpage'));
         $io->success(sprintf('Results: %d PDFs, %d Webpages', $pdfCount, $webpageCount));
 
         return Command::SUCCESS;
