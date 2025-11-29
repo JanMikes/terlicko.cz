@@ -178,6 +178,206 @@ readonly final class VectorSearchService
     }
 
     /**
+     * Dual-query hybrid search combining original and LLM-normalized queries
+     *
+     * This method runs searches with both the original query and the LLM-normalized query,
+     * then merges results using Reciprocal Rank Fusion (RRF). This preserves the benefits
+     * of normalization (Czech grammar handling, synonyms) while maintaining precision
+     * of the original query.
+     *
+     * @param float $distanceThreshold Maximum cosine distance (0-2, lower = more similar)
+     * @param int $minResults Minimum number of results to return even if above threshold
+     * @return array<array<string, mixed>>
+     */
+    public function dualQueryHybridSearch(
+        string $query,
+        int $limit = 15,
+        float $distanceThreshold = 0.65,
+        int $minResults = 5
+    ): array {
+        // 1. Search with ORIGINAL query (preprocessed but NOT LLM-normalized)
+        $preprocessedOriginal = $this->preprocessQueryForEmbedding($query);
+        $expandedOriginal = $this->expandQuery($preprocessedOriginal);
+        $embeddingOriginal = $this->embeddingService->generateEmbedding($expandedOriginal);
+
+        // 2. Search with NORMALIZED query (LLM-normalized)
+        $normalizedQuery = $this->queryNormalizer->normalizeQuery($query);
+        $preprocessedNormalized = $this->preprocessQueryForEmbedding($normalizedQuery);
+        $expandedNormalized = $this->expandQuery($preprocessedNormalized);
+        $embeddingNormalized = $this->embeddingService->generateEmbedding($expandedNormalized);
+
+        // 3. Get results from both pipelines (get more to ensure overlap)
+        $resultsOriginal = $this->embeddingRepository->findSimilarChunksHybrid(
+            $embeddingOriginal['embedding'],
+            $preprocessedOriginal,
+            $limit * 2
+        );
+
+        $resultsNormalized = $this->embeddingRepository->findSimilarChunksHybrid(
+            $embeddingNormalized['embedding'],
+            $preprocessedNormalized,
+            $limit * 2
+        );
+
+        // 4. Merge with RRF
+        $merged = $this->mergeWithRRF($resultsOriginal, $resultsNormalized);
+
+        // 5. Check for webpage presence and apply fallback if needed
+        $hasWebpage = false;
+        foreach (array_slice($merged, 0, 5) as $result) {
+            if (($result['document_type'] ?? '') === 'webpage') {
+                $hasWebpage = true;
+                break;
+            }
+        }
+
+        // If no webpages in top 5, explicitly search webpages and inject if relevant
+        if (!$hasWebpage) {
+            $webpageResults = $this->embeddingRepository->findSimilarChunksWebpageOnly(
+                $embeddingOriginal['embedding'],
+                5
+            );
+
+            foreach ($webpageResults as $wpResult) {
+                // Only inject if distance is reasonable (0.8 = somewhat relevant)
+                if ((float) $wpResult['distance'] <= 0.8) {
+                    $merged = $this->injectWebpageResult($merged, $wpResult);
+                }
+            }
+        }
+
+        // 6. Apply threshold and limit
+        return $this->applyThresholdAndLimit($merged, $distanceThreshold, $minResults, $limit);
+    }
+
+    /**
+     * Merge two result sets using Reciprocal Rank Fusion (RRF)
+     *
+     * RRF is a simple and effective method for combining ranked lists.
+     * Score = sum(1 / (k + rank)) where k is a constant (typically 60)
+     *
+     * @param array<array<string, mixed>> $results1
+     * @param array<array<string, mixed>> $results2
+     * @return array<array<string, mixed>>
+     */
+    private function mergeWithRRF(array $results1, array $results2, float $k = 60): array
+    {
+        /** @var array<string, float> $scores */
+        $scores = [];
+        /** @var array<string, array<string, mixed>> $dataByChunk */
+        $dataByChunk = [];
+
+        // Score from first result set
+        foreach ($results1 as $rank => $result) {
+            /** @var string $chunkId */
+            $chunkId = $result['chunk_id'];
+            $scores[$chunkId] = ($scores[$chunkId] ?? 0) + (1 / ($k + $rank + 1));
+            $dataByChunk[$chunkId] = $result;
+        }
+
+        // Score from second result set
+        foreach ($results2 as $rank => $result) {
+            /** @var string $chunkId */
+            $chunkId = $result['chunk_id'];
+            $scores[$chunkId] = ($scores[$chunkId] ?? 0) + (1 / ($k + $rank + 1));
+
+            // Keep the result with better distance
+            /** @var float $newDistance */
+            $newDistance = $result['distance'];
+            /** @var float $existingDistance */
+            $existingDistance = $dataByChunk[$chunkId]['distance'] ?? 999;
+            if (!isset($dataByChunk[$chunkId]) || $newDistance < $existingDistance) {
+                $dataByChunk[$chunkId] = $result;
+            }
+        }
+
+        // Apply webpage boost AFTER RRF (1.5x = 50% boost)
+        foreach ($scores as $chunkId => $score) {
+            if (($dataByChunk[$chunkId]['document_type'] ?? '') === 'webpage') {
+                $scores[$chunkId] = $score * 1.5;
+            }
+        }
+
+        // Sort by RRF score (descending)
+        arsort($scores);
+
+        // Build final results
+        $merged = [];
+        foreach ($scores as $chunkId => $rrfScore) {
+            $result = $dataByChunk[$chunkId];
+            $result['rrf_score'] = $rrfScore;
+            $merged[] = $result;
+        }
+
+        return $merged;
+    }
+
+    /**
+     * Inject a webpage result into merged results if not already present
+     *
+     * @param array<array<string, mixed>> $merged
+     * @param array<string, mixed> $wpResult
+     * @return array<array<string, mixed>>
+     */
+    private function injectWebpageResult(array $merged, array $wpResult): array
+    {
+        /** @var string $chunkId */
+        $chunkId = $wpResult['chunk_id'];
+
+        // Check if already in results
+        foreach ($merged as $result) {
+            /** @var string $existingChunkId */
+            $existingChunkId = $result['chunk_id'];
+            if ($existingChunkId === $chunkId) {
+                return $merged;
+            }
+        }
+
+        // Add webpage result with a reasonable RRF score (between top results)
+        $wpResult['rrf_score'] = 0.015; // Places it in top 10 typically
+        $merged[] = $wpResult;
+
+        // Re-sort by RRF score
+        usort($merged, fn($a, $b) => ($b['rrf_score'] ?? 0) <=> ($a['rrf_score'] ?? 0));
+
+        return $merged;
+    }
+
+    /**
+     * Apply distance threshold and limit to results
+     *
+     * @param array<array<string, mixed>> $results
+     * @return array<array<string, mixed>>
+     */
+    private function applyThresholdAndLimit(
+        array $results,
+        float $distanceThreshold,
+        int $minResults,
+        int $limit
+    ): array {
+        $relevant = [];
+        $belowThreshold = [];
+
+        foreach ($results as $result) {
+            /** @var float $distance */
+            $distance = $result['distance'];
+            if ($distance <= $distanceThreshold) {
+                $relevant[] = $result;
+            } else {
+                $belowThreshold[] = $result;
+            }
+        }
+
+        // Ensure minimum results
+        if (count($relevant) < $minResults && count($belowThreshold) > 0) {
+            $needed = $minResults - count($relevant);
+            $relevant = array_merge($relevant, array_slice($belowThreshold, 0, $needed));
+        }
+
+        return array_slice($relevant, 0, $limit);
+    }
+
+    /**
      * Preprocess query by removing question words and meaningless verbs
      * This improves embedding quality by focusing on semantic content
      */

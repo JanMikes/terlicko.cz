@@ -104,8 +104,8 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
                 SELECT
                     chunk_id, document_id, content, source_url, title, document_type, chunk_metadata,
                     distance, keyword_rank,
-                    -- Webpage boost: webpages get 20% score boost over PDFs
-                    (1.0 / (rank + 10)) * (CASE WHEN document_type = 'webpage' THEN 1.2 ELSE 1.0 END) as combined_score
+                    -- Webpage boost: webpages get 50% score boost over PDFs
+                    (1.0 / (rank + 10)) * (CASE WHEN document_type = 'webpage' THEN 1.5 ELSE 1.0 END) as combined_score
                 FROM ranked
                 ORDER BY combined_score DESC
                 LIMIT :limit
@@ -159,9 +159,9 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
                 COALESCE(vs.distance, 999) as distance,
                 COALESCE(ks.keyword_rank, 0) as keyword_rank,
                 -- Weighted scoring: 55% semantic (vector), 35% keyword, plus webpage boost
-                -- Webpages get 20% boost to prioritize official website content over PDF documents
+                -- Webpages get 50% boost to prioritize official website content over PDF documents
                 (0.55 * COALESCE(1.0 / (vs.rank + 10), 0) + 0.35 * COALESCE(1.0 / (ks.rank + 10), 0))
-                * (CASE WHEN d.type = 'webpage' THEN 1.2 ELSE 1.0 END) as combined_score
+                * (CASE WHEN d.type = 'webpage' THEN 1.5 ELSE 1.0 END) as combined_score
             FROM vector_search vs
             FULL OUTER JOIN keyword_search ks ON vs.chunk_id = ks.chunk_id
             INNER JOIN ai_chunks c ON c.id = COALESCE(vs.chunk_id, ks.chunk_id)
@@ -297,6 +297,47 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
         }
 
         return $word;
+    }
+
+    /**
+     * Find similar chunks from webpages only (for fallback search)
+     *
+     * @param array<float> $queryVector
+     * @param int $limit
+     * @return array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, document_type: string, distance: float}>
+     */
+    public function findSimilarChunksWebpageOnly(array $queryVector, int $limit = 5): array
+    {
+        $vectorString = '[' . implode(',', $queryVector) . ']';
+
+        $sql = <<<SQL
+            SELECT
+                c.id as chunk_id,
+                d.id as document_id,
+                c.content,
+                d.source_url,
+                d.title,
+                d.type as document_type,
+                c.metadata as chunk_metadata,
+                (e.vector <=> :query_vector::vector) as distance,
+                0::float as keyword_rank,
+                0::float as combined_score
+            FROM ai_embeddings e
+            INNER JOIN ai_chunks c ON c.id = e.chunk_id
+            INNER JOIN ai_documents d ON d.id = c.document_id
+            WHERE d.type = 'webpage'
+            ORDER BY e.vector <=> :query_vector::vector
+            LIMIT :limit
+        SQL;
+
+        $conn = $this->getEntityManager()->getConnection();
+        $result = $conn->executeQuery($sql, [
+            'query_vector' => $vectorString,
+            'limit' => $limit,
+        ]);
+
+        /** @var array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, document_type: string, distance: float}> */
+        return $result->fetchAllAssociative();
     }
 
     /**

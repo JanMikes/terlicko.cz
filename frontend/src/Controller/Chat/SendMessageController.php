@@ -96,8 +96,9 @@ final class SendMessageController extends AbstractController
         // Save user message
         $this->conversationManager->addMessage($conversation, 'user', $userMessage);
 
-        // Search for relevant context (more results for better AI context)
-        $searchResults = $this->vectorSearchService->hybridSearch($userMessage, 15);
+        // Search for relevant context using dual-query RRF (combines original and normalized queries)
+        $searchResults = $this->vectorSearchService->dualQueryHybridSearch($userMessage, 15);
+        /** @var array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, document_type: string}> $searchResults */
         $contextData = $this->contextBuilder->buildContext($searchResults);
 
         // Get conversation history

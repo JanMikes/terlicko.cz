@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Terlicko\Web\Services\Ai;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Terlicko\Web\Entity\AiChunk;
 use Terlicko\Web\Entity\AiDocument;
 use Terlicko\Web\Entity\AiEmbedding;
@@ -21,7 +22,24 @@ readonly final class IngestionService
         private TextChunker $textChunker,
         private EmbeddingService $embeddingService,
         private DocumentHasher $documentHasher,
+        private HttpClientInterface $httpClient,
     ) {
+    }
+
+    /**
+     * Check if a file URL is accessible (returns 2xx status)
+     */
+    private function isFileAccessible(string $url): bool
+    {
+        try {
+            $response = $this->httpClient->request('HEAD', $url, [
+                'timeout' => 10,
+            ]);
+
+            return $response->getStatusCode() >= 200 && $response->getStatusCode() < 300;
+        } catch (\Throwable) {
+            return false;
+        }
     }
 
     /**
@@ -37,6 +55,15 @@ readonly final class IngestionService
         // Internal URL for downloading PDF content within Docker network
         $downloadUrl = str_replace('https://terlicko.cz', 'http://frontend:80', $sourceUrl);
         $title = $fileData['title'];
+
+        // Check if file is accessible before processing
+        if (!$this->isFileAccessible($downloadUrl)) {
+            return [
+                'status' => 'skipped',
+                'message' => 'File not accessible',
+                'chunks_created' => 0,
+            ];
+        }
 
         // Calculate content hash using internal URL for download
         $contentHash = $this->documentHasher->hashUrl($downloadUrl);
@@ -145,8 +172,17 @@ readonly final class IngestionService
         $sourceUrl = $fileData['source_url'];
         $title = $fileData['title'];
 
-        // Calculate content hash using file URL (image content hash)
+        // Check if file is accessible before processing
         $downloadUrl = str_replace('https://terlicko.cz', 'http://frontend:80', $sourceUrl);
+        if (!$this->isFileAccessible($downloadUrl)) {
+            return [
+                'status' => 'skipped',
+                'message' => 'File not accessible',
+                'chunks_created' => 0,
+            ];
+        }
+
+        // Calculate content hash using file URL (image content hash)
         $contentHash = $this->documentHasher->hashUrl($downloadUrl);
 
         // Check if document exists and hasn't changed (skip if not forcing)

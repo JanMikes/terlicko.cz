@@ -68,6 +68,7 @@ final class AiIngestCommand extends Command
             $progressBar = $io->createProgressBar($filesCount);
             $progressBar->start();
 
+            $skippedFiles = 0;
             foreach ($files as $file) {
                 $fileData = [
                     'source_url' => 'https://terlicko.cz' . $file['url'],
@@ -77,10 +78,19 @@ final class AiIngestCommand extends Command
                 ];
 
                 $result = $this->ingestionService->ingestPdfDocument($fileData, $force);
-                $totalProcessed++;
-                $totalChunks += $result['chunks_created'];
+                if ($result['message'] === 'File not accessible') {
+                    $skippedFiles++;
+                } else {
+                    $totalProcessed++;
+                    $totalChunks += $result['chunks_created'];
+                }
 
                 $progressBar->advance();
+            }
+
+            if ($skippedFiles > 0) {
+                $io->newLine();
+                $io->warning(sprintf('%d PDF files were skipped (not accessible)', $skippedFiles));
             }
 
             $progressBar->finish();
@@ -100,6 +110,7 @@ final class AiIngestCommand extends Command
             $progressBar = $io->createProgressBar($imagesCount);
             $progressBar->start();
 
+            $skippedImages = 0;
             foreach ($images as $image) {
                 $fileData = [
                     'source_url' => 'https://terlicko.cz' . $image['url'],
@@ -111,8 +122,12 @@ final class AiIngestCommand extends Command
 
                 try {
                     $result = $this->ingestionService->ingestImageDocument($fileData, $force);
-                    $totalProcessed++;
-                    $totalChunks += $result['chunks_created'];
+                    if ($result['message'] === 'File not accessible') {
+                        $skippedImages++;
+                    } else {
+                        $totalProcessed++;
+                        $totalChunks += $result['chunks_created'];
+                    }
                 } catch (\Exception $e) {
                     // Log error but continue processing other images
                     $io->newLine();
@@ -120,6 +135,11 @@ final class AiIngestCommand extends Command
                 }
 
                 $progressBar->advance();
+            }
+
+            if ($skippedImages > 0) {
+                $io->newLine();
+                $io->warning(sprintf('%d image files were skipped (not accessible)', $skippedImages));
             }
 
             $progressBar->finish();
