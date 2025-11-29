@@ -191,11 +191,20 @@ readonly final class IngestionService
             ];
         }
 
-        // Calculate content hash using file URL (image content hash)
-        $contentHash = $this->documentHasher->hashUrl($downloadUrl);
-
         // Check if document exists and hasn't changed (skip if not forcing)
         $existingDocument = $this->documentRepository->findBySourceUrl($sourceUrl);
+
+        // Skip permanently failed images (unless forcing)
+        if (!$force && $existingDocument && str_starts_with($existingDocument->getContentHash(), 'failed:')) {
+            return [
+                'status' => 'skipped',
+                'message' => 'Previously failed image',
+                'chunks_created' => 0,
+            ];
+        }
+
+        // Calculate content hash using file URL (image content hash)
+        $contentHash = $this->documentHasher->hashUrl($downloadUrl);
 
         if (!$force && $existingDocument && $existingDocument->getContentHash() === $contentHash) {
             return [
