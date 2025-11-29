@@ -9,9 +9,9 @@ readonly final class ContextBuilder
     /**
      * Build context from search results with structured formatting
      *
-     * @param array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string}> $searchResults
+     * @param array<array{chunk_id: string, document_id: string, content: string, source_url: string, title: string, document_type: string}> $searchResults
      * @param int $maxTokens Maximum tokens for context
-     * @return array{context: string, sources: array<array{url: string, title: string}>}
+     * @return array{context: string, sources: array<array{url: string, title: string, type: string}>}
      */
     public function buildContext(array $searchResults, int $maxTokens = 2000): array
     {
@@ -44,6 +44,7 @@ readonly final class ContextBuilder
                 $sources[] = [
                     'url' => $sourceUrl,
                     'title' => $title,
+                    'type' => $result['document_type'],
                 ];
                 $seenUrls[] = $sourceUrl;
                 $sourceIndex++;

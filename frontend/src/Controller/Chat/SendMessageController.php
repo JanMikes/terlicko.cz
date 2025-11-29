@@ -96,8 +96,8 @@ final class SendMessageController extends AbstractController
         // Save user message
         $this->conversationManager->addMessage($conversation, 'user', $userMessage);
 
-        // Search for relevant context
-        $searchResults = $this->vectorSearchService->hybridSearch($userMessage, 10);
+        // Search for relevant context (more results for better AI context)
+        $searchResults = $this->vectorSearchService->hybridSearch($userMessage, 15);
         $contextData = $this->contextBuilder->buildContext($searchResults);
 
         // Get conversation history

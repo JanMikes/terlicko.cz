@@ -250,16 +250,20 @@ export default class extends Controller {
         return messageDiv;
     }
 
-    updateMessage(messageElement, content, sources = [], isFinal = false) {
+    updateMessage(messageElement, content, sources = {}, isFinal = false) {
         const contentDiv = messageElement.querySelector('.message-content');
         if (!contentDiv) return;
 
         // Convert newlines to <br> for proper formatting
         contentDiv.innerHTML = this.formatContent(content);
 
+        // Normalize sources format (handle both old array and new object format)
+        const normalizedSources = this.normalizeSources(sources);
+        const { initial, expanded, hasMore } = normalizedSources;
+
         // Only show sources when response is final and AI actually used them
         // Don't show sources if AI says it doesn't have the information
-        if (isFinal && sources.length > 0 && this.shouldShowSources(content)) {
+        if (isFinal && initial.length > 0 && this.shouldShowSources(content)) {
             let citationsDiv = messageElement.querySelector('.citations');
             if (!citationsDiv) {
                 citationsDiv = document.createElement('div');
@@ -267,27 +271,95 @@ export default class extends Controller {
                 contentDiv.parentElement.appendChild(citationsDiv);
             }
 
+            const expandedId = `expanded-sources-${Date.now()}`;
+
             citationsDiv.innerHTML = `
                 <div class="small text-muted">
                     <strong>Zdroje:</strong>
                     <ul class="list-unstyled mt-2 mb-0">
-                        ${sources.map(source => `
-                            <li class="mb-1">
-                                <a href="${source.url}" target="_blank" class="text-decoration-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
-                                        <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/>
-                                        <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
-                                    </svg>
-                                    ${this.escapeHtml(source.title)}
-                                </a>
-                            </li>
-                        `).join('')}
+                        ${initial.map(source => this.renderSourceItem(source)).join('')}
                     </ul>
+                    ${hasMore ? `
+                        <div class="expanded-sources collapse" id="${expandedId}">
+                            <ul class="list-unstyled mb-0">
+                                ${expanded.map(source => this.renderSourceItem(source)).join('')}
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-link btn-sm p-0 mt-2 show-more-sources" data-bs-toggle="collapse" data-bs-target="#${expandedId}">
+                            <span class="show-more-text">Zobrazit další zdroje (${expanded.length})</span>
+                            <span class="show-less-text d-none">Skrýt další zdroje</span>
+                        </button>
+                    ` : ''}
                 </div>
             `;
+
+            // Add toggle handler for show more/less text
+            if (hasMore) {
+                const expandedEl = citationsDiv.querySelector(`#${expandedId}`);
+                const button = citationsDiv.querySelector('.show-more-sources');
+                if (expandedEl && button) {
+                    expandedEl.addEventListener('shown.bs.collapse', () => {
+                        button.querySelector('.show-more-text').classList.add('d-none');
+                        button.querySelector('.show-less-text').classList.remove('d-none');
+                    });
+                    expandedEl.addEventListener('hidden.bs.collapse', () => {
+                        button.querySelector('.show-more-text').classList.remove('d-none');
+                        button.querySelector('.show-less-text').classList.add('d-none');
+                    });
+                }
+            }
         }
 
         this.scrollToBottom();
+    }
+
+    /**
+     * Render a single source item
+     */
+    renderSourceItem(source) {
+        const icon = source.type === 'webpage'
+            ? `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-globe" viewBox="0 0 16 16">
+                <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7 7 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-1.834a7 7 0 0 0 .656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-1.834a13.7 13.7 0 0 1-.312 2.5zm2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"/>
+               </svg>`
+            : `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-file-earmark-pdf" viewBox="0 0 16 16">
+                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                <path d="M4.603 14.087a.8.8 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.7 7.7 0 0 1 1.482-.645 20 20 0 0 0 1.062-2.227 7.3 7.3 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.188-.012.396-.047.614-.084.51-.27 1.134-.52 1.794a11 11 0 0 0 .98 1.686 5.8 5.8 0 0 1 1.334.05c.364.066.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.86.86 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.7 5.7 0 0 1-.911-.95 11.7 11.7 0 0 0-1.997.406 11.3 11.3 0 0 1-1.02 1.51c-.292.35-.609.656-.927.787a.8.8 0 0 1-.58.029"/>
+               </svg>`;
+
+        return `
+            <li class="mb-1">
+                <a href="${source.url}" target="_blank" class="text-decoration-none">
+                    ${icon}
+                    ${this.escapeHtml(source.title)}
+                </a>
+            </li>
+        `;
+    }
+
+    /**
+     * Normalize sources to new format (handles both old array and new object format)
+     */
+    normalizeSources(sources) {
+        // New format: { initial: [], expanded: [], hasMore: bool }
+        if (sources && typeof sources === 'object' && 'initial' in sources) {
+            return sources;
+        }
+
+        // Old format: array of sources - convert to new format
+        if (Array.isArray(sources)) {
+            return {
+                initial: sources,
+                expanded: [],
+                hasMore: false
+            };
+        }
+
+        // Empty/invalid
+        return {
+            initial: [],
+            expanded: [],
+            hasMore: false
+        };
     }
 
     /**
