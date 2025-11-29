@@ -143,7 +143,11 @@ readonly final class IngestionService
     {
         $sourceUrl = $pageData['url'];
         $title = $pageData['title'];
-        $content = $pageData['content']['normalized_text'];
+        $rawContent = $pageData['content']['normalized_text'];
+
+        // Prepend title to content for better embedding context
+        // Strip markdown formatting for cleaner embeddings
+        $content = $this->prepareWebpageContentForEmbedding($title, $rawContent);
 
         // Calculate content hash
         $contentHash = $this->documentHasher->hashContent($content);
@@ -247,5 +251,105 @@ readonly final class IngestionService
                 'normalized_text' => $item->normalizedText,
             ],
         ], $force);
+    }
+
+    /**
+     * Prepare webpage content for embedding by:
+     * 1. Prepending the title for context
+     * 2. Stripping markdown formatting for cleaner embeddings
+     */
+    private function prepareWebpageContentForEmbedding(string $title, string $content): string
+    {
+        // Strip markdown formatting
+        $cleanContent = $this->stripMarkdown($content);
+
+        // Prepend title for better semantic context
+        // This helps embeddings understand what the content is about
+        return "Stránka: {$title}\n\n{$cleanContent}";
+    }
+
+    /**
+     * Strip markdown formatting from text to create cleaner embeddings
+     * Converts structured content into natural prose for better semantic search
+     */
+    private function stripMarkdown(string $text): string
+    {
+        // Remove code blocks (```code```)
+        $text = preg_replace('/```[\s\S]*?```/', '', $text) ?? $text;
+
+        // Remove inline code (`code` -> code)
+        $text = preg_replace('/`([^`]+)`/', '$1', $text) ?? $text;
+
+        // Remove images ![alt](url)
+        $text = preg_replace('/!\[([^\]]*)\]\([^)]+\)/', '$1', $text) ?? $text;
+
+        // Convert links [text](url) -> text
+        $text = preg_replace('/\[([^\]]+)\]\([^)]+\)/', '$1', $text) ?? $text;
+
+        // Remove reference-style links [text][ref]
+        $text = preg_replace('/\[([^\]]+)\]\[[^\]]*\]/', '$1', $text) ?? $text;
+
+        // Remove link references [ref]: url
+        $text = preg_replace('/^\[[^\]]+\]:\s*\S+.*$/m', '', $text) ?? $text;
+
+        // Convert headers to emphasized text (### Header -> Header:)
+        $text = preg_replace('/^#{1,6}\s*(.+)$/m', '$1:', $text) ?? $text;
+
+        // Remove bold markers (**text** or __text__ -> text)
+        $text = preg_replace('/\*\*([^*]+)\*\*/', '$1', $text) ?? $text;
+        $text = preg_replace('/__([^_]+)__/', '$1', $text) ?? $text;
+
+        // Remove italic markers (*text* or _text_ -> text) - careful not to match list items
+        $text = preg_replace('/(?<![*\s])\*([^*\n]+)\*(?![*])/', '$1', $text) ?? $text;
+        $text = preg_replace('/(?<![_\s])_([^_\n]+)_(?![_])/', '$1', $text) ?? $text;
+
+        // Remove strikethrough (~~text~~ -> text)
+        $text = preg_replace('/~~([^~]+)~~/', '$1', $text) ?? $text;
+
+        // Convert unordered lists to readable text
+        $text = preg_replace('/^[\s]*[-*+]\s+/m', '• ', $text) ?? $text;
+
+        // Convert ordered lists to readable text
+        $text = preg_replace('/^[\s]*(\d+)\.\s+/m', '$1. ', $text) ?? $text;
+
+        // Remove blockquotes (> text -> text)
+        $text = preg_replace('/^>\s*/m', '', $text) ?? $text;
+
+        // Remove horizontal rules (---, ***, ___)
+        $text = preg_replace('/^[-*_]{3,}$/m', '', $text) ?? $text;
+
+        // Remove HTML tags if any
+        $text = strip_tags($text);
+
+        // Clean up field-value patterns for better readability
+        // "**Funkce:** Starosta" is already handled by bold removal
+        // Keep "Label: Value" format as it reads naturally
+
+        // Normalize multiple spaces
+        $text = preg_replace('/[ \t]+/', ' ', $text) ?? $text;
+
+        // Normalize multiple newlines (keep paragraph structure with single blank lines)
+        $text = preg_replace('/\n{3,}/', "\n\n", $text) ?? $text;
+
+        // Trim each line
+        $lines = explode("\n", $text);
+        $lines = array_map('trim', $lines);
+
+        // Remove empty lines but preserve paragraph breaks
+        $result = [];
+        $previousEmpty = false;
+        foreach ($lines as $line) {
+            if ($line === '') {
+                if (!$previousEmpty) {
+                    $result[] = '';
+                    $previousEmpty = true;
+                }
+            } else {
+                $result[] = $line;
+                $previousEmpty = false;
+            }
+        }
+
+        return trim(implode("\n", $result));
     }
 }

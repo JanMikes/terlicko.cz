@@ -82,24 +82,32 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
             $ilikeParams["keyword_{$index}"] = '%' . $pattern . '%';
         }
 
-        // If no significant keywords, use vector-only search
+        // If no significant keywords, use vector-only search with webpage boost
         if (empty($ilikeConditions)) {
             $sql = <<<SQL
+                WITH ranked AS (
+                    SELECT
+                        c.id as chunk_id,
+                        d.id as document_id,
+                        c.content,
+                        d.source_url,
+                        d.title,
+                        d.type as document_type,
+                        c.metadata as chunk_metadata,
+                        (e.vector <=> :query_vector::vector) as distance,
+                        0::float as keyword_rank,
+                        ROW_NUMBER() OVER (ORDER BY e.vector <=> :query_vector::vector) as rank
+                    FROM ai_embeddings e
+                    INNER JOIN ai_chunks c ON c.id = e.chunk_id
+                    INNER JOIN ai_documents d ON d.id = c.document_id
+                )
                 SELECT
-                    c.id as chunk_id,
-                    d.id as document_id,
-                    c.content,
-                    d.source_url,
-                    d.title,
-                    d.type as document_type,
-                    c.metadata as chunk_metadata,
-                    (e.vector <=> :query_vector::vector) as distance,
-                    0::float as keyword_rank,
-                    (1.0 / (ROW_NUMBER() OVER (ORDER BY e.vector <=> :query_vector::vector) + 10)) as combined_score
-                FROM ai_embeddings e
-                INNER JOIN ai_chunks c ON c.id = e.chunk_id
-                INNER JOIN ai_documents d ON d.id = c.document_id
-                ORDER BY e.vector <=> :query_vector::vector
+                    chunk_id, document_id, content, source_url, title, document_type, chunk_metadata,
+                    distance, keyword_rank,
+                    -- Webpage boost: webpages get 20% score boost over PDFs
+                    (1.0 / (rank + 10)) * (CASE WHEN document_type = 'webpage' THEN 1.2 ELSE 1.0 END) as combined_score
+                FROM ranked
+                ORDER BY combined_score DESC
                 LIMIT :limit
             SQL;
 
@@ -150,9 +158,10 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
                 c.metadata as chunk_metadata,
                 COALESCE(vs.distance, 999) as distance,
                 COALESCE(ks.keyword_rank, 0) as keyword_rank,
-                -- Weighted scoring: 60% semantic (vector), 40% keyword
-                -- Lower k value (10) gives more weight to top results
-                (0.6 * COALESCE(1.0 / (vs.rank + 10), 0) + 0.4 * COALESCE(1.0 / (ks.rank + 10), 0)) as combined_score
+                -- Weighted scoring: 55% semantic (vector), 35% keyword, plus webpage boost
+                -- Webpages get 20% boost to prioritize official website content over PDF documents
+                (0.55 * COALESCE(1.0 / (vs.rank + 10), 0) + 0.35 * COALESCE(1.0 / (ks.rank + 10), 0))
+                * (CASE WHEN d.type = 'webpage' THEN 1.2 ELSE 1.0 END) as combined_score
             FROM vector_search vs
             FULL OUTER JOIN keyword_search ks ON vs.chunk_id = ks.chunk_id
             INNER JOIN ai_chunks c ON c.id = COALESCE(vs.chunk_id, ks.chunk_id)

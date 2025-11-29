@@ -91,7 +91,8 @@ final class AiIngestCommand extends Command
             $io->comment('Extracting content directly from Strapi...');
 
             // Collect all items first for progress bar
-            $contentItems = iterator_to_array($this->contentExtractor->extractAll());
+            // Note: Use preserve_keys=false to prevent key collisions from yield from
+            $contentItems = iterator_to_array($this->contentExtractor->extractAll(), false);
             $pagesCount = count($contentItems);
 
             $io->comment(sprintf('Found %d content items (aktuality, sekce, uredni deska, kalendar akci)', $pagesCount));

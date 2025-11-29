@@ -51,7 +51,7 @@ readonly final class StrapiContent
     public function getSectionSlugs(): array
     {
         /** @var array{data: array<SekceDataArray>} $strapiResponse */
-        $strapiResponse = $this->strapiClient->getApiResource('sekces', populateLevel: 2);
+        $strapiResponse = $this->strapiClient->getApiResource('sekces', populateLevel: 2, pagination: ['limit' => 500, 'start' => 0]);
 
         $data = [];
 
@@ -68,14 +68,11 @@ readonly final class StrapiContent
      */
     public function getAktualityData(int|null $limit = null, null|array|string $tag = null): array
     {
-        $pagination = null;
-
-        if ($limit !== null) {
-            $pagination = [
-                'limit' => $limit,
-                'start' => 0,
-            ];
-        }
+        // Default pagination to get all records if no limit specified
+        $pagination = [
+            'limit' => $limit ?? 500,
+            'start' => 0,
+        ];
 
         $filters = [
             'Zobrazovat' => ['$eq' => true],
@@ -157,14 +154,11 @@ readonly final class StrapiContent
             }
         }
 
-        $pagination = null;
-
-        if ($limit !== null) {
-            $pagination = [
-                'limit' => $limit,
-                'start' => 0,
-            ];
-        }
+        // Default pagination to get all records if no limit specified
+        $pagination = [
+            'limit' => $limit ?? 1000,
+            'start' => 0,
+        ];
 
         /** @var array{data: array<UredniDeskaDataArray>} $strapiResponse */
         $strapiResponse = $this->strapiClient->getApiResource('uredni-deskas',
