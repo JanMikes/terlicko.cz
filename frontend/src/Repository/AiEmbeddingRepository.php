@@ -183,6 +183,7 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
 
     /**
      * Extract significant keywords from query for ILIKE matching
+     * Now includes stemmed versions for better matching
      *
      * @return array<int, string>
      */
@@ -213,6 +214,9 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
             'akce', 'ples', 'koncert', 'trhy', 'festival',
             // Utilities
             'voda', 'plyn', 'elektřina', 'odpad', 'svoz',
+            // Municipality info - NEW
+            'rozloha', 'velikost', 'počet', 'obyvatel', 'historie', 'dějiny',
+            'znak', 'erb', 'vlajka', 'symboly', 'mapa', 'poloha', 'kontakt',
         ];
 
         // Comprehensive Czech stop words list
@@ -225,19 +229,74 @@ final class AiEmbeddingRepository extends ServiceEntityRepository
             'ale', 'ani', 'asi', 'jak', 'kde', 'kdy', 'kdo', 'než', 'pod', 'pro', 'tak', 'ten', 'při', 'být', 'mít', 'jen', 'již', 'pak', 'dne',
             // Common function words
             'nebo', 'jako', 'jeho', 'její', 'jsem', 'jste', 'jsme', 'jsou', 'mám', 'máte', 'máme', 'mezi', 'před', 'toto', 'tato', 'tyto', 'této', 'tohoto', 'těchto',
-            // Question words (keep some for intent)
-            'jaké', 'jaká', 'jaký', 'které', 'která', 'který', 'kterou', 'kterým',
+            // Question words
+            'jaké', 'jaká', 'jaký', 'jakou', 'jakým', 'které', 'která', 'který', 'kterou', 'kterým',
+            'kolik', 'kolikrát',
             // Other common words
             'tedy', 'však', 'což', 'přece', 'sice', 'zda', 'neboť', 'protože', 'pokud', 'kdyby', 'když', 'jestli',
             // Municipality-specific (too common in this context)
-            'obci', 'obce', 'obecní',
+            'obci', 'obce', 'obecní', 'obec',
+            // Common verbs
+            'má', 'mají', 'jsou', 'bylo', 'bude',
         ];
 
-        return array_values(array_filter(
-            $words,
-            fn(string $word) => in_array($word, $alwaysInclude, true) ||
-                (mb_strlen($word) >= 3 && !in_array($word, $stopWords, true))
-        ));
+        // Filter words and add stemmed versions
+        $patterns = [];
+        foreach ($words as $word) {
+            // Skip stop words
+            if (in_array($word, $stopWords, true)) {
+                continue;
+            }
+
+            // Include if it's a domain term
+            if (in_array($word, $alwaysInclude, true)) {
+                $patterns[] = $word;
+                continue;
+            }
+
+            // Include if it's long enough
+            if (mb_strlen($word) >= 3) {
+                $patterns[] = $word;
+
+                // Also add stemmed version for better matching
+                $stemmed = $this->stemCzechWord($word);
+                if ($stemmed !== $word && mb_strlen($stemmed) >= 3) {
+                    $patterns[] = $stemmed;
+                }
+            }
+        }
+
+        return array_values(array_unique($patterns));
+    }
+
+    /**
+     * Apply aggressive Czech stemming to improve word matching
+     * Strips common Czech suffixes while keeping minimum 4 chars
+     */
+    private function stemCzechWord(string $word): string
+    {
+        // Aggressive Czech noun/adjective suffixes - ordered by length (longest first)
+        $suffixes = [
+            // Long compound suffixes
+            'ových', 'ovými', 'ovou', 'ového', 'ovému',
+            'ními', 'ního', 'nímu', 'ním',
+            'ová', 'ový', 'ové', 'ovým',
+            // Case endings
+            'ách', 'ami', 'ech', 'ům', 'ím',
+            'ou', 'em', 'ů', 'ích',
+            // Short endings
+            'y', 'u', 'e', 'i', 'a',
+        ];
+
+        foreach ($suffixes as $suffix) {
+            // Keep at least 4 chars after stripping
+            if (mb_strlen($word) > mb_strlen($suffix) + 3 &&
+                str_ends_with($word, $suffix)) {
+                return mb_substr($word, 0, -mb_strlen($suffix));
+            }
+        }
+
+        return $word;
     }
 
     /**
