@@ -172,12 +172,21 @@ readonly final class IngestionService
         $sourceUrl = $fileData['source_url'];
         $title = $fileData['title'];
 
-        // Check if file is accessible before processing
+        // Check if file is accessible before processing (internal URL for hashing)
         $downloadUrl = str_replace('https://terlicko.cz', 'http://frontend:80', $sourceUrl);
         if (!$this->isFileAccessible($downloadUrl)) {
             return [
                 'status' => 'skipped',
-                'message' => 'File not accessible',
+                'message' => 'File not accessible (internal)',
+                'chunks_created' => 0,
+            ];
+        }
+
+        // Also check public URL that OpenAI will use for OCR
+        if (!$this->isFileAccessible($sourceUrl)) {
+            return [
+                'status' => 'skipped',
+                'message' => 'File not accessible (public URL)',
                 'chunks_created' => 0,
             ];
         }
@@ -200,8 +209,27 @@ readonly final class IngestionService
         $ocrResult = $this->imageOcrService->extractText($sourceUrl);
         $extractedText = trim($ocrResult['text']);
 
-        // Skip if no text was extracted
+        // If no text was extracted, still create/update document to prevent re-processing
         if ($extractedText === '') {
+            if ($existingDocument) {
+                $existingDocument->updateContentHash($contentHash);
+            } else {
+                $document = new AiDocument(
+                    sourceUrl: $sourceUrl,
+                    title: $title,
+                    type: 'image',
+                    contentHash: $contentHash,
+                    metadata: json_encode([
+                        'size' => $fileData['size_bytes'],
+                        'extension' => $fileData['ext'],
+                        'ocr_result' => 'no_text',
+                    ], JSON_THROW_ON_ERROR),
+                );
+                $this->entityManager->persist($document);
+            }
+            $this->entityManager->flush();
+            $this->entityManager->clear();
+
             return [
                 'status' => 'skipped',
                 'message' => 'No text found in image',
@@ -506,5 +534,34 @@ readonly final class IngestionService
         }
 
         return trim(implode("\n", $result));
+    }
+
+    /**
+     * Record a failed image ingestion to prevent retrying on subsequent runs
+     *
+     * @param array{source_url: string, title: string, size_bytes: int, published_at: string, ext: string} $fileData
+     */
+    public function recordFailedImage(array $fileData, string $errorMessage): void
+    {
+        $sourceUrl = $fileData['source_url'];
+        $existingDocument = $this->documentRepository->findBySourceUrl($sourceUrl);
+
+        if ($existingDocument === null) {
+            $document = new AiDocument(
+                sourceUrl: $sourceUrl,
+                title: $fileData['title'],
+                type: 'image',
+                contentHash: 'failed:' . md5($errorMessage),
+                metadata: json_encode([
+                    'error' => $errorMessage,
+                    'failed_at' => date('c'),
+                    'size' => $fileData['size_bytes'],
+                    'extension' => $fileData['ext'],
+                ], JSON_THROW_ON_ERROR),
+            );
+            $this->entityManager->persist($document);
+            $this->entityManager->flush();
+            $this->entityManager->clear();
+        }
     }
 }

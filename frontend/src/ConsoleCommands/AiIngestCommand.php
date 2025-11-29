@@ -132,6 +132,14 @@ final class AiIngestCommand extends Command
                     // Log error but continue processing other images
                     $io->newLine();
                     $io->warning(sprintf('Failed to process image %s: %s', $image['name'], $e->getMessage()));
+
+                    // Record failure to prevent retrying on next run
+                    try {
+                        $this->ingestionService->recordFailedImage($fileData, $e->getMessage());
+                    } catch (\Exception) {
+                        // Ignore errors when recording failure
+                    }
+                    $skippedImages++;
                 }
 
                 $progressBar->advance();
