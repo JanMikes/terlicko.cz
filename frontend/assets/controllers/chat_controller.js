@@ -364,10 +364,12 @@ export default class extends Controller {
 
     /**
      * Check if sources should be shown based on AI response content
+     * Returns false if AI indicates it cannot/won't answer the question
      */
     shouldShowSources(content) {
         const lowerContent = content.toLowerCase();
         const noInfoPhrases = [
+            // AI doesn't have the information
             'nemám k dispozici',
             'nemám informaci',
             'tuto informaci bohužel',
@@ -375,7 +377,13 @@ export default class extends Controller {
             'nejsem schopen',
             'nemohu odpovědět',
             'nemám dostatek informací',
-            'nemám žádné informace'
+            'nemám žádné informace',
+            // AI declines to answer (off-topic questions)
+            'mohu odpovídat pouze',
+            'pouze na otázky týkající se',
+            'nespadá do mé působnosti',
+            'není v mé kompetenci',
+            'tato otázka se netýká'
         ];
 
         return !noInfoPhrases.some(phrase => lowerContent.includes(phrase));
