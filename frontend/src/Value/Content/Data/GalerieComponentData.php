@@ -6,6 +6,10 @@ namespace Terlicko\Web\Value\Content\Data;
 
 /**
  * @phpstan-import-type ObrazekGalerieDataArray from ObrazekGalerieData
+ * @phpstan-type GalerieComponentDataArray array{
+ *      Obrazek: array<ObrazekGalerieDataArray>,
+ *      Pocet_zobrazenych: int,
+ *   }
  */
 readonly final class GalerieComponentData
 {
@@ -18,10 +22,7 @@ readonly final class GalerieComponentData
     ) {}
 
     /**
-     * @param array{
-     *     Obrazek: array<ObrazekGalerieDataArray>,
-     *     Pocet_zobrazenych: int,
-     *  } $data
+     * @param GalerieComponentDataArray $data
      */
     public static function createFromStrapiResponse(array $data): self
     {

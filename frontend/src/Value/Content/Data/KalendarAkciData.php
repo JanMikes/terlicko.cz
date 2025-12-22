@@ -9,7 +9,7 @@ use DateTimeZone;
 
 /**
  * @phpstan-import-type ImageDataArray from ImageData
- * @phpstan-import-type ObrazekGalerieDataArray from GalerieComponentData
+ * @phpstan-import-type GalerieComponentDataArray from GalerieComponentData
  * @phpstan-import-type SouborDataArray from SouboryKeStazeniComponentData
  * @phpstan-import-type FileDataArray from FileData
  * @phpstan-import-type TagDataArray from TagData
@@ -23,7 +23,7 @@ use DateTimeZone;
  *     Popis: null|string,
  *     Fotka_detail: null|ImageDataArray,
  *     Video_youtube: null|string,
- *     Galerie: null|ObrazekGalerieDataArray,
+ *     Galerie: null|GalerieComponentDataArray,
  *     Dokumenty: null|SouborDataArray,
  * }
  */
