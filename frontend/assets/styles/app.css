@@ -382,6 +382,7 @@ header.bg-dark {
     display: inline-block;
     font-weight: bold;
     border: 0;
+    font-size: 14px;
 }
 
 .custom-badge.custom-badge-secondary {
@@ -1189,4 +1190,8 @@ a:hover .upcoming-event-item {
         flex: 1 1 calc(20% - 0.8rem);
         max-width: calc(20% - 0.8rem);
     }
+}
+
+.actuality-detail {
+    border: 1px solid #ccc;
 }

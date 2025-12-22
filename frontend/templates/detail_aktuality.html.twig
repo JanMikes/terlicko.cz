@@ -22,14 +22,16 @@
         </nav>
         #}
 
-        <article>
+        <article class="actuality-detail p-3 p-md-5 rounded mx-auto" style="max-width: 1000px;">
             <h1 class="fw-bolder mb-4" id="aktualita-{{ aktualita.slug }}">{{ aktualita.Nadpis }}</h1>
 
             <p>
-                {% if aktualita.Zverejnil %}
-                    {{ aktualita.Zverejnil.Jmeno }}<br>
-                {% endif %}
                 <time>{{ aktualita.DatumZverejneni|date('d.m.Y') }}</time>
+
+                {% if aktualita.Zverejnil %}
+                     |
+                    {{ aktualita.Zverejnil.Jmeno }}
+                {% endif %}
             </p>
 
 
@@ -44,7 +46,7 @@
             {% endif %}
 
             {% if aktualita.Obrazek %}
-                <div class="img-wrapper">
+                <div class="img-wrapper mb-3">
                     <img src="{{ aktualita.Obrazek.url }}" class="img-fluid" alt="" aria-labelledby="aktualita-{{ aktualita.slug }}">
                 </div>
             {% endif %}
