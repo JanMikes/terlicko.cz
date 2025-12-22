@@ -245,11 +245,8 @@ readonly final class AiContentExtractor
         }
 
         // Linked news article
-        if ($item->Aktualita !== null) {
-            $parts[] = '**Související článek:** ' . $item->Aktualita->Nadpis;
-            if ($item->Aktualita->Popis !== '') {
-                $parts[] = $item->Aktualita->Popis;
-            }
+        if ($item->Popis !== null) {
+            $parts[] = '**Související článek:** ' . $item->Popis;
         }
 
         return implode("\n\n", $parts);
