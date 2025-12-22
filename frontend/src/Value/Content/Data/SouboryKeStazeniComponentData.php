@@ -6,6 +6,10 @@ namespace Terlicko\Web\Value\Content\Data;
 
 /**
  * @phpstan-import-type SouborDataArray from SouborData
+ * @phpstan-type SouboryKeStazeniComponentDataArray array{
+ *      Pocet_sloupcu: string,
+ *      Soubor: array<SouborDataArray>,
+ *   }
  */
 readonly final class SouboryKeStazeniComponentData
 {
@@ -18,10 +22,7 @@ readonly final class SouboryKeStazeniComponentData
     ) {}
 
     /**
-     * @param array{
-     *     Pocet_sloupcu: string,
-     *     Soubor: array<SouborDataArray>,
-     *  } $data
+     * @param SouboryKeStazeniComponentDataArray $data
      */
     public static function createFromStrapiResponse(array $data): self
     {

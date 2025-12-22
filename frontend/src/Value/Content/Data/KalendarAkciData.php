@@ -10,7 +10,7 @@ use DateTimeZone;
 /**
  * @phpstan-import-type ImageDataArray from ImageData
  * @phpstan-import-type GalerieComponentDataArray from GalerieComponentData
- * @phpstan-import-type SouborDataArray from SouboryKeStazeniComponentData
+ * @phpstan-import-type SouboryKeStazeniComponentDataArray from SouboryKeStazeniComponentData
  * @phpstan-import-type FileDataArray from FileData
  * @phpstan-import-type TagDataArray from TagData
  * @phpstan-type KalendarAkciDataArray array{
@@ -24,7 +24,7 @@ use DateTimeZone;
  *     Fotka_detail: null|ImageDataArray,
  *     Video_youtube: null|string,
  *     Galerie: null|GalerieComponentDataArray,
- *     Dokumenty: null|SouborDataArray,
+ *     Dokumenty: null|SouboryKeStazeniComponentDataArray,
  * }
  */
 readonly final class KalendarAkciData
