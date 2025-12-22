@@ -23,14 +23,37 @@
     "Poradatel": {
       "type": "string"
     },
-    "Aktualita": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::aktuality.aktuality"
-    },
     "Popis": {
       "type": "text",
       "maxLength": 150
+    },
+    "Misto_konani": {
+      "type": "string"
+    },
+    "Dokumenty": {
+      "type": "component",
+      "component": "komponenty.soubory-ke-stazeni",
+      "repeatable": false
+    },
+    "Galerie": {
+      "type": "component",
+      "component": "komponenty.galerie",
+      "repeatable": false
+    },
+    "Video_youtube": {
+      "type": "string"
+    },
+    "Fotka_detail": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "Nazev",
+      "required": true
     }
   }
 }

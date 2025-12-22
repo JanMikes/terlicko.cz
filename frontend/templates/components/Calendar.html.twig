@@ -105,8 +105,8 @@
                             {% set monthName = czechMonths[event.Datum.format('m') - 1] %}
 
                             <div class="calendar-event-item">
-                                {% if event.Aktualita %}
-                                    <a href="{{ path('detail_aktuality', {'slug': event.Aktualita.slug}) }}" class="text-decoration-none">
+                                {% if event.slug and ((event.Dokumenty ?? []) or (event.Galerie ?? []) or event.Popis or event.FotkaDetail) %}
+                                    <a href="{{ path('detail_akce', {'slug': event.slug}) }}" class="text-decoration-none">
                                 {% endif %}
 
                                         <div class="d-flex w-100 upcoming-event-item position-relative">
@@ -143,14 +143,14 @@
                                                 {% endif %}
                                             </div>
 
-                                            {% if event.Aktualita %}
+                                            {% if event.slug and ((event.Dokumenty ?? []) or (event.Galerie ?? []) or event.Popis or event.FotkaDetail) %}
                                                 <span class="event-link">
                                         <i class="bi bi-caret-right-fill"></i>
                                     </span>
                                             {% endif %}
                                         </div>
 
-                                {% if event.Aktualita %}
+                                        {% if event.slug and ((event.Dokumenty ?? []) or (event.Galerie ?? []) or event.Popis or event.FotkaDetail) %}
                                     </a>
                                 {% endif %}
                             </div>

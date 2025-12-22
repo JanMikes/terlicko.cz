@@ -598,21 +598,24 @@ export interface ApiKalendarAkciKalendarAkci
     draftAndPublish: false;
   };
   attributes: {
-    Aktualita: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::aktuality.aktuality'
-    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     Datum: Schema.Attribute.DateTime;
     Datum_do: Schema.Attribute.DateTime;
+    Dokumenty: Schema.Attribute.Component<
+      'komponenty.soubory-ke-stazeni',
+      false
+    >;
+    Fotka_detail: Schema.Attribute.Media<'images'>;
+    Galerie: Schema.Attribute.Component<'komponenty.galerie', false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::kalendar-akci.kalendar-akci'
     > &
       Schema.Attribute.Private;
+    Misto_konani: Schema.Attribute.String;
     Nazev: Schema.Attribute.String;
     Popis: Schema.Attribute.Text &
       Schema.Attribute.SetMinMaxLength<{
@@ -620,9 +623,11 @@ export interface ApiKalendarAkciKalendarAkci
       }>;
     Poradatel: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'Nazev'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    Video_youtube: Schema.Attribute.String;
   };
 }
 
@@ -1154,8 +1159,8 @@ export interface PluginUploadFile extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
-    alternativeText: Schema.Attribute.String;
-    caption: Schema.Attribute.String;
+    alternativeText: Schema.Attribute.Text;
+    caption: Schema.Attribute.Text;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1179,7 +1184,7 @@ export interface PluginUploadFile extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     mime: Schema.Attribute.String & Schema.Attribute.Required;
     name: Schema.Attribute.String & Schema.Attribute.Required;
-    previewUrl: Schema.Attribute.String;
+    previewUrl: Schema.Attribute.Text;
     provider: Schema.Attribute.String & Schema.Attribute.Required;
     provider_metadata: Schema.Attribute.JSON;
     publishedAt: Schema.Attribute.DateTime;
@@ -1188,7 +1193,7 @@ export interface PluginUploadFile extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    url: Schema.Attribute.String & Schema.Attribute.Required;
+    url: Schema.Attribute.Text & Schema.Attribute.Required;
     width: Schema.Attribute.Integer;
   };
 }

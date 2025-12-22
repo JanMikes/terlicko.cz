@@ -172,13 +172,13 @@
                 {% for event in upcoming_events %}
                     {% set monthName = czechMonths[event.Datum.format('m') - 1] %}
                     <div class="col-lg-6 mb-2">
-                        {% if event.Aktualita %}
-                            <a href="{{ path('detail_aktuality', {'slug': event.Aktualita.slug}) }}" class="text-decoration-none">
+                        {% if event.slug and ((event.Dokumenty ?? []) or (event.Galerie ?? []) or event.Popis or event.FotkaDetail) %}
+                            <a href="{{ path('detail_akce', {'slug': event.slug}) }}" class="text-decoration-none">
                         {% endif %}
                             <div class="d-flex w-100 upcoming-event-item position-relative">
                                 <div class="upcoming-event-date-wrapper {% if event.DatumDo and (not event.Datum or event.DatumDo.format('Y-m-d') != event.Datum.format('Y-m-d')) %}multiday{% endif %}">
                                     {% if event.Datum %}
-                                        <div class="upcoming-event-date flex-shrink-0">
+                                        <div class="upcoming-event-date flex-shrink-0 {% if not event.DatumDo or event.DatumDo.format('Y-m-d') != event.Datum.format('Y-m-d') %}h-100{% endif %}">
                                             <span class="month-day">{{ event.Datum.format('d') }}</span>
                                             <span class="month-name">{{ czechMonths[event.Datum.format('m') - 1] }}</span>
                                         </div>
@@ -212,13 +212,13 @@
                                     {% endif %}
                                 </div>
 
-                                {% if event.Aktualita %}
+                                {% if event.slug and ((event.Dokumenty ?? []) or (event.Galerie ?? []) or event.Popis or event.FotkaDetail) %}
                                     <span class="event-link">
                                         <i class="bi bi-caret-right-fill"></i>
                                     </span>
                                 {% endif %}
                             </div>
-                        {% if event.Aktualita %}
+                                {% if event.slug and ((event.Dokumenty ?? []) or (event.Galerie ?? []) or event.Popis or event.FotkaDetail) %}
                             </a>
                         {% endif %}
                     </div>

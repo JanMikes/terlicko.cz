@@ -13,15 +13,6 @@
     </nav>
 
     <section class="detail-aktuality-section">
-        {#
-        <nav>
-            <a href="{{ path('aktuality') }}">Všechny příspěvky</a>
-            <a href="{{ path('urad_dokumenty_formulare') }}">Formuláře</a>
-            <a href="{{ path('urad_dokumenty_odpady') }}">Odpady</a>
-            <a href="{{ path('urad_dokumenty_vyhlasky') }}">Vyhlášky</a>
-        </nav>
-        #}
-
         <article class="actuality-detail p-3 p-md-5 rounded mx-auto" style="max-width: 1000px;">
             <h1 class="fw-bolder mb-4" id="aktualita-{{ aktualita.slug }}">{{ aktualita.Nadpis }}</h1>
 
