@@ -25,16 +25,6 @@
         <article class="actuality-detail p-3 p-md-5 rounded mx-auto" style="max-width: 1000px;">
             <h1 class="fw-bolder mb-4" id="aktualita-{{ aktualita.slug }}">{{ aktualita.Nadpis }}</h1>
 
-            <p>
-                <time>{{ aktualita.DatumZverejneni|date('d.m.Y') }}</time>
-
-                {% if aktualita.Zverejnil %}
-                     |
-                    {{ aktualita.Zverejnil.Jmeno }}
-                {% endif %}
-            </p>
-
-
             {% if aktualita.Tagy %}
                 <p class="tags">
                     {% for Tag in aktualita.Tagy %}
@@ -44,6 +34,15 @@
                     {% endfor %}
                 </p>
             {% endif %}
+
+            <p>
+                <time>{{ aktualita.DatumZverejneni|date('d.m.Y') }}</time>
+
+                {% if aktualita.Zverejnil %}
+                     |
+                    {{ aktualita.Zverejnil.Jmeno }}
+                {% endif %}
+            </p>
 
             {% if aktualita.Obrazek %}
                 <div class="img-wrapper mb-3">

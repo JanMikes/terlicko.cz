@@ -32,6 +32,10 @@
                         Zobrazit více
                     </button>
                 {% endif %}
+
+                {% if active_tag %}
+                    <a class="ms-2 mb-2" href="{{ path('aktuality') }}">Vymazat filtr</a>
+                {% endif %}
             </p>
         </div>
     {% endif %}

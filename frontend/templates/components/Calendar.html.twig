@@ -112,7 +112,7 @@
                                         <div class="d-flex w-100 upcoming-event-item position-relative">
                                             <div class="upcoming-event-date-wrapper {% if event.DatumDo and (not event.Datum or event.DatumDo.format('Y-m-d') != event.Datum.format('Y-m-d')) %}multiday{% endif %}">
                                                 {% if event.Datum %}
-                                                    <div class="upcoming-event-date flex-shrink-0">
+                                                    <div class="upcoming-event-date flex-shrink-0 {% if not event.DatumDo or event.DatumDo.format('Y-m-d') != event.Datum.format('Y-m-d') %}h-100{% endif %}">
                                                         <span class="month-day">{{ event.Datum.format('d') }}</span>
                                                         <span class="month-name">{{ czechMonths[event.Datum.format('m') - 1] }}</span>
                                                     </div>
