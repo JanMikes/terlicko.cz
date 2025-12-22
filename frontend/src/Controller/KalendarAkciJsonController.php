@@ -36,25 +36,19 @@ final class KalendarAkciJsonController extends AbstractController
             $imageUrl = '';
             $detailUrl = '';
             
-            if ($kalendarAkce->Aktualita !== null) {
-                $perex = $this->textProcessor->createPerex($kalendarAkce->Aktualita->Popis);
-                $content = $kalendarAkce->Aktualita->Popis;
+            if ($kalendarAkce->slug !== null) {
+                $perex = $this->textProcessor->createPerex($kalendarAkce->Popis ?? '');
+                $content = $kalendarAkce->Popis ?? '';
                 
-                if (!empty($kalendarAkce->Aktualita->Tagy)) {
-                    $category = $kalendarAkce->Aktualita->Tagy[0]->Tag;
-                }
-                
-                if ($kalendarAkce->Aktualita->Obrazek !== null) {
+                if ($kalendarAkce->FotkaDetail !== null) {
                     $baseUrl = $request->getSchemeAndHttpHost();
-                    $imageUrl = $baseUrl . $kalendarAkce->Aktualita->Obrazek->url;
+                    $imageUrl = $baseUrl . $kalendarAkce->FotkaDetail->url;
                 }
                 
-                if ($kalendarAkce->Aktualita->slug !== null) {
-                    $detailUrl = $this->generateUrl('detail_aktuality', 
-                        ['slug' => $kalendarAkce->Aktualita->slug], 
-                        UrlGeneratorInterface::ABSOLUTE_URL
-                    );
-                }
+                $detailUrl = $this->generateUrl('detail_akce',
+                    ['slug' => $kalendarAkce->slug],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                );
             }
             
             $actionDate = DateHelper::formatActionDate($kalendarAkce->Datum, $kalendarAkce->DatumDo);
@@ -94,8 +88,8 @@ final class KalendarAkciJsonController extends AbstractController
             'dates' => $startDate . '/' . $endDate,
         ];
 
-        if ($kalendarAkce->Aktualita?->Popis) {
-            $params['details'] = strip_tags($kalendarAkce->Aktualita->Popis);
+        if ($kalendarAkce->Popis) {
+            $params['details'] = strip_tags($kalendarAkce->Popis);
         }
 
         if ($kalendarAkce->Poradatel) {
