@@ -8,7 +8,7 @@ namespace Terlicko\Web\Value\Content\Data;
  * @phpstan-import-type FileDataArray from FileData
  * @phpstan-type SouborDataArray array{
  *     Nadpis: string,
- *     Soubor: FileDataArray,
+ *     Soubor: FileDataArray|null,
  * }
  */
 readonly final class SouborData
@@ -18,7 +18,7 @@ readonly final class SouborData
 
     public function __construct(
         public string $Nadpis,
-        public FileData $Soubor,
+        public ?FileData $Soubor,
     ) {
     }
 
@@ -29,7 +29,7 @@ readonly final class SouborData
     {
         return new self(
             $data['Nadpis'],
-            FileData::createFromStrapiResponse($data['Soubor']),
+            $data['Soubor'] !== null ? FileData::createFromStrapiResponse($data['Soubor']) : null,
         );
     }
 }
