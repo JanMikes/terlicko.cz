@@ -164,7 +164,7 @@ readonly final class StrapiContent
         $strapiResponse = $this->strapiClient->getApiResource('uredni-deskas',
             filters: $filters,
             pagination: $pagination,
-            sort: ['Datum_zverejneni:desc', 'Nadpis'],
+            sort: ['Datum_zverejneni:desc', 'id'],
         );
 
         return UredniDeskaData::createManyFromStrapiResponse($strapiResponse['data']);
