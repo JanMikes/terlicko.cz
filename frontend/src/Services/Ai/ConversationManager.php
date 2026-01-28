@@ -115,6 +115,11 @@ readonly final class ConversationManager
         return $history;
     }
 
+    public function flush(): void
+    {
+        $this->entityManager->flush();
+    }
+
     /**
      * Check rate limits for guest
      */

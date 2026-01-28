@@ -85,8 +85,35 @@ final class SendMessageController extends AbstractController
             throw new BadRequestHttpException('Message cannot be empty');
         }
 
+        // Check if user is blocked due to repeated violations
+        if ($conversation->isModerationBlocked()) {
+            return $this->json([
+                'error' => 'moderation_blocked',
+                'message' => $this->moderationService->getRandomCooldownMessage(),
+                'blocked_until' => $conversation->getModerationBlockedUntil()?->getTimestamp(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
         // Moderate input
         if ($this->moderationService->shouldBlock($userMessage)) {
+            $conversation->incrementModerationStrikes();
+
+            if ($conversation->getModerationStrikes() >= $this->moderationService->getMaxStrikes()) {
+                $blockedUntil = new \DateTimeImmutable(
+                    sprintf('+%d minutes', $this->moderationService->getCooldownMinutes())
+                );
+                $conversation->blockModerationUntil($blockedUntil);
+                $this->conversationManager->flush();
+
+                return $this->json([
+                    'error' => 'moderation_blocked',
+                    'message' => $this->moderationService->getRandomCooldownMessage(),
+                    'blocked_until' => $blockedUntil->getTimestamp(),
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            $this->conversationManager->flush();
+
             return $this->json([
                 'error' => 'message_flagged',
                 'message' => 'Vaše zpráva byla označena jako nevhodná.',

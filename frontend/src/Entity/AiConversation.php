@@ -36,6 +36,12 @@ class AiConversation
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $endedAt = null;
 
+    #[ORM\Column(type: Types::INTEGER, options: ['default' => 0])]
+    private int $moderationStrikes = 0;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $moderationBlockedUntil = null;
+
     /** @var Collection<int, AiMessage> */
     #[ORM\OneToMany(targetEntity: AiMessage::class, mappedBy: 'conversation', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[ORM\OrderBy(['createdAt' => 'ASC'])]
@@ -102,5 +108,31 @@ class AiConversation
     public function getMessageCount(): int
     {
         return $this->messages->count();
+    }
+
+    public function getModerationStrikes(): int
+    {
+        return $this->moderationStrikes;
+    }
+
+    public function incrementModerationStrikes(): void
+    {
+        $this->moderationStrikes++;
+    }
+
+    public function isModerationBlocked(): bool
+    {
+        return $this->moderationBlockedUntil !== null
+            && $this->moderationBlockedUntil > new \DateTimeImmutable();
+    }
+
+    public function getModerationBlockedUntil(): ?\DateTimeImmutable
+    {
+        return $this->moderationBlockedUntil;
+    }
+
+    public function blockModerationUntil(\DateTimeImmutable $until): void
+    {
+        $this->moderationBlockedUntil = $until;
     }
 }

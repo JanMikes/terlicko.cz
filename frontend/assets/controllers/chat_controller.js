@@ -127,6 +127,24 @@ export default class extends Controller {
                     this.submitButtonTarget.disabled = false;
                     return;
                 }
+
+                const data = await response.json();
+                if (data.error === 'message_flagged') {
+                    this.hideLoading();
+                    this.addMessage('assistant', data.message);
+                    this.inputTarget.disabled = false;
+                    this.submitButtonTarget.disabled = false;
+                    return;
+                }
+
+                if (data.error === 'moderation_blocked') {
+                    this.hideLoading();
+                    this.addMessage('assistant', data.message);
+                    this.moderationCooldownActive = true;
+                    this.startModerationCooldown(data.blocked_until);
+                    return;
+                }
+
                 throw new Error('Failed to send message');
             }
 
@@ -138,9 +156,11 @@ export default class extends Controller {
             this.showError('Nepodařilo se odeslat zprávu. Zkuste to prosím znovu.');
             this.hideLoading();
         } finally {
-            this.inputTarget.disabled = false;
-            this.submitButtonTarget.disabled = false;
-            this.inputTarget.focus();
+            if (!this.moderationCooldownActive) {
+                this.inputTarget.disabled = false;
+                this.submitButtonTarget.disabled = false;
+                this.inputTarget.focus();
+            }
         }
     }
 
@@ -445,6 +465,35 @@ export default class extends Controller {
         if (this.hasRateLimitTarget) {
             this.rateLimitTarget.classList.add('d-none');
         }
+    }
+
+    startModerationCooldown(blockedUntilTimestamp) {
+        this.inputTarget.disabled = true;
+        this.submitButtonTarget.disabled = true;
+        this.inputTarget.placeholder = 'Počkejte prosím...';
+
+        const updateCooldown = () => {
+            const now = Math.floor(Date.now() / 1000);
+            const remaining = blockedUntilTimestamp - now;
+
+            if (remaining <= 0) {
+                this.moderationCooldownActive = false;
+                this.inputTarget.disabled = false;
+                this.submitButtonTarget.disabled = false;
+                this.inputTarget.placeholder = 'Napište svou otázku...';
+                this.inputTarget.focus();
+                return;
+            }
+
+            const minutes = Math.floor(remaining / 60);
+            const seconds = remaining % 60;
+            const timeString = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+            this.inputTarget.placeholder = `Pauza – můžete psát za ${timeString}`;
+
+            setTimeout(updateCooldown, 1000);
+        };
+
+        updateCooldown();
     }
 
     async endConversation() {
