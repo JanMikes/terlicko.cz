@@ -73,29 +73,17 @@ This creates the necessary database tables:
 - `ai_conversations`
 - `ai_messages`
 
-### Step 3: Test Data Feeds
-
-```bash
-# Test PDF files feed
-curl http://localhost:8080/ai/files.json | jq '.count'
-
-# Test content feed
-curl http://localhost:8080/ai/content.json | jq '.count'
-```
-
-Both should return a count > 0.
-
-### Step 4: Run Initial Ingestion
+### Step 3: Run Initial Ingestion
 
 ```bash
 docker compose exec frontend bin/console ai:ingest
 ```
 
 This will:
-- Fetch all PDFs from Strapi
-- Fetch all webpage content
-- Extract text and chunk it
-- Generate embeddings via OpenAI
+- Fetch all PDFs from Strapi and extract text
+- Fetch all images from Strapi and extract text via OCR (OpenAI Vision)
+- Fetch all web content (aktuality, sekce, uredni deska, kalendar akci) from Strapi
+- Chunk text and generate embeddings via OpenAI
 - Store everything in PostgreSQL
 
 **Expected output:**
@@ -107,8 +95,12 @@ Processing PDF Documents
 Found X PDF files
 [============================] 100%
 
+Processing Image Documents (OCR)
+Found X image files
+[============================] 100%
+
 Processing Web Content
-Found X pages
+Found X content items (aktuality, sekce, uredni deska, kalendar akci)
 [============================] 100%
 
 Summary
@@ -176,11 +168,46 @@ event: done
 data: {"status":"complete"}
 ```
 
+**Get Conversation (restore on page reload):**
+```bash
+curl "http://localhost:8080/chat/$CONVERSATION_ID" \
+  -b cookies.txt | jq
+```
+
 **End Conversation:**
 ```bash
 curl -X POST "http://localhost:8080/chat/$CONVERSATION_ID/end" \
   -H "Content-Type: application/json" \
   -b cookies.txt
+```
+
+---
+
+## 🔧 Additional Console Commands
+
+### Search Test
+Test the vector search quality with a query:
+
+```bash
+docker compose exec frontend bin/console ai:search-test "sběr odpadu"
+```
+
+This shows ranked search results with distance scores, document types, and content previews.
+
+### Ingestion Options
+
+```bash
+# Ingest only PDFs
+docker compose exec frontend bin/console ai:ingest --pdf-only
+
+# Ingest only images (OCR)
+docker compose exec frontend bin/console ai:ingest --images-only
+
+# Ingest only web content
+docker compose exec frontend bin/console ai:ingest --content-only
+
+# Force re-ingestion of all documents
+docker compose exec frontend bin/console ai:ingest --force
 ```
 
 ---

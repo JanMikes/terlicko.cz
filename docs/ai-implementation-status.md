@@ -1,7 +1,7 @@
 # AI RAG Chatbot Implementation Status
 
-**Date**: 2025-11-06
-**Status**: ✅ FULLY COMPLETE - Ready for Production
+**Date**: 2026-01-28
+**Status**: ✅ Core Features Complete - Ready for Production
 
 ---
 
@@ -40,9 +40,12 @@
 
 ### Phase 3: RAG Core Services (COMPLETE)
 
-#### Data Feed Controllers
-- ✅ `AiFilesJsonController` - Serves `/ai/files.json`
-- ✅ `AiContentJsonController` - Serves `/ai/content.json`
+#### Data Extraction Services
+- ✅ `FileExtractor` - Extracts PDF and image files directly from Strapi upload API
+- ✅ `AiContentExtractor` - Extracts web content (aktuality, sekce, uredni deska, kalendar akci) from Strapi
+- ✅ `ContentNormalizer` - Normalizes Strapi component content to text
+- ~~`AiFilesJsonController`~~ - Not implemented (replaced by direct Strapi integration)
+- ~~`AiContentJsonController`~~ - Not implemented (replaced by direct Strapi integration)
 
 #### Ingestion Services
 - ✅ `PdfParser` - Extracts text from PDFs
@@ -50,11 +53,14 @@
 - ✅ `EmbeddingService` - Generates OpenAI embeddings
 - ✅ `DocumentHasher` - Change detection (SHA256)
 - ✅ `IngestionService` - Orchestrates full pipeline
+- ✅ `ImageOcrService` - Text extraction from images via OpenAI Vision API
+- ✅ `TextSanitizer` - UTF-8 text sanitization
 
 #### Retrieval Services
-- ✅ `VectorSearchService` - Hybrid vector + keyword search
+- ✅ `VectorSearchService` - Hybrid vector + keyword search with Czech query preprocessing
 - ✅ `ContextBuilder` - Assembles chunks into context
 - ✅ `CitationFormatter` - Formats source references
+- ✅ `QueryNormalizerService` - LLM-based Czech query normalization
 
 #### Chat Services
 - ✅ `OpenAiChatService` - GPT completion with streaming
@@ -64,6 +70,7 @@
 ### Phase 4: Chat API Endpoints (COMPLETE)
 - ✅ `POST /chat/start` - Creates new conversation
 - ✅ `POST /chat/{id}/messages` - Sends message (SSE streaming)
+- ✅ `GET /chat/{id}` - Retrieves conversation with message history
 - ✅ `POST /chat/{id}/end` - Ends conversation
 - ✅ Rate limiting applied to all endpoints
 - ✅ Guest ID cookie management (1-year expiry)
@@ -71,12 +78,13 @@
 - ✅ Vector search + context retrieval
 - ✅ Citation tracking
 
-### Phase 6: Ingestion Console Command (COMPLETE)
+### Phase 6: Console Commands (COMPLETE)
 - ✅ `bin/console ai:ingest` command created
-- ✅ Fetches from `/ai/files.json` and `/ai/content.json`
+- ✅ Extracts data directly from Strapi (PDF files, images, web content)
 - ✅ Progress bars for user feedback
 - ✅ Error handling and reporting
-- ✅ Options: `--pdf-only`, `--content-only`, `--force`
+- ✅ Options: `--pdf-only`, `--images-only`, `--content-only`, `--force`
+- ✅ `bin/console ai:search-test` - Test vector search with a query
 
 ---
 
@@ -97,7 +105,6 @@ These features are NOT part of the core implementation but could be added later:
 
 - Feedback mechanism (thumbs up/down on responses)
 - Analytics dashboard for popular queries
-- Query expansion/synonyms for better Czech language support
 - Multi-language support (English, Polish)
 - Voice input
 - Export conversation to PDF
@@ -105,6 +112,9 @@ These features are NOT part of the core implementation but could be added later:
 - Suggested questions/prompts
 - Typing indicators
 - Message edit/regenerate
+- Automated tests (Phase 7)
+
+Note: Czech language query expansion and normalization HAS been implemented via `QueryNormalizerService` and `VectorSearchService`.
 
 ---
 
@@ -148,18 +158,12 @@ docker compose ps
 docker compose exec frontend bin/console doctrine:migrations:migrate --no-interaction
 ```
 
-### 3. Test Data Feeds
-```bash
-curl http://localhost:8080/ai/files.json | jq
-curl http://localhost:8080/ai/content.json | jq
-```
-
-### 4. Run Ingestion
+### 3. Run Ingestion
 ```bash
 docker compose exec frontend bin/console ai:ingest
 ```
 
-### 5. Test Chat API
+### 4. Test Chat API
 
 **Start Conversation:**
 ```bash
@@ -180,7 +184,7 @@ curl -X POST "http://localhost:8080/chat/{CONVERSATION_ID}/messages" \
 
 ## 📝 Next Steps
 
-### Immediate Tasks
+### Before Production
 
 1. **Set OpenAI API Key**
    ```bash
@@ -188,21 +192,18 @@ curl -X POST "http://localhost:8080/chat/{CONVERSATION_ID}/messages" \
    OPENAI_API_KEY=sk-...
    ```
 
-2. **Test Ingestion**
+2. **Run Ingestion**
    ```bash
    docker compose exec frontend bin/console ai:ingest
    ```
 
-3. **Create Frontend Widget**
-   - Follow implementation guide above
-   - Reference existing Stimulus controllers in `frontend/assets/controllers/`
-   - Use Bootstrap 5 classes (already available)
-
-4. **Test End-to-End**
+3. **Test End-to-End**
    - Open browser to http://localhost:8080
-   - Click chat button
+   - Click the chat button in the bottom-right corner
    - Send test message
    - Verify sources are displayed
+
+4. **Set Up Cron** for regular content updates
 
 ### Optional Enhancements
 
@@ -212,6 +213,7 @@ curl -X POST "http://localhost:8080/chat/{CONVERSATION_ID}/messages" \
 - Voice input
 - Export conversation
 - Admin panel for conversation review
+- Automated tests
 
 ---
 
@@ -221,12 +223,10 @@ curl -X POST "http://localhost:8080/chat/{CONVERSATION_ID}/messages" \
 frontend/
 ├── src/
 │   ├── Controller/
-│   │   ├── Ai/
-│   │   │   ├── AiFilesJsonController.php ✅
-│   │   │   └── AiContentJsonController.php ✅
 │   │   └── Chat/
 │   │       ├── StartChatController.php ✅
 │   │       ├── SendMessageController.php ✅
+│   │       ├── GetConversationController.php ✅
 │   │       └── EndChatController.php ✅
 │   ├── Entity/
 │   │   ├── AiDocument.php ✅
@@ -239,31 +239,45 @@ frontend/
 │   │   ├── AiEmbeddingRepository.php ✅
 │   │   └── AiConversationRepository.php ✅
 │   ├── Services/
+│   │   ├── Ai/
+│   │   │   ├── AiContentExtractor.php ✅
+│   │   │   ├── CitationFormatter.php ✅
+│   │   │   ├── ContentNormalizer.php ✅
+│   │   │   ├── ContextBuilder.php ✅
+│   │   │   ├── ConversationManager.php ✅
+│   │   │   ├── DocumentHasher.php ✅
+│   │   │   ├── EmbeddingService.php ✅
+│   │   │   ├── FileExtractor.php ✅
+│   │   │   ├── ImageOcrService.php ✅
+│   │   │   ├── IngestionService.php ✅
+│   │   │   ├── ModerationService.php ✅
+│   │   │   ├── OpenAiChatService.php ✅
+│   │   │   ├── PdfParser.php ✅
+│   │   │   ├── QueryNormalizerService.php ✅
+│   │   │   ├── TextChunker.php ✅
+│   │   │   ├── TextSanitizer.php ✅
+│   │   │   └── VectorSearchService.php ✅
+│   │   └── Doctrine/
+│   │       └── VectorType.php ✅
+│   ├── Value/
 │   │   └── Ai/
-│   │       ├── PdfParser.php ✅
-│   │       ├── TextChunker.php ✅
-│   │       ├── EmbeddingService.php ✅
-│   │       ├── DocumentHasher.php ✅
-│   │       ├── IngestionService.php ✅
-│   │       ├── VectorSearchService.php ✅
-│   │       ├── ContextBuilder.php ✅
-│   │       ├── CitationFormatter.php ✅
-│   │       ├── OpenAiChatService.php ✅
-│   │       ├── ModerationService.php ✅
-│   │       └── ConversationManager.php ✅
+│   │       └── AiContentItem.php ✅
 │   ├── ConsoleCommands/
-│   │   └── AiIngestCommand.php ✅
+│   │   ├── AiIngestCommand.php ✅
+│   │   └── AiSearchTestCommand.php ✅
 │   └── Components/
-│       └── ChatWidget.php ⏳ (TODO)
+│       └── ChatWidget.php ✅
 ├── templates/
 │   └── components/
-│       └── ChatWidget.html.twig ⏳ (TODO)
+│       └── ChatWidget.html.twig ✅
 ├── assets/
 │   └── controllers/
-│       └── chat_controller.js ⏳ (TODO)
+│       └── chat_controller.js ✅
 └── migrations/
-    ├── Version20251106161900.php ✅ (pgvector)
-    └── Version20251106161958.php ✅ (entities)
+    ├── Version20251106161900.php ✅ (pgvector extension)
+    ├── Version20251106161958.php ✅ (AI entities)
+    ├── Version20251124114235.php ✅ (schema updates)
+    └── Version20260128120000.php ✅ (recent updates)
 ```
 
 ---
@@ -273,7 +287,7 @@ frontend/
 ### Backend (COMPLETE ✅)
 - [x] Docker services running with Redis + pgvector
 - [x] Database tables created
-- [x] Data feed endpoints working
+- [x] Strapi data extraction working (PDF, images, web content)
 - [x] Ingestion pipeline functional
 - [x] Vector search operational
 - [x] Chat API endpoints responding
@@ -301,7 +315,7 @@ frontend/
    USING ivfflat (vector vector_cosine_ops) WITH (lists = 100);
    ```
 3. **PDF Parsing**: Basic text extraction. Complex PDFs with tables/images may need specialized handling
-4. **Czech Language**: System prompt in Czech, but keyword search uses English stemmer. Consider Czech-specific search configuration
+4. **Czech Language**: System prompt in Czech. Query preprocessing removes Czech question words, and `QueryNormalizerService` handles declension/synonyms via LLM. `VectorSearchService` includes 30+ Czech topic expansion mappings
 5. **No Auth**: All users anonymous. Consider adding optional user authentication for personalized experience
 
 ---
@@ -323,11 +337,14 @@ frontend/
 **Ingestion Flow:**
 
 1. Command runs → `AiIngestCommand`
-2. Fetches feeds → `/ai/files.json`, `/ai/content.json`
+2. Extracts data directly from Strapi:
+   - PDF files → `FileExtractor` (Strapi upload API)
+   - Image files → `FileExtractor` (Strapi upload API)
+   - Web content → `AiContentExtractor` (aktuality, sekce, uredni deska, kalendar akci)
 3. For each document:
    - Hash calculated → `DocumentHasher`
    - Change detected → Skip if unchanged
-   - Text extracted → `PdfParser` or direct
+   - Text extracted → `PdfParser` (PDFs), `ImageOcrService` (images via OpenAI Vision), or direct (web content)
    - Text chunked → `TextChunker`
    - Embeddings generated → `EmbeddingService`
    - Stored → Database via `IngestionService`
@@ -336,7 +353,8 @@ frontend/
 
 ## 💡 Tips
 
-- Use `--pdf-only` or `--content-only` flags during development
+- Use `--pdf-only`, `--images-only`, or `--content-only` flags during development
+- Use `bin/console ai:search-test "your query"` to test search quality
 - Monitor Redis with `docker compose exec redis redis-cli MONITOR`
 - Check pgvector with `docker compose exec postgres psql -U postgres -d terlicko -c "SELECT COUNT(*) FROM ai_embeddings;"`
 - Test API endpoints with Postman or curl before implementing frontend
@@ -351,11 +369,13 @@ frontend/
 ✅ **All core features working:**
 - Infrastructure (Docker, Redis, pgvector)
 - Database layer with vector search
-- RAG pipeline (ingestion, retrieval, generation)
-- Chat API with streaming
+- RAG pipeline (ingestion with PDF, image OCR, and web content; retrieval; generation)
+- Chat API with streaming (start, send message, get conversation, end)
 - Frontend widget with real-time updates
 - Rate limiting and moderation
 - Citation tracking
+- Czech language query normalization and expansion
+- Search test utility command
 
 📖 **Next steps:**
 1. Set `OPENAI_API_KEY` in `.env`

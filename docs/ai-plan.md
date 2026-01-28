@@ -59,10 +59,13 @@ Create entities in `frontend/src/Entity/`:
 
 ## Phase 3: RAG Core Services
 
-### 3.1 Data Feed Controllers
-Create in `frontend/src/Controller/Ai/`:
-- [ ] `AiFilesJsonController` - Uses existing `FileExtractor` to output `/ai/files.json`
-- [ ] `AiContentJsonController` - Uses existing `ContentNormalizer` to output `/ai/content.json`
+### 3.1 Data Extraction Services
+Instead of HTTP JSON feed controllers, data is extracted directly from Strapi via services:
+- [x] `FileExtractor` - Extracts PDF and image files directly from Strapi upload API
+- [x] `AiContentExtractor` - Extracts web content (aktuality, sekce, uredni deska, kalendar akci) from Strapi
+- [x] `ContentNormalizer` - Normalizes Strapi component content to text
+- ~~`AiFilesJsonController`~~ - Not implemented (replaced by direct Strapi integration)
+- ~~`AiContentJsonController`~~ - Not implemented (replaced by direct Strapi integration)
 
 ### 3.2 Ingestion Service
 Create `frontend/src/Services/Ai/`:
@@ -71,11 +74,14 @@ Create `frontend/src/Services/Ai/`:
 - [x] `EmbeddingService` - Calls OpenAI to generate embeddings
 - [x] `DocumentHasher` - Detects changed documents
 - [x] `IngestionService` - Orchestrates ingestion pipeline
+- [x] `ImageOcrService` - Extracts text from images via OpenAI Vision API
+- [x] `TextSanitizer` - UTF-8 text sanitization
 
 ### 3.3 Retrieval Service
-- [x] `VectorSearchService` - Hybrid search (pgvector + keyword)
+- [x] `VectorSearchService` - Hybrid search (pgvector + keyword) with Czech query preprocessing and expansion
 - [x] `ContextBuilder` - Assembles top chunks into context
 - [x] `CitationFormatter` - Formats source references
+- [x] `QueryNormalizerService` - LLM-based Czech query normalization (declension, synonyms)
 
 ### 3.4 Chat Service
 - [x] `OpenAiChatService` - Calls GPT with streaming support
@@ -88,19 +94,20 @@ Create `frontend/src/Services/Ai/`:
 
 ### 4.1 Controllers
 Create in `frontend/src/Controller/Chat/`:
-- [ ] `StartChatController` - POST `/chat/start` - Creates conversation, sets guest_id cookie
-- [ ] `SendMessageController` - POST `/chat/{cid}/messages` - Accepts message, streams SSE response
-- [ ] `EndChatController` - POST `/chat/{cid}/end` - Ends conversation
+- [x] `StartChatController` - POST `/chat/start` - Creates conversation, sets guest_id cookie
+- [x] `SendMessageController` - POST `/chat/{cid}/messages` - Accepts message, streams SSE response
+- [x] `EndChatController` - POST `/chat/{cid}/end` - Ends conversation
+- [x] `GetConversationController` - GET `/chat/{cid}` - Retrieves conversation with messages
 
 ### 4.2 Rate Limiting
-- [ ] Apply rate limiters to all chat endpoints
-- [ ] Configure HTTP 429 responses with retry-after header
-- [ ] Track by guest_id + IP combination
+- [x] Apply rate limiters to all chat endpoints
+- [x] Configure HTTP 429 responses with retry-after header
+- [x] Track by guest_id + IP combination
 
 ### 4.3 Guest Identification
-- [ ] Generate UUID guest_id on first visit
-- [ ] Store as HttpOnly, SameSite=Lax cookie
-- [ ] Configure 1-year expiration
+- [x] Generate UUID guest_id on first visit
+- [x] Store as HttpOnly, SameSite=Lax cookie
+- [x] Configure 1-year expiration
 
 ---
 
@@ -131,17 +138,20 @@ Create in `frontend/src/Controller/Chat/`:
 ## Phase 6: Ingestion Worker
 
 ### 6.1 Console Command
-- [ ] Create `frontend/src/Command/AiIngestCommand.php`
-- [ ] Implement fetching of `/ai/files.json` and `/ai/content.json`
-- [ ] Implement PDF parsing
-- [ ] Implement text chunking
-- [ ] Implement embedding generation
-- [ ] Implement database storage with change detection
-- [ ] Add progress bar output
-- [ ] Add `--force` flag
+- [x] Create `frontend/src/ConsoleCommands/AiIngestCommand.php` (`bin/console ai:ingest`)
+- [x] Implement direct Strapi extraction (PDF files, images, web content)
+- [x] Implement PDF parsing
+- [x] Implement image OCR via OpenAI Vision
+- [x] Implement text chunking
+- [x] Implement embedding generation
+- [x] Implement database storage with change detection
+- [x] Add progress bar output
+- [x] Add `--force` flag
+- [x] Add `--pdf-only`, `--images-only`, `--content-only` flags
+- [x] Create `AiSearchTestCommand` (`bin/console ai:search-test`) for testing search
 
 ### 6.2 Scheduling
-- [ ] Document cron setup in README
+- [x] Document cron setup in getting-started guide
 - [ ] Add deployment instructions
 
 ---
@@ -164,6 +174,6 @@ Create in `frontend/src/Controller/Chat/`:
 
 ## Implementation Status
 
-**Current Phase**: COMPLETE ✅
-**Last Updated**: 2025-11-06
-**Overall Progress**: All Phases Complete (1-6) - Testing & Documentation Recommended
+**Current Phase**: Phases 1-6 COMPLETE ✅ | Phase 7 Partial
+**Last Updated**: 2026-01-28
+**Overall Progress**: All core features implemented (Phases 1-6). Phase 3.1 was redesigned (direct Strapi integration instead of JSON feed controllers). Phase 7 (testing) not yet done.

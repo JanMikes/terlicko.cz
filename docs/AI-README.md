@@ -14,7 +14,7 @@ All documentation is located in the `docs/` directory:
 The original architecture and requirements document that guided the implementation.
 
 ### 2. **ai-plan.md** - Detailed Implementation Plan
-A comprehensive step-by-step plan showing all phases and tasks. Every checkbox is now marked complete!
+A comprehensive step-by-step plan showing all phases and tasks. Core phases (1-6) are complete. Phase 7 (testing) is pending.
 
 ### 3. **ai-implementation-status.md** - Technical Status Report
 Detailed breakdown of what was built:
@@ -138,25 +138,20 @@ Open http://localhost:8080 and click the **blue chat button** in the bottom-righ
 ## 📊 Statistics
 
 ### Implementation Metrics
-- **Total Files Created**: ~40
+- **Total Files Created**: ~45
   - 5 Entities
   - 3 Repositories
-  - 13 Services
-  - 5 Controllers
-  - 1 Console Command
-  - 1 Twig Component
+  - 17 Services (including OCR, query normalization, content extraction)
+  - 4 Controllers (start, send message, get conversation, end)
+  - 2 Console Commands (`ai:ingest`, `ai:search-test`)
+  - 1 Twig Component + template
   - 1 Stimulus Controller
-  - 2 Database Migrations
-
-- **Lines of Code**: ~3,500
-  - PHP: ~2,800 lines
-  - JavaScript: ~500 lines
-  - Twig: ~200 lines
-
-- **Implementation Time**: ~4-6 hours (all phases)
+  - 1 Value Object (`AiContentItem`)
+  - 1 Doctrine Type (`VectorType`)
+  - 4 Database Migrations
 
 ### Database Schema
-- **5 Tables**: documents, chunks, embeddings, conversations, messages
+- **5 Tables**: ai_documents, ai_chunks, ai_embeddings, ai_conversations, ai_messages
 - **Vector Index**: pgvector with cosine similarity
 - **Relationships**: Fully normalized with foreign keys
 

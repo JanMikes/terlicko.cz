@@ -21,15 +21,15 @@ It uses a **Retrieval-Augmented Generation (RAG)** architecture built around the
 ### 1. **Symfony Application**
 - Main web application and user interface.
 - Hosts:
-    - `/ai/files.json` – list of PDF documents and metadata.
-    - `/ai/content.json` – normalized website text data.
-    - Chat API endpoints (`/chat/start`, `/chat/{cid}/messages`, `/chat/{cid}/end`).
+    - Chat API endpoints (`/chat/start`, `/chat/{cid}/messages`, `/chat/{cid}` (GET), `/chat/{cid}/end`).
 - Provides the chat widget as a **Symfony UX component** (`<twig:ChatWidget/>`), embedded once in the base template.
 
 ### 2. **Ingestion Worker**
-- Fetches both JSON feeds and updates the knowledge base.
-- Parses and extracts text from PDFs (using PyMuPDF or similar tools).
-- Reads normalized text directly from `/ai/content.json`.
+- Console command (`bin/console ai:ingest`) that updates the knowledge base.
+- Extracts PDF files directly from Strapi upload API via `FileExtractor` service.
+- Extracts web content (aktuality, sekce, uredni deska, kalendar akci) directly from Strapi via `AiContentExtractor` service.
+- Extracts text from images using OpenAI Vision OCR via `ImageOcrService`.
+- Parses PDF text using `smalot/pdfparser` library.
 - Splits content into semantic chunks and generates embeddings using **OpenAI text-embedding-3-small**.
 - Saves chunks and embeddings into PostgreSQL with **pgvector** for semantic search.
 
@@ -39,14 +39,15 @@ It uses a **Retrieval-Augmented Generation (RAG)** architecture built around the
     - `documents` and `chunks` metadata.
     - `embeddings` vectors.
     - `conversations` and `messages` for persistent chat.
-- Optional Redis instance for caching and rate-limiting counters.
+- Redis instance for rate-limiting counters.
 
 ### 4. **Retrieval and Chat Service**
 - Performs hybrid search combining:
     - Vector similarity search (pgvector).
     - Keyword or BM25-style lexical search.
 - Merges and ranks top chunks to build contextual answers.
-- Calls **OpenAI GPT-4o-mini** (default) or **GPT-4.1** for generation.
+- Includes Czech language query normalization and expansion via `QueryNormalizerService`.
+- Calls **OpenAI GPT-4o-mini** (default) or **GPT-4o** for generation.
 - Streams model responses and citations to the user interface.
 
 ### 5. **Frontend Chat Widget**
@@ -61,9 +62,10 @@ It uses a **Retrieval-Augmented Generation (RAG)** architecture built around the
 
 ## Data Flow Summary
 
-1. The ingestion worker periodically fetches data from:
-    - `/ai/files.json` for PDFs.
-    - `/ai/content.json` for web text.
+1. The ingestion command (`bin/console ai:ingest`) fetches data directly from Strapi:
+    - PDF files via `FileExtractor` (Strapi upload API).
+    - Web content via `AiContentExtractor` (aktuality, sekce, uredni deska, kalendar akci).
+    - Image files via `FileExtractor` + OCR via `ImageOcrService` (OpenAI Vision).
 2. Extracted and chunked text is embedded via OpenAI and stored in PostgreSQL (pgvector).
 3. When a user sends a message:
     - Symfony backend retrieves relevant chunks from the vector database.
@@ -116,7 +118,7 @@ It uses a **Retrieval-Augmented Generation (RAG)** architecture built around the
 | Database | **PostgreSQL + pgvector** | Document and vector storage |
 | Cache / Limits | **Redis** | Rate limiter, session cache |
 | Embeddings | **OpenAI text-embedding-3-small** | Semantic search vectors |
-| LLM | **OpenAI GPT-4o-mini / GPT-4.1** | Response generation |
+| LLM | **OpenAI GPT-4o-mini / GPT-4o** | Response generation |
 | Streaming | **Server-Sent Events (SSE)** | Real-time chat updates |
 
 ---
@@ -135,12 +137,13 @@ It uses a **Retrieval-Augmented Generation (RAG)** architecture built around the
 
 ## Future Enhancements
 
-- Add query expansion for multilingual support.
+- Add multilingual support (English, Polish).
 - Implement re-ranking for more precise retrieval.
 - Cache frequent queries for cost reduction.
-- Add feedback and analytics for unanswered questions.
+- Add feedback mechanism (thumbs up/down) and analytics for unanswered questions.
 - Enable optional login and personalization.
 - Extend RAG index for other AI-driven city services.
+- Admin dashboard for conversation review.
 
 ---
 
