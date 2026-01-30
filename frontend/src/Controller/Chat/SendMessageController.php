@@ -18,6 +18,7 @@ use Terlicko\Web\Services\Ai\CitationFormatter;
 use Terlicko\Web\Services\Ai\ContextBuilder;
 use Terlicko\Web\Services\Ai\ConversationManager;
 use Terlicko\Web\Services\Ai\ModerationService;
+use Terlicko\Web\Services\Ai\OfftopicService;
 use Terlicko\Web\Services\Ai\OpenAiChatService;
 use Terlicko\Web\Services\Ai\VectorSearchService;
 
@@ -27,6 +28,7 @@ final class SendMessageController extends AbstractController
     public function __construct(
         private readonly ConversationManager $conversationManager,
         private readonly ModerationService $moderationService,
+        private readonly OfftopicService $offtopicService,
         private readonly VectorSearchService $vectorSearchService,
         private readonly ContextBuilder $contextBuilder,
         private readonly OpenAiChatService $openAiChatService,
@@ -94,6 +96,14 @@ final class SendMessageController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
+        // Check if blocked from too many off-topic questions
+        if ($this->offtopicService->isBlocked($guestId)) {
+            return $this->json([
+                'error' => 'offtopic_blocked',
+                'message' => $this->offtopicService->getRandomBlockedMessage(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
         // Moderate input
         if ($this->moderationService->shouldBlock($userMessage)) {
             $conversation->incrementModerationStrikes();
@@ -146,42 +156,59 @@ final class SendMessageController extends AbstractController
         $conversationManager = $this->conversationManager;
         $openAiChatService = $this->openAiChatService;
         $citationFormatter = $this->citationFormatter;
+        $offtopicService = $this->offtopicService;
 
         $response->setCallback(function () use (
             $conversationManager,
             $openAiChatService,
             $citationFormatter,
+            $offtopicService,
             $conversation,
             $history,
-            $contextData
+            $contextData,
+            $guestId,
+            $userMessage
         ) {
             $fullResponse = '';
 
             try {
-                // Send sources first
-                if (!empty($contextData['sources'])) {
-                    $sourcesData = $citationFormatter->formatForApi($contextData['sources']);
-                    echo "event: sources\n";
-                    echo 'data: ' . json_encode($sourcesData) . "\n\n";
-                    if (ob_get_level() > 0) {
-                        ob_flush();
-                    }
-                    flush();
-                }
-
-                // Stream AI response
+                // First, collect the full AI response (buffer it)
                 foreach ($openAiChatService->generateStreamingCompletion($history, $contextData['context']) as $chunk) {
                     $fullResponse .= $chunk;
-                    echo "event: message\n";
-                    echo 'data: ' . json_encode(['content' => $chunk]) . "\n\n";
-                    if (ob_get_level() > 0) {
-                        ob_flush();
-                    }
-                    flush();
                 }
 
-                // Save assistant message
-                $citations = !empty($contextData['sources'])
+                // Check if response is off-topic marker
+                $isOfftopic = $offtopicService->isOfftopicResponse($fullResponse);
+
+                if ($isOfftopic) {
+                    // Replace marker with random message and record violation
+                    $fullResponse = $offtopicService->getRandomOfftopicMessage();
+                    $offtopicService->recordViolation($guestId, $userMessage);
+
+                    // Don't send sources for off-topic responses
+                } else {
+                    // Send sources for normal responses
+                    if (!empty($contextData['sources'])) {
+                        $sourcesData = $citationFormatter->formatForApi($contextData['sources']);
+                        echo "event: sources\n";
+                        echo 'data: ' . json_encode($sourcesData) . "\n\n";
+                        if (ob_get_level() > 0) {
+                            ob_flush();
+                        }
+                        flush();
+                    }
+                }
+
+                // Send the full response as a single message
+                echo "event: message\n";
+                echo 'data: ' . json_encode(['content' => $fullResponse]) . "\n\n";
+                if (ob_get_level() > 0) {
+                    ob_flush();
+                }
+                flush();
+
+                // Save assistant message (don't save off-topic marker, save the replacement)
+                $citations = (!$isOfftopic && !empty($contextData['sources']))
                     ? $citationFormatter->formatAsJson($contextData['sources'])
                     : null;
 

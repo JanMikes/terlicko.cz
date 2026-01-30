@@ -93,6 +93,20 @@
     .citation-link:hover {
         text-decoration: underline;
     }
+    /* Text with citation link */
+    .citation-text-link {
+        color: var(--bs-primary);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--bs-primary);
+    }
+    .citation-text-link:hover {
+        text-decoration: none;
+        border-bottom-style: solid;
+    }
+    .citation-text-link sup {
+        font-size: 0.7rem;
+        margin-left: 1px;
+    }
 </style>
 
 {# AI Chatbot Widget #}
@@ -171,6 +185,14 @@
                     <div class="px-3 pb-3 d-none" data-chat-target="rateLimit">
                         <div class="alert alert-warning mb-0" role="alert">
                             <strong>Omezení:</strong> Dosáhli jste limitu zpráv. Zkuste to prosím za <span data-chat-target="rateLimitTime"></span>.
+                        </div>
+                    </div>
+
+                    {# Off-topic Feedback Message #}
+                    <div class="px-3 pb-3 d-none" data-chat-target="feedback">
+                        <div class="alert alert-info small mb-0" role="alert">
+                            Myslíte si, že je to chyba?
+                            <a href="mailto:info@terlicko.cz?subject=AI%20Chat%20-%20Zpětná%20vazba">Dejte nám vědět</a>
                         </div>
                     </div>
 

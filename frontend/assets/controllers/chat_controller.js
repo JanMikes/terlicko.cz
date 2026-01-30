@@ -14,7 +14,8 @@ export default class extends Controller {
         'errorMessage',
         'rateLimit',
         'rateLimitTime',
-        'welcome'
+        'welcome',
+        'feedback'
     ];
 
     connect() {
@@ -147,6 +148,15 @@ export default class extends Controller {
                     this.addMessage('assistant', data.message);
                     this.moderationCooldownActive = true;
                     this.startModerationCooldown(data.blocked_until);
+                    return;
+                }
+
+                if (data.error === 'offtopic_blocked') {
+                    this.hideLoading();
+                    this.addMessage('assistant', data.message);
+                    this.showFeedback();
+                    this.inputTarget.disabled = false;
+                    this.submitButtonTarget.disabled = false;
                     return;
                 }
 
@@ -435,18 +445,32 @@ export default class extends Controller {
     }
 
     /**
-     * Convert [[n]] citation markers to clickable superscript links
+     * Convert [text][[n]] and [[n]] citation markers to clickable links
      */
     convertInlineCitations(html, sources) {
-        return html.replace(/\[\[(\d+)\]\]/g, (match, num) => {
+        const allSources = this.flattenSources(sources);
+
+        // First, handle [text][[n]] format - linked text with citation
+        html = html.replace(/\[([^\]]+)\]\[\[(\d+)\]\]/g, (match, text, num) => {
             const index = parseInt(num, 10) - 1;
-            const allSources = this.flattenSources(sources);
+            const source = allSources[index];
+            if (source) {
+                return `<a href="${source.url}" target="_blank" class="citation-text-link" title="${this.escapeHtml(source.title)}">${text}<sup>[${num}]</sup></a>`;
+            }
+            return text;
+        });
+
+        // Then, handle standalone [[n]] format - just superscript link
+        html = html.replace(/\[\[(\d+)\]\]/g, (match, num) => {
+            const index = parseInt(num, 10) - 1;
             const source = allSources[index];
             if (source) {
                 return `<sup><a href="${source.url}" target="_blank" class="citation-link" title="${this.escapeHtml(source.title)}">[${num}]</a></sup>`;
             }
             return match;
         });
+
+        return html;
     }
 
     /**
@@ -504,6 +528,18 @@ export default class extends Controller {
     hideRateLimit() {
         if (this.hasRateLimitTarget) {
             this.rateLimitTarget.classList.add('d-none');
+        }
+    }
+
+    showFeedback() {
+        if (this.hasFeedbackTarget) {
+            this.feedbackTarget.classList.remove('d-none');
+        }
+    }
+
+    hideFeedback() {
+        if (this.hasFeedbackTarget) {
+            this.feedbackTarget.classList.add('d-none');
         }
     }
 
