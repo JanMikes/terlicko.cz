@@ -25,6 +25,27 @@
                 <i class="bi-chevron-right bi-large" aria-hidden="true"></i>
                 <span class="visually-hidden">Next</span>
             </button>
+
+            {# AI Chat Hero Trigger - only show in test mode #}
+            {% if app.request.query.has('ai-test') %}
+                <div class="hero-chat-trigger">
+                    <button
+                        type="button"
+                        class="hero-chat-trigger-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#aiChatModal"
+                        title="Zeptejte se Terky"
+                    >
+                        <img src="{{ asset('images/chat-input-face.png') }}" alt="Terka" class="hero-chat-face">
+                        <span class="hero-chat-placeholder">Ahoj, já jsem průvodkyně Terka, napiš mi co hledáš....</span>
+                        <span class="hero-chat-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+            {% endif %}
         </div>
     {% endif %}
 

@@ -31,6 +31,13 @@ export default class extends Controller {
         if (this.conversationId) {
             this.loadConversationHistory();
         }
+
+        // Listen for modal show event to handle external triggers
+        if (this.hasModalTarget) {
+            this.modalTarget.addEventListener('shown.bs.modal', () => {
+                this.open();
+            });
+        }
     }
 
     open() {

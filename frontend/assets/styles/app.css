@@ -248,6 +248,134 @@ header.bg-dark {
     background-color: #1E2648;
 }
 
+/* Hero Chat Trigger */
+.hero-chat-trigger {
+    position: absolute;
+    top: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    width: 90%;
+    max-width: 700px;
+}
+
+.hero-chat-trigger-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: rgba(225, 235, 255, 0.9);
+    border: none;
+    border-radius: 50px;
+    padding: 8px 20px 8px 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.hero-chat-trigger-btn:hover {
+    background: rgba(235, 243, 255, 0.95);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+    transform: scale(1.01);
+}
+
+.hero-chat-face {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.hero-chat-placeholder {
+    flex-grow: 1;
+    text-align: left;
+    padding: 0 20px;
+    color: #6b7c93;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hero-chat-icon {
+    flex-shrink: 0;
+    color: #6b7c93;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hero Chat Trigger - Responsive */
+@media (max-width: 991px) {
+    .hero-chat-trigger {
+        top: 180px;
+        max-width: 500px;
+    }
+
+    .hero-chat-face {
+        width: 50px;
+        height: 50px;
+    }
+
+    .hero-chat-placeholder {
+        font-size: 14px;
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero-chat-trigger {
+        top: 140px;
+        width: 85%;
+        max-width: 400px;
+    }
+
+    .hero-chat-trigger-btn {
+        padding: 6px 15px 6px 6px;
+    }
+
+    .hero-chat-face {
+        width: 44px;
+        height: 44px;
+    }
+
+    .hero-chat-placeholder {
+        font-size: 13px;
+        padding: 0 12px;
+    }
+
+    .hero-chat-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+@media (max-width: 575px) {
+    .hero-chat-trigger {
+        top: 100px;
+        width: 90%;
+    }
+
+    .hero-chat-trigger-btn {
+        padding: 5px 12px 5px 5px;
+    }
+
+    .hero-chat-face {
+        width: 38px;
+        height: 38px;
+    }
+
+    .hero-chat-placeholder {
+        font-size: 12px;
+        padding: 0 10px;
+    }
+
+    .hero-chat-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
 .home-quick-links {
     background: #21294C linear-gradient(to bottom, #2B355A, #21294C);
     padding-top: 10px;
