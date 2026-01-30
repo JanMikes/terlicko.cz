@@ -135,18 +135,6 @@ It uses a **Retrieval-Augmented Generation (RAG)** architecture built around the
 
 ---
 
-## Future Enhancements
-
-- Add multilingual support (English, Polish).
-- Implement re-ranking for more precise retrieval.
-- Cache frequent queries for cost reduction.
-- Add feedback mechanism (thumbs up/down) and analytics for unanswered questions.
-- Enable optional login and personalization.
-- Extend RAG index for other AI-driven city services.
-- Admin dashboard for conversation review.
-
----
-
 ## Summary
 
 The chatbot combines city-published information with OpenAI’s language models using a RAG pipeline built entirely around Symfony and PostgreSQL.  

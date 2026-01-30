@@ -245,45 +245,4 @@ The following features are NOT part of this implementation but could be added:
 
 **Full troubleshooting guide**: See `ai-getting-started.md`
 
----
 
-## 📖 Learning Resources
-
-- [OpenAI API Documentation](https://platform.openai.com/docs)
-- [pgvector Documentation](https://github.com/pgvector/pgvector)
-- [Symfony UX Documentation](https://ux.symfony.com/)
-- [Stimulus Handbook](https://stimulus.hotwired.dev/)
-- [RAG Architecture Guide](https://www.pinecone.io/learn/retrieval-augmented-generation/)
-
----
-
-## ✅ Final Checklist
-
-Before going to production:
-
-- [ ] Set `OPENAI_API_KEY` in `.env`
-- [ ] Run initial ingestion: `bin/console ai:ingest`
-- [ ] Test chat functionality thoroughly
-- [ ] Set up cron for regular ingestion updates
-- [ ] Monitor API usage for first week
-- [ ] Adjust rate limits based on actual traffic
-- [ ] Review and customize system prompts
-- [ ] Add monitoring/alerting for errors
-- [ ] Document any customizations made
-- [ ] Train staff on how it works
-
----
-
-## 🎉 Success!
-
-You now have a **fully functional AI-powered chatbot** that:
-
-- ✅ Answers questions about Těrlicko municipality
-- ✅ Uses official documents and website content
-- ✅ Provides accurate, cited information
-- ✅ Scales to handle real-world traffic
-- ✅ Is production-ready and maintainable
-
-**Congratulations on completing the implementation!** 🚀
-
-For questions or issues, refer to the detailed documentation files listed above.

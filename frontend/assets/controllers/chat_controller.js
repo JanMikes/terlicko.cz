@@ -1,4 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
+import { marked } from 'marked';
+import morphdom from 'morphdom';
 
 export default class extends Controller {
     static targets = [
@@ -17,6 +19,9 @@ export default class extends Controller {
 
     connect() {
         console.log('Chat controller connected');
+
+        // Configure marked for GitHub-flavored markdown with line breaks
+        marked.use({ gfm: true, breaks: true });
 
         // Restore conversation from localStorage
         this.conversationId = localStorage.getItem('ai_conversation_id');
@@ -258,7 +263,7 @@ export default class extends Controller {
                 </div>
                 <div class="flex-grow-1">
                     <div class="chat-assistant-message rounded-3 p-3 shadow-sm">
-                        <div class="message-content">${this.escapeHtml(content)}</div>
+                        <div class="message-content">${content ? this.formatContent(content) : ''}</div>
                     </div>
                 </div>
             `;
@@ -274,11 +279,20 @@ export default class extends Controller {
         const contentDiv = messageElement.querySelector('.message-content');
         if (!contentDiv) return;
 
-        // Convert newlines to <br> for proper formatting
-        contentDiv.innerHTML = this.formatContent(content);
-
-        // Normalize sources format (handle both old array and new object format)
+        // Normalize sources for citation links
         const normalizedSources = this.normalizeSources(sources);
+        const allSources = [...normalizedSources.initial, ...normalizedSources.expanded];
+
+        // Format content with markdown and inline citations
+        const newHtml = this.formatContent(content, allSources);
+
+        // Use morphdom for efficient DOM updates without flickering
+        const tempDiv = document.createElement('div');
+        tempDiv.className = 'message-content';
+        tempDiv.innerHTML = newHtml;
+        morphdom(contentDiv, tempDiv);
+
+        // Extract sources for footer section
         const { initial, expanded, hasMore } = normalizedSources;
 
         // Only show sources when response is final and AI actually used them
@@ -410,11 +424,37 @@ export default class extends Controller {
     }
 
     /**
-     * Format content with proper line breaks
+     * Format content with markdown parsing and inline citations
      */
-    formatContent(content) {
-        // First escape HTML, then convert newlines to <br>
-        return this.escapeHtml(content).replace(/\n/g, '<br>');
+    formatContent(content, sources = []) {
+        // Parse markdown to HTML
+        let html = marked.parse(content);
+        // Convert inline citations [[n]] to clickable links
+        html = this.convertInlineCitations(html, sources);
+        return html;
+    }
+
+    /**
+     * Convert [[n]] citation markers to clickable superscript links
+     */
+    convertInlineCitations(html, sources) {
+        return html.replace(/\[\[(\d+)\]\]/g, (match, num) => {
+            const index = parseInt(num, 10) - 1;
+            const allSources = this.flattenSources(sources);
+            const source = allSources[index];
+            if (source) {
+                return `<sup><a href="${source.url}" target="_blank" class="citation-link" title="${this.escapeHtml(source.title)}">[${num}]</a></sup>`;
+            }
+            return match;
+        });
+    }
+
+    /**
+     * Flatten sources from normalized format to simple array
+     */
+    flattenSources(sources) {
+        const normalized = this.normalizeSources(sources);
+        return [...normalized.initial, ...normalized.expanded];
     }
 
     showLoading() {

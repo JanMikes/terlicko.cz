@@ -49,4 +49,10 @@ return [
         'version' => '3.3.1',
         'type' => 'css',
     ],
+    'marked' => [
+        'version' => '15.0.6',
+    ],
+    'morphdom' => [
+        'version' => '2.7.4',
+    ],
 ];

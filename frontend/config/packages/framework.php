@@ -30,8 +30,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         'rate_limiter' => [
             'ai_chat_messages' => [
                 'policy' => 'sliding_window',
-                'limit' => 10,
-                'interval' => '1 minute',
+                'limit' => 20,
+                'interval' => '1 hour',
             ],
             'ai_chat_daily' => [
                 'policy' => 'sliding_window',
@@ -41,7 +41,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'ai_new_conversations' => [
                 'policy' => 'sliding_window',
                 'limit' => 12,
-                'interval' => '1 hour',
+                'interval' => '1 day',
             ],
         ],
     ]);

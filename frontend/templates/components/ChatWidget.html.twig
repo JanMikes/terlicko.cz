@@ -37,6 +37,62 @@
     #aiChatModal .bg-white {
         color: #212529 !important;
     }
+    /* Markdown formatting styles - override global heading styles for chat */
+    .message-content h1,
+    .message-content h2,
+    .message-content h3,
+    .message-content h4,
+    .message-content h5,
+    .message-content h6 {
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        margin: 0.75rem 0 0.5rem !important;
+        padding: 0 !important;
+        line-height: 1.4 !important;
+        color: #212529 !important;
+        border: none !important;
+        background: none !important;
+    }
+    .message-content h1:first-child,
+    .message-content h2:first-child,
+    .message-content h3:first-child,
+    .message-content h4:first-child,
+    .message-content h5:first-child,
+    .message-content h6:first-child {
+        margin-top: 0 !important;
+    }
+    .message-content h2 {
+        font-size: 1.05rem !important;
+    }
+    .message-content h3 {
+        font-size: 0.95rem !important;
+    }
+    .message-content ul,
+    .message-content ol {
+        padding-left: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .message-content li {
+        margin-bottom: 0.25rem;
+    }
+    .message-content p {
+        margin-bottom: 0.5rem;
+    }
+    .message-content p:last-child {
+        margin-bottom: 0;
+    }
+    .message-content strong {
+        font-weight: 600;
+    }
+    /* Inline citation styles */
+    .citation-link {
+        color: var(--bs-primary);
+        text-decoration: none;
+        font-size: 0.75rem;
+    }
+    .citation-link:hover {
+        text-decoration: underline;
+    }
 </style>
 
 {# AI Chatbot Widget #}
@@ -44,16 +100,14 @@
     {# Floating Chat Button #}
     <button
         type="button"
-        class="btn btn-primary rounded-circle position-fixed bottom-0 end-0 m-4 shadow-lg"
-        style="width: 60px; height: 60px; z-index: 1040;"
+        class="btn p-0 border-0 position-fixed end-0 m-4 shadow-lg rounded-circle"
+        style="width: 70px; height: 70px; bottom: 10px; z-index: 1040; overflow: hidden;"
         data-action="click->chat#open"
         data-bs-toggle="modal"
         data-bs-target="#aiChatModal"
         title="AI Asistent Těrlicka"
     >
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
-            <path d="M16 8c0 3.866-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
-        </svg>
+        <img src="{{ asset('images/chat-icon.png') }}" alt="AI Asistent" style="width: 100%; height: 100%; object-fit: cover;">
     </button>
 
     {# Chat Modal #}
@@ -144,7 +198,7 @@
                             </div>
                             <div class="form-text mt-2">
                                 <small class="text-muted">
-                                    Odpovědi jsou generovány AI na základě oficiálních dokumentů města.
+                                    Terka čerpá informace z obsahu webu Terlicko.cz a postupně se učí. Nenašli jste, co hledáte? Dejte nám vědět.
                                 </small>
                             </div>
                         </form>
