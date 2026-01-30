@@ -1,5 +1,5 @@
 <style>
-    /* Fix z-index layering for modal */
+    /* Modal z-index and pointer events */
     #aiChatModal {
         z-index: 1055 !important;
     }
@@ -9,11 +9,14 @@
     }
     #aiChatModal .modal-content {
         pointer-events: auto !important;
+        border-radius: 16px;
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     }
     #aiChatModal .modal-backdrop {
         z-index: 1054 !important;
     }
-    /* Ensure all interactive elements are clickable */
     #aiChatModal input,
     #aiChatModal button,
     #aiChatModal a,
@@ -21,23 +24,136 @@
         pointer-events: auto !important;
         cursor: pointer !important;
     }
-    /* Fix bg-primary utility class - use CSS variable */
-    .chat-user-message {
-        background-color: var(--bs-primary) !important;
-        color: white !important;
+
+    /* Chat Modal Header */
+    .chat-modal-header {
+        background: #354169;
+        padding: 20px 24px;
+        position: relative;
+        min-height: 100px;
     }
-    /* Fix text colors for assistant messages */
-    .chat-assistant-message {
-        background-color: white !important;
-        color: #212529 !important;
+    .chat-modal-header .chat-title {
+        color: #fff;
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin: 0;
     }
+    .chat-modal-header .chat-close-btn {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 28px;
+        line-height: 1;
+        padding: 0;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s;
+    }
+    .chat-modal-header .chat-close-btn:hover {
+        color: #fff;
+    }
+    .chat-modal-header .chat-character {
+        position: absolute;
+        right: 60px;
+        top: -10px;
+        width: 130px;
+        height: auto;
+        pointer-events: none;
+    }
+
+    /* Chat Modal Body */
+    .chat-modal-body {
+        background: #fff;
+        height: 450px;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    /* Welcome message */
+    .chat-welcome {
+        text-align: center;
+        padding: 40px 20px;
+        color: #6b7c93;
+    }
+    .chat-welcome-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 16px;
+    }
+    .chat-welcome p {
+        margin: 0;
+        font-size: 15px;
+    }
+    .chat-welcome .small {
+        font-size: 13px;
+        margin-top: 8px;
+    }
+
+    /* Message styles */
+    .chat-message {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 16px;
+    }
+    .chat-message-assistant {
+        flex-direction: row;
+    }
+    .chat-message-user {
+        flex-direction: row-reverse;
+    }
+
+    /* Avatar */
+    .chat-avatar {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    .chat-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .chat-avatar-user {
+        background: #d1d5db;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Message bubbles */
+    .chat-bubble {
+        max-width: 80%;
+        padding: 14px 18px;
+        border-radius: 16px;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+    .chat-bubble-assistant {
+        background: #dbeafe;
+        color: #1e293b;
+        margin-left: 12px;
+        border-bottom-left-radius: 4px;
+    }
+    .chat-bubble-user {
+        background: #F2F2F2;
+        color: #1e293b;
+        margin-right: 12px;
+        border-bottom-right-radius: 4px;
+    }
+
+    /* Message content markdown */
     .message-content {
-        color: #212529 !important;
+        color: #1e293b !important;
     }
-    #aiChatModal .bg-white {
-        color: #212529 !important;
-    }
-    /* Markdown formatting styles - override global heading styles for chat */
     .message-content h1,
     .message-content h2,
     .message-content h3,
@@ -49,7 +165,7 @@
         margin: 0.75rem 0 0.5rem !important;
         padding: 0 !important;
         line-height: 1.4 !important;
-        color: #212529 !important;
+        color: #1e293b !important;
         border: none !important;
         background: none !important;
     }
@@ -60,12 +176,6 @@
     .message-content h5:first-child,
     .message-content h6:first-child {
         margin-top: 0 !important;
-    }
-    .message-content h2 {
-        font-size: 1.05rem !important;
-    }
-    .message-content h3 {
-        font-size: 0.95rem !important;
     }
     .message-content ul,
     .message-content ol {
@@ -84,33 +194,194 @@
     .message-content strong {
         font-weight: 600;
     }
-    /* Inline citation styles */
+    .message-content a {
+        color: #3b5998;
+        text-decoration: underline;
+    }
+
+    /* Citations */
+    .chat-citations {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        font-size: 13px;
+        color: #6b7c93;
+    }
+    .chat-citations-label {
+        font-weight: 500;
+        margin-right: 8px;
+    }
+    .citation-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        background: #f1f5f9;
+        border-radius: 12px;
+        margin-right: 8px;
+        font-size: 12px;
+        color: #475569;
+    }
     .citation-link {
-        color: var(--bs-primary);
+        color: #3b5998;
         text-decoration: none;
         font-size: 0.75rem;
     }
     .citation-link:hover {
         text-decoration: underline;
     }
-    /* Text with citation link */
     .citation-text-link {
-        color: var(--bs-primary);
+        color: #3b5998;
         text-decoration: none;
-        border-bottom: 1px dotted var(--bs-primary);
+        border-bottom: 1px dotted #3b5998;
     }
     .citation-text-link:hover {
-        text-decoration: none;
         border-bottom-style: solid;
     }
     .citation-text-link sup {
         font-size: 0.7rem;
         margin-left: 1px;
     }
+
+    /* Loading */
+    .chat-loading {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 16px;
+    }
+    .chat-loading .chat-bubble {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Chat Input Section - Light background */
+    .chat-input-section {
+        background: #f0f2f5;
+        padding: 16px 20px;
+        border-top: 1px solid #e5e7eb;
+    }
+    .chat-input-wrapper {
+        display: flex;
+        gap: 12px;
+    }
+    .chat-input {
+        flex: 1;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 14px 18px;
+        font-size: 15px;
+        outline: none;
+        background: #fff;
+    }
+    .chat-input:focus {
+        border-color: #3b5998;
+        box-shadow: 0 0 0 2px rgba(59, 89, 152, 0.15);
+    }
+    .chat-send-btn {
+        background: #d4a44a;
+        border: none;
+        border-radius: 8px;
+        padding: 14px 20px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+    }
+    .chat-send-btn:hover {
+        background: #c49a40;
+    }
+    .chat-send-btn:disabled {
+        background: #9ca3af;
+        cursor: not-allowed;
+    }
+
+    /* End conversation button */
+    .chat-end-btn {
+        background: transparent;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 12px;
+        margin-top: 12px;
+        transition: all 0.2s;
+    }
+    .chat-end-btn:hover {
+        border-color: #9ca3af;
+        color: #374151;
+        background: #fff;
+    }
+
+    /* Chat Modal Footer - Dark background */
+    .chat-modal-footer {
+        background: #354169;
+        padding: 14px 20px;
+    }
+    .chat-footer-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+    .chat-footer-info .info-dot {
+        width: 10px;
+        height: 10px;
+        background: #d4a44a;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+    .chat-footer-info a {
+        color: #d4a44a;
+        text-decoration: none;
+    }
+    .chat-footer-info a:hover {
+        text-decoration: underline;
+    }
+
+    /* Alerts */
+    .chat-alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        margin: 0 20px 16px;
+    }
+    .chat-alert-error {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+    .chat-alert-warning {
+        background: #fef3c7;
+        color: #92400e;
+    }
+    .chat-alert-info {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+        .chat-modal-header .chat-character {
+            width: 90px;
+            right: 50px;
+            top: 0;
+        }
+        .chat-modal-header .chat-title {
+            font-size: 1.4rem;
+        }
+        .chat-modal-body {
+            height: 350px;
+        }
+        .chat-bubble {
+            max-width: 85%;
+        }
+    }
 </style>
 
 {# AI Chatbot Widget #}
-<div data-controller="chat">
+<div data-controller="chat" data-chat-avatar-url-value="{{ asset('images/chat-icon.png') }}">
     {# Floating Chat Button #}
     <button
         type="button"
@@ -119,125 +390,107 @@
         data-action="click->chat#open"
         data-bs-toggle="modal"
         data-bs-target="#aiChatModal"
-        title="AI Asistent Těrlicka"
+        title="AI Asistentka Terka"
     >
-        <img src="{{ asset('images/chat-icon.png') }}" alt="AI Asistent" style="width: 100%; height: 100%; object-fit: cover;">
+        <img src="{{ asset('images/chat-icon.png') }}" alt="AI Asistentka" style="width: 100%; height: 100%; object-fit: cover;">
     </button>
 
     {# Chat Modal #}
     <div class="modal fade" id="aiChatModal" tabindex="-1" data-chat-target="modal">
-        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 {# Modal Header #}
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-robot me-2" viewBox="0 0 16 16">
-                            <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
-                            <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
+                <div class="chat-modal-header">
+                    <h5 class="chat-title">AI Asistentka Terka</h5>
+                    <img src="{{ asset('images/chat-icon.png') }}" alt="Terka" class="chat-character">
+                    <button type="button" class="chat-close-btn" data-action="click->chat#close" data-bs-dismiss="modal" aria-label="Zavřít">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                         </svg>
-                        AI Asistent Těrlicka
-                    </h5>
-                    <button type="button" class="btn-close" data-action="click->chat#close" data-bs-dismiss="modal" aria-label="Zavřít"></button>
+                    </button>
                 </div>
 
                 {# Modal Body - Messages #}
-                <div class="modal-body p-0" style="height: 500px; overflow-y: auto; background-color: #f8f9fa;">
+                <div class="chat-modal-body">
                     {# Welcome Message #}
-                    <div class="p-4 text-center text-muted" data-chat-target="welcome">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-chat-left-dots mb-3 opacity-50" viewBox="0 0 16 16">
-                            <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-                            <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                        </svg>
-                        <p class="mb-0">Dobrý den! Jsem AI asistent města Těrlicko.</p>
-                        <p class="small">Zeptejte se mě na cokoliv ohledně služeb města.</p>
+                    <div class="chat-welcome" data-chat-target="welcome">
+                        <img src="{{ asset('images/chat-icon.png') }}" alt="Terka" class="chat-welcome-avatar">
+                        <p>Dobrý den! Jsem AI asistentka Terka.</p>
+                        <p class="small">Zeptejte se mě na cokoliv ohledně služeb obce Těrlicko.</p>
                     </div>
 
                     {# Messages Container #}
-                    <div class="p-3" data-chat-target="messages"></div>
+                    <div data-chat-target="messages"></div>
 
                     {# Loading Indicator #}
-                    <div class="px-3 pb-3 d-none" data-chat-target="loading">
-                        <div class="d-flex align-items-start">
-                            <div class="flex-shrink-0">
-                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
-                                        <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <div class="bg-white rounded-3 p-3 shadow-sm">
-                                        <div class="spinner-grow spinner-grow-sm me-2" role="status"></div>
-                                        <span class="text-muted">Přemýšlím...</span>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="chat-loading d-none" data-chat-target="loading">
+                        <div class="chat-avatar">
+                            <img src="{{ asset('images/chat-icon.png') }}" alt="Terka">
+                        </div>
+                        <div class="chat-bubble chat-bubble-assistant">
+                            <div class="spinner-grow spinner-grow-sm me-2" role="status"></div>
+                            <span>Přemýšlím...</span>
                         </div>
                     </div>
 
                     {# Error Message #}
-                    <div class="px-3 pb-3 d-none" data-chat-target="error">
-                        <div class="alert alert-danger mb-0" role="alert">
-                            <strong>Chyba:</strong> <span data-chat-target="errorMessage"></span>
-                        </div>
+                    <div class="chat-alert chat-alert-error d-none" data-chat-target="error">
+                        <strong>Chyba:</strong> <span data-chat-target="errorMessage"></span>
                     </div>
 
                     {# Rate Limit Message #}
-                    <div class="px-3 pb-3 d-none" data-chat-target="rateLimit">
-                        <div class="alert alert-warning mb-0" role="alert">
-                            <strong>Omezení:</strong> Dosáhli jste limitu zpráv. Zkuste to prosím za <span data-chat-target="rateLimitTime"></span>.
-                        </div>
+                    <div class="chat-alert chat-alert-warning d-none" data-chat-target="rateLimit">
+                        <strong>Omezení:</strong> Dosáhli jste limitu zpráv. Zkuste to prosím za <span data-chat-target="rateLimitTime"></span>.
                     </div>
 
                     {# Off-topic Feedback Message #}
-                    <div class="px-3 pb-3 d-none" data-chat-target="feedback">
-                        <div class="alert alert-info small mb-0" role="alert">
-                            Myslíte si, že je to chyba?
-                            <a href="mailto:info@terlicko.cz?subject=AI%20Chat%20-%20Zpětná%20vazba">Dejte nám vědět</a>
-                        </div>
+                    <div class="chat-alert chat-alert-info d-none" data-chat-target="feedback">
+                        Myslíte si, že je to chyba?
+                        <a href="mailto:info@terlicko.cz?subject=AI%20Chat%20-%20Zpětná%20vazba">Dejte nám vědět</a>
                     </div>
+                </div>
 
-                    {# Modal Footer - Input Form #}
-                    <div class="modal-footer flex-column align-items-stretch p-3 bg-light">
-                        <form data-action="submit->chat#sendMessage" data-chat-target="form">
-                            <div class="input-group">
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Napište svou zprávu..."
-                                    data-chat-target="input"
-                                    required
-                                    maxlength="500"
-                                >
-                                <button
-                                    class="btn btn-primary"
-                                    type="submit"
-                                    data-chat-target="submitButton"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
-                                        <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="form-text mt-2">
-                                <small class="text-muted">
-                                    Terka čerpá informace z obsahu webu Terlicko.cz a postupně se učí. Nenašli jste, co hledáte? Dejte nám vědět.
-                                </small>
-                            </div>
-                        </form>
-
-                        <div class="mt-2">
-                            <button
-                                type="button"
-                                class="btn btn-sm btn-outline-secondary"
-                                data-action="click->chat#endConversation"
+                {# Input Section - Light background #}
+                <div class="chat-input-section">
+                    <form data-action="submit->chat#sendMessage" data-chat-target="form">
+                        <div class="chat-input-wrapper">
+                            <input
+                                type="text"
+                                class="chat-input"
+                                placeholder="Napište váš dotaz"
+                                data-chat-target="input"
+                                required
+                                maxlength="500"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle me-1" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            <button
+                                class="chat-send-btn"
+                                type="submit"
+                                data-chat-target="submitButton"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
                                 </svg>
-                                Ukončit konverzaci
                             </button>
                         </div>
+                    </form>
+                    <button
+                        type="button"
+                        class="chat-end-btn"
+                        data-action="click->chat#endConversation"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                        Ukončit konverzaci
+                    </button>
+                </div>
+
+                {# Footer - Dark background with disclaimer #}
+                <div class="chat-modal-footer">
+                    <div class="chat-footer-info">
+                        <span class="info-dot"></span>
+                        <span>Terka čerpá informace z obsahu webu Terlicko.cz a postupně se učí. Nenašli jste, co hledáte? <a href="mailto:info@terlicko.cz?subject=AI%20Chat%20-%20Zpětná%20vazba">Dejte nám vědět.</a></span>
                     </div>
                 </div>
             </div>

@@ -18,6 +18,10 @@ export default class extends Controller {
         'feedback'
     ];
 
+    static values = {
+        avatarUrl: String
+    };
+
     connect() {
         console.log('Chat controller connected');
 
@@ -250,38 +254,28 @@ export default class extends Controller {
 
     addMessage(role, content) {
         const messageDiv = document.createElement('div');
-        messageDiv.classList.add('d-flex', 'align-items-start', 'mb-3');
+        messageDiv.classList.add('chat-message');
 
         if (role === 'user') {
-            messageDiv.classList.add('flex-row-reverse');
+            messageDiv.classList.add('chat-message-user');
             messageDiv.innerHTML = `
-                <div class="flex-shrink-0 ms-2">
-                    <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                        </svg>
-                    </div>
+                <div class="chat-avatar chat-avatar-user">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#9ca3af" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                    </svg>
                 </div>
-                <div class="flex-grow-1 me-2">
-                    <div class="chat-user-message rounded-3 p-3 shadow-sm">
-                        ${this.escapeHtml(content)}
-                    </div>
+                <div class="chat-bubble chat-bubble-user">
+                    ${this.escapeHtml(content)}
                 </div>
             `;
         } else {
+            messageDiv.classList.add('chat-message-assistant');
             messageDiv.innerHTML = `
-                <div class="flex-shrink-0 me-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: var(--bs-primary) !important; color: white;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
-                            <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
-                            <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
-                        </svg>
-                    </div>
+                <div class="chat-avatar">
+                    <img src="${this.avatarUrlValue}" alt="Terka">
                 </div>
-                <div class="flex-grow-1">
-                    <div class="chat-assistant-message rounded-3 p-3 shadow-sm">
-                        <div class="message-content">${content ? this.formatContent(content) : ''}</div>
-                    </div>
+                <div class="chat-bubble chat-bubble-assistant">
+                    <div class="message-content">${content ? this.formatContent(content) : ''}</div>
                 </div>
             `;
         }
@@ -315,33 +309,31 @@ export default class extends Controller {
         // Only show sources when response is final and AI actually used them
         // Don't show sources if AI says it doesn't have the information
         if (isFinal && initial.length > 0 && this.shouldShowSources(content)) {
-            let citationsDiv = messageElement.querySelector('.citations');
+            let citationsDiv = messageElement.querySelector('.chat-citations');
             if (!citationsDiv) {
                 citationsDiv = document.createElement('div');
-                citationsDiv.classList.add('citations', 'mt-3', 'pt-3', 'border-top');
+                citationsDiv.classList.add('chat-citations');
                 contentDiv.parentElement.appendChild(citationsDiv);
             }
 
             const expandedId = `expanded-sources-${Date.now()}`;
 
             citationsDiv.innerHTML = `
-                <div class="small text-muted">
-                    <strong>Zdroje:</strong>
-                    <ul class="list-unstyled mt-2 mb-0">
-                        ${initial.map(source => this.renderSourceItem(source)).join('')}
-                    </ul>
-                    ${hasMore ? `
-                        <div class="expanded-sources collapse" id="${expandedId}">
-                            <ul class="list-unstyled mb-0">
-                                ${expanded.map(source => this.renderSourceItem(source)).join('')}
-                            </ul>
-                        </div>
-                        <button type="button" class="btn btn-link btn-sm p-0 mt-2 show-more-sources" data-bs-toggle="collapse" data-bs-target="#${expandedId}">
-                            <span class="show-more-text">Zobrazit další zdroje (${expanded.length})</span>
-                            <span class="show-less-text d-none">Skrýt další zdroje</span>
-                        </button>
-                    ` : ''}
-                </div>
+                <span class="chat-citations-label">Zdroje:</span>
+                <ul class="list-unstyled mt-2 mb-0">
+                    ${initial.map(source => this.renderSourceItem(source)).join('')}
+                </ul>
+                ${hasMore ? `
+                    <div class="expanded-sources collapse" id="${expandedId}">
+                        <ul class="list-unstyled mb-0">
+                            ${expanded.map(source => this.renderSourceItem(source)).join('')}
+                        </ul>
+                    </div>
+                    <button type="button" class="btn btn-link btn-sm p-0 mt-2 show-more-sources" data-bs-toggle="collapse" data-bs-target="#${expandedId}">
+                        <span class="show-more-text">Zobrazit další zdroje (${expanded.length})</span>
+                        <span class="show-less-text d-none">Skrýt další zdroje</span>
+                    </button>
+                ` : ''}
             `;
 
             // Add toggle handler for show more/less text
@@ -671,7 +663,7 @@ export default class extends Controller {
     }
 
     scrollToBottom() {
-        const modalBody = this.modalTarget.querySelector('.modal-body');
+        const modalBody = this.modalTarget.querySelector('.chat-modal-body');
         if (modalBody) {
             modalBody.scrollTop = modalBody.scrollHeight;
         }

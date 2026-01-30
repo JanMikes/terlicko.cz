@@ -1323,3 +1323,7 @@ a:hover .upcoming-event-item {
 .actuality-detail {
     border: 1px solid #ccc;
 }
+
+.chat-input-wrapper input.chat-input {
+    border: 0 !important;
+}
