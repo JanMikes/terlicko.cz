@@ -69,6 +69,7 @@ final class AiIngestCommand extends Command
             $progressBar->start();
 
             $skippedFiles = 0;
+            $failedFiles = 0;
             foreach ($files as $file) {
                 $fileData = [
                     'source_url' => 'https://terlicko.cz' . $file['url'],
@@ -77,12 +78,19 @@ final class AiIngestCommand extends Command
                     'published_at' => $file['created_at']->format(\DateTimeInterface::ATOM),
                 ];
 
-                $result = $this->ingestionService->ingestPdfDocument($fileData, $force);
-                if ($result['message'] === 'File not accessible') {
-                    $skippedFiles++;
-                } else {
-                    $totalProcessed++;
-                    $totalChunks += $result['chunks_created'];
+                try {
+                    $result = $this->ingestionService->ingestPdfDocument($fileData, $force);
+                    if ($result['message'] === 'File not accessible') {
+                        $skippedFiles++;
+                    } else {
+                        $totalProcessed++;
+                        $totalChunks += $result['chunks_created'];
+                    }
+                } catch (\Exception $e) {
+                    // Log error but continue processing other PDFs
+                    $io->newLine();
+                    $io->error(sprintf('Failed to process PDF %s: %s', $file['name'], $e->getMessage()));
+                    $failedFiles++;
                 }
 
                 $progressBar->advance();
@@ -91,6 +99,11 @@ final class AiIngestCommand extends Command
             if ($skippedFiles > 0) {
                 $io->newLine();
                 $io->warning(sprintf('%d PDF files were skipped (not accessible)', $skippedFiles));
+            }
+
+            if ($failedFiles > 0) {
+                $io->newLine();
+                $io->warning(sprintf('%d PDF files failed to process', $failedFiles));
             }
 
             $progressBar->finish();
@@ -169,12 +182,25 @@ final class AiIngestCommand extends Command
             $progressBar = $io->createProgressBar($pagesCount);
             $progressBar->start();
 
+            $failedContent = 0;
             foreach ($contentItems as $item) {
-                $result = $this->ingestionService->ingestContentItem($item, $force);
-                $totalProcessed++;
-                $totalChunks += $result['chunks_created'];
+                try {
+                    $result = $this->ingestionService->ingestContentItem($item, $force);
+                    $totalProcessed++;
+                    $totalChunks += $result['chunks_created'];
+                } catch (\Exception $e) {
+                    // Log error but continue processing other content
+                    $io->newLine();
+                    $io->error(sprintf('Failed to process content %s: %s', $item->title, $e->getMessage()));
+                    $failedContent++;
+                }
 
                 $progressBar->advance();
+            }
+
+            if ($failedContent > 0) {
+                $io->newLine();
+                $io->warning(sprintf('%d content items failed to process', $failedContent));
             }
 
             $progressBar->finish();

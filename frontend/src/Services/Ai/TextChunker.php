@@ -41,6 +41,33 @@ readonly final class TextChunker
         foreach ($sentences as $sentence) {
             $sentenceTokens = $this->estimateTokens($sentence);
 
+            // Handle sentences that are too long by themselves - split them by words
+            if ($sentenceTokens > $this->chunkSize) {
+                // Save current chunk first if not empty
+                if ($currentChunk !== '') {
+                    $chunks[] = [
+                        'text' => TextSanitizer::sanitizeUtf8(trim($currentChunk)),
+                        'token_count' => $currentTokenCount,
+                        'index' => $chunkIndex,
+                    ];
+                    $chunkIndex++;
+                    $currentChunk = '';
+                    $currentTokenCount = 0;
+                }
+
+                // Split the long sentence into smaller pieces
+                $subChunks = $this->splitLongText($sentence);
+                foreach ($subChunks as $subChunk) {
+                    $chunks[] = [
+                        'text' => TextSanitizer::sanitizeUtf8(trim($subChunk['text'])),
+                        'token_count' => $subChunk['token_count'],
+                        'index' => $chunkIndex,
+                    ];
+                    $chunkIndex++;
+                }
+                continue;
+            }
+
             // If adding this sentence would exceed chunk size, save current chunk
             if ($currentTokenCount + $sentenceTokens > $this->chunkSize && $currentChunk !== '') {
                 $chunks[] = [
@@ -83,6 +110,65 @@ readonly final class TextChunker
         $sentences = preg_split('/(?<=[.!?])\s+/', $text, -1, PREG_SPLIT_NO_EMPTY);
 
         return $sentences ?: [$text];
+    }
+
+    /**
+     * Split long text (exceeding chunk size) into smaller pieces by words
+     *
+     * @return array<array{text: string, token_count: int}>
+     */
+    private function splitLongText(string $text): array
+    {
+        $words = preg_split('/\s+/', $text, -1, PREG_SPLIT_NO_EMPTY) ?: [$text];
+        $chunks = [];
+        $currentChunk = '';
+        $currentTokenCount = 0;
+
+        // Use a slightly smaller target to leave room for safety margin
+        $targetSize = (int) ($this->chunkSize * 0.9);
+
+        foreach ($words as $word) {
+            $wordTokens = $this->estimateTokens($word);
+
+            // If a single word exceeds target, we have to include it anyway
+            // but as its own chunk
+            if ($wordTokens > $targetSize) {
+                if ($currentChunk !== '') {
+                    $chunks[] = [
+                        'text' => $currentChunk,
+                        'token_count' => $currentTokenCount,
+                    ];
+                    $currentChunk = '';
+                    $currentTokenCount = 0;
+                }
+                $chunks[] = [
+                    'text' => $word,
+                    'token_count' => $wordTokens,
+                ];
+                continue;
+            }
+
+            if ($currentTokenCount + $wordTokens > $targetSize && $currentChunk !== '') {
+                $chunks[] = [
+                    'text' => $currentChunk,
+                    'token_count' => $currentTokenCount,
+                ];
+                $currentChunk = $word;
+                $currentTokenCount = $wordTokens;
+            } else {
+                $currentChunk .= ($currentChunk === '' ? '' : ' ') . $word;
+                $currentTokenCount += $wordTokens;
+            }
+        }
+
+        if ($currentChunk !== '') {
+            $chunks[] = [
+                'text' => $currentChunk,
+                'token_count' => $currentTokenCount,
+            ];
+        }
+
+        return $chunks;
     }
 
     /**

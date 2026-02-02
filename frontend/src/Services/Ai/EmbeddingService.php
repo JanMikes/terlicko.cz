@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terlicko\Web\Services\Ai;
 
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 readonly final class EmbeddingService
@@ -21,15 +22,36 @@ readonly final class EmbeddingService
      */
     public function generateEmbedding(string $text): array
     {
-        $response = $this->openaiClient->request('POST', 'embeddings', [
-            'json' => [
-                'model' => $this->embeddingModel,
-                'input' => TextSanitizer::sanitizeUtf8($text),
-            ],
-        ]);
+        $sanitizedText = TextSanitizer::sanitizeUtf8($text);
 
-        /** @var array{data: array<array{embedding: array<float>}>, model: string, usage: array{total_tokens: int}} $data */
-        $data = $response->toArray();
+        try {
+            $response = $this->openaiClient->request('POST', 'embeddings', [
+                'json' => [
+                    'model' => $this->embeddingModel,
+                    'input' => $sanitizedText,
+                ],
+            ]);
+
+            /** @var array{data: array<array{embedding: array<float>}>, model: string, usage: array{total_tokens: int}} $data */
+            $data = $response->toArray();
+        } catch (HttpExceptionInterface $e) {
+            // Extract the actual error response from OpenAI for better debugging
+            $errorBody = '';
+            try {
+                $errorBody = $e->getResponse()->getContent(false);
+            } catch (\Throwable) {
+                // Ignore errors when reading error response
+            }
+
+            $textLength = mb_strlen($sanitizedText);
+            throw new \RuntimeException(sprintf(
+                'OpenAI embeddings API error (HTTP %d): %s. Text length: %d chars. Response: %s',
+                $e->getResponse()->getStatusCode(),
+                $e->getMessage(),
+                $textLength,
+                $errorBody ?: 'N/A'
+            ), 0, $e);
+        }
 
         if (!isset($data['data'][0]['embedding'])) {
             throw new \RuntimeException('Invalid response from OpenAI embeddings API');
@@ -58,16 +80,38 @@ readonly final class EmbeddingService
             return [];
         }
 
-        // OpenAI supports batch embedding requests
-        $response = $this->openaiClient->request('POST', 'embeddings', [
-            'json' => [
-                'model' => $this->embeddingModel,
-                'input' => array_map(TextSanitizer::sanitizeUtf8(...), $texts),
-            ],
-        ]);
+        $sanitizedTexts = array_map(TextSanitizer::sanitizeUtf8(...), $texts);
 
-        /** @var array{data: array<array{embedding: array<float>}>, model: string} $data */
-        $data = $response->toArray();
+        try {
+            // OpenAI supports batch embedding requests
+            $response = $this->openaiClient->request('POST', 'embeddings', [
+                'json' => [
+                    'model' => $this->embeddingModel,
+                    'input' => $sanitizedTexts,
+                ],
+            ]);
+
+            /** @var array{data: array<array{embedding: array<float>}>, model: string} $data */
+            $data = $response->toArray();
+        } catch (HttpExceptionInterface $e) {
+            // Extract the actual error response from OpenAI for better debugging
+            $errorBody = '';
+            try {
+                $errorBody = $e->getResponse()->getContent(false);
+            } catch (\Throwable) {
+                // Ignore errors when reading error response
+            }
+
+            $totalChars = array_sum(array_map('mb_strlen', $sanitizedTexts));
+            throw new \RuntimeException(sprintf(
+                'OpenAI embeddings API error (HTTP %d): %s. Batch size: %d texts, total %d chars. Response: %s',
+                $e->getResponse()->getStatusCode(),
+                $e->getMessage(),
+                count($sanitizedTexts),
+                $totalChars,
+                $errorBody ?: 'N/A'
+            ), 0, $e);
+        }
 
         $results = [];
         foreach ($data['data'] as $item) {
