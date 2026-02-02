@@ -201,7 +201,7 @@ header.bg-dark {
 }
 
 .home-hero-gradient {
-    background: url('../images/home-hero-gradient.png') center top no-repeat;
+    background: url('../images/home-hero-gradient.png') center top repeat-x;
     height: 551px;
     position: absolute;
     left: 0;
