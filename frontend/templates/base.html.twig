@@ -73,10 +73,7 @@
 
     <twig:Footer />
 
-    {# AI Chatbot Widget - only show in test mode #}
-    {% if app.request.query.has('ai-test') %}
-        <twig:ChatWidget />
-    {% endif %}
+    <twig:ChatWidget />
 
     {% include 'components/CookieBanner.html.twig' %}
 

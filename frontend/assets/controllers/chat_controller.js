@@ -242,6 +242,10 @@ export default class extends Controller {
      */
     async switchConversation(event) {
         const newId = event.currentTarget.dataset.conversationId;
+
+        // Hide avatar selection if open
+        this.hideAvatarSelection();
+
         if (newId === this.conversationId) return;
 
         // Update active conversation
@@ -434,6 +438,9 @@ export default class extends Controller {
 
         const message = this.inputTarget.value.trim();
         if (!message) return;
+
+        // Hide avatar selection if open
+        this.hideAvatarSelection();
 
         // Ensure we have a conversation
         if (!this.conversationId) {
