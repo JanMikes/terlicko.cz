@@ -1050,6 +1050,14 @@ export default class extends Controller {
             this.loadingAvatarTarget.src = urls.icon;
         }
 
+        // Update avatars in existing conversation messages
+        if (this.hasMessagesTarget) {
+            const messageAvatars = this.messagesTarget.querySelectorAll('.chat-message-assistant .chat-avatar img');
+            messageAvatars.forEach(img => {
+                img.src = urls.icon;
+            });
+        }
+
         // Update selected state on avatar options
         if (this.hasAvatarOptionTarget) {
             this.avatarOptionTargets.forEach(option => {
