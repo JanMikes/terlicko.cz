@@ -670,7 +670,8 @@ export default class extends Controller {
             if (!citationsDiv) {
                 citationsDiv = document.createElement('div');
                 citationsDiv.classList.add('chat-citations');
-                contentDiv.parentElement.appendChild(citationsDiv);
+                // Append to message wrapper (outside the bubble)
+                messageElement.appendChild(citationsDiv);
             }
 
             const expandedId = `expanded-sources-${Date.now()}`;
