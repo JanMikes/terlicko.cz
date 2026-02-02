@@ -68,6 +68,7 @@ final class GetConversationController extends AbstractController
 
         return new JsonResponse([
             'conversation_id' => $conversation->getId()->toString(),
+            'title' => $conversation->getTitle(),
             'is_active' => $conversation->isActive(),
             'started_at' => $conversation->getStartedAt()->format(\DateTimeInterface::ATOM),
             'messages' => $messages,

@@ -78,4 +78,21 @@ final class AiConversationRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
     }
+
+    /**
+     * Find all conversations for a guest, ordered by most recent first
+     *
+     * @return AiConversation[]
+     */
+    public function findAllByGuestId(UuidInterface $guestId, int $limit = 20): array
+    {
+        /** @var AiConversation[] */
+        return $this->createQueryBuilder('c')
+            ->where('c.guestId = :guestId')
+            ->setParameter('guestId', $guestId, 'uuid')
+            ->orderBy('c.startedAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -4,7 +4,7 @@
             <div class="col-sm-8">
                 <div class="pb-3 pe-3">
                     {% if data.Fotka %}
-                        <img class="img-fluid" src="{{ data.Fotka.url }}" alt="">
+                        <img class="img-fluid" src="{{ data.Fotka.url }}" alt="{{ data.Nadpis|default('') }}">
                     {% endif %}
                 </div>
             </div>
@@ -36,7 +36,7 @@
             <div class="col-sm-8">
                 <div class="pb-3 ps-3">
                     {% if data.Fotka %}
-                        <img class="img-fluid" src="{{ data.Fotka.url }}" alt="">
+                        <img class="img-fluid" src="{{ data.Fotka.url }}" alt="{{ data.Nadpis|default('') }}">
                     {% endif %}
                 </div>
             </div>

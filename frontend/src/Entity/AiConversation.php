@@ -42,6 +42,9 @@ class AiConversation
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $moderationBlockedUntil = null;
 
+    #[ORM\Column(type: Types::STRING, length: 100, nullable: true)]
+    private ?string $title = null;
+
     /** @var Collection<int, AiMessage> */
     #[ORM\OneToMany(targetEntity: AiMessage::class, mappedBy: 'conversation', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[ORM\OrderBy(['createdAt' => 'ASC'])]
@@ -134,5 +137,15 @@ class AiConversation
     public function blockModerationUntil(\DateTimeImmutable $until): void
     {
         $this->moderationBlockedUntil = $until;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): void
+    {
+        $this->title = $title;
     }
 }

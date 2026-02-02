@@ -18,7 +18,7 @@
 
                         {% for banner in computed.footer.Bannery %}
                             <twig:Odkaz data="{{ banner.Odkaz }}">
-                                <img class="mt-3 img-fluid" src="{{ banner.Obrazek.url }}" alt="" title="">
+                                <img class="mt-3 img-fluid" src="{{ banner.Obrazek.url }}" alt="{{ banner.Odkaz.Text|default('') }}">
                             </twig:Odkaz>
                         {% endfor %}
                     </div>
@@ -31,9 +31,11 @@
         <div class="container py-2">
             <div class="row">
                 <div class="col-sm-6 text-sm-start">
-                    web &amp; design <a href="https://www.wantoo.cz" target="_blank" class="fw-bold">WANTOO design</a> 2025
+                    web &amp; design <a href="https://www.wantoo.cz" target="_blank" rel="noopener" class="fw-bold">WANTOO design<span class="visually-hidden"> (otevře se v novém okně)</span></a> 2025
                 </div>
                 <div class="col-sm-6 text-sm-end">
+                    <a href="{{ path('pristupnost') }}" class="d-inline-block mx-2">Přístupnost</a>
+                    <a href="{{ path('cookie_policy') }}" class="d-inline-block mx-2">Cookies a soukromí</a>
                     {% for odkaz in computed.footer.Odkazy %}
                         <twig:Odkaz data="{{ odkaz.Odkaz }}" class="d-inline-block mx-2">{{ odkaz.Text }}</twig:Odkaz>
                     {% endfor %}

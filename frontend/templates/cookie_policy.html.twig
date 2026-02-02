@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Zásady cookies a ochrana soukromí{% endblock %}
+
+{% block meta_description %}Informace o používání cookies a ochraně osobních údajů na webu obce Těrlicko.{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="mb-4">Zásady cookies a ochrana soukromí</h1>
+
+            <section class="mb-5">
+                <h2>Co jsou cookies?</h2>
+                <p>
+                    Cookies jsou malé textové soubory, které se ukládají do vašeho prohlížeče při návštěvě webových stránek.
+                    Pomáhají nám pochopit, jak návštěvníci používají náš web, a zlepšovat jeho fungování.
+                </p>
+            </section>
+
+            <section class="mb-5">
+                <h2>Jaké cookies používáme?</h2>
+                <p>Na těchto stránkách používáme pouze nezbytné technické cookies a analytické cookies Google Analytics.</p>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Název</th>
+                                <th>Účel</th>
+                                <th>Platnost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>cookie_consent</code></td>
+                                <td>Ukládá vaše rozhodnutí o cookies (přijato/odmítnuto)</td>
+                                <td>1 rok</td>
+                            </tr>
+                            <tr>
+                                <td><code>_ga</code></td>
+                                <td>Google Analytics - rozlišení unikátních návštěvníků</td>
+                                <td>2 roky</td>
+                            </tr>
+                            <tr>
+                                <td><code>_ga_*</code></td>
+                                <td>Google Analytics - uchovávání stavu relace</td>
+                                <td>2 roky</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="mb-5">
+                <h2>Jaké údaje shromažďujeme?</h2>
+                <p>Prostřednictvím Google Analytics sbíráme anonymizované statistické údaje:</p>
+                <ul>
+                    <li>Počet návštěv a zobrazených stránek</li>
+                    <li>Přibližná poloha (město/region)</li>
+                    <li>Typ zařízení a prohlížeče</li>
+                    <li>Zdroj návštěvy (odkud jste přišli)</li>
+                    <li>Čas strávený na stránkách</li>
+                </ul>
+                <p>
+                    <strong>IP adresy jsou anonymizovány</strong> a data používáme pouze pro statistické účely
+                    k vylepšení obsahu a fungování webu. Údaje nesdílíme s třetími stranami pro reklamní účely.
+                </p>
+            </section>
+
+            <section class="mb-5">
+                <h2>Vaše práva</h2>
+                <p>Máte právo:</p>
+                <ul>
+                    <li>Odmítnout používání analytických cookies</li>
+                    <li>Kdykoli změnit svůj souhlas</li>
+                    <li>Vymazat cookies ve svém prohlížeči</li>
+                </ul>
+                <p>
+                    Pokud cookies odmítnete, web bude fungovat normálně, pouze nebudeme moci sledovat
+                    statistiky návštěvnosti.
+                </p>
+            </section>
+
+            <section class="mb-5">
+                <h2>Změna nastavení cookies</h2>
+                <p>
+                    Pokud chcete změnit své rozhodnutí ohledně cookies, klikněte na tlačítko níže.
+                    Zobrazí se vám znovu panel s volbou přijmout nebo odmítnout cookies.
+                </p>
+                <button type="button"
+                        class="btn button-style-1"
+                        data-action="cookie-consent#openSettings">
+                    Změnit nastavení cookies
+                </button>
+            </section>
+
+            <section class="mb-5">
+                <h2>Kontakt</h2>
+                <p>
+                    V případě dotazů ohledně ochrany osobních údajů nás můžete kontaktovat:
+                </p>
+                <address>
+                    <strong>Obec Těrlicko</strong><br>
+                    Obecní úřad Těrlicko<br>
+                    Horní Těrlicko 474<br>
+                    735 42 Těrlicko<br>
+                    E-mail: <a href="mailto:obec@terlicko.cz">obec@terlicko.cz</a>
+                </address>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

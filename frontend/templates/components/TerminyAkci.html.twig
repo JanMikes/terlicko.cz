@@ -21,13 +21,13 @@
                         </div>
                         <div class="flex-shrink-1 text-end">
                             {% if termin.ZivyPrenos %}
-                                <a class="event-live-stream" href="{{ termin.ZivyPrenos }}" target="_blank">přehrát</a>
+                                <a class="event-live-stream" href="{{ termin.ZivyPrenos }}" target="_blank" rel="noopener">přehrát<span class="visually-hidden"> (otevře se v novém okně)</span></a>
                             {% endif %}
 
                             {% if termin.Zaznam %}
-                                <a class="event-replay text-nowrap {{ termin.Zaznam ? 'ms-1' }}" href="{{ termin.Zaznam }}" target="_blank">
-                                    <i class="bi-youtube me-1"></i>
-                                    záznam
+                                <a class="event-replay text-nowrap {{ termin.Zaznam ? 'ms-1' }}" href="{{ termin.Zaznam }}" target="_blank" rel="noopener">
+                                    <i class="bi-youtube me-1" aria-hidden="true"></i>
+                                    záznam<span class="visually-hidden"> (otevře se v novém okně)</span>
                                 </a>
                             {% endif %}
                         </div>

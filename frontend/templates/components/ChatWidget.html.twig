@@ -17,6 +17,36 @@
     #aiChatModal .modal-backdrop {
         z-index: 1054 !important;
     }
+
+    /* Floating Chat Button */
+    .chat-floating-btn {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        background: #93ABD1;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        z-index: 1040;
+        padding: 0;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .chat-floating-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+    .chat-floating-btn img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        object-position: top;
+        transform: scale(1.15) translateY(4px);
+    }
+
     #aiChatModal input,
     #aiChatModal button,
     #aiChatModal a,
@@ -58,13 +88,18 @@
     .chat-modal-header .chat-close-btn:hover {
         color: #fff;
     }
-    .chat-modal-header .chat-character {
+    .chat-modal-wrapper {
+        position: relative;
+        width: 100%;
+    }
+    .chat-character {
         position: absolute;
         right: 60px;
-        top: -10px;
-        width: 130px;
+        top: -52px;
+        width: 140px;
         height: auto;
         pointer-events: none;
+        z-index: 10;
     }
 
     /* Chat Modal Body */
@@ -86,6 +121,11 @@
         height: 80px;
         border-radius: 50%;
         margin-bottom: 16px;
+        background: #93ABD1;
+        border: 3px solid #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        object-fit: cover;
+        object-position: top;
     }
     .chat-welcome p {
         margin: 0;
@@ -116,17 +156,24 @@
         height: 48px;
         border-radius: 50%;
         overflow: hidden;
+        background: #93ABD1;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
     .chat-avatar img {
         width: 100%;
-        height: 100%;
+        height: auto;
         object-fit: cover;
+        object-position: top;
+        transform: scale(1.1) translateY(2px);
     }
     .chat-avatar-user {
         background: #d1d5db;
         display: flex;
         align-items: center;
         justify-content: center;
+        border: none;
+        box-shadow: none;
     }
 
     /* Message bubbles */
@@ -297,21 +344,75 @@
         cursor: not-allowed;
     }
 
-    /* End conversation button */
-    .chat-end-btn {
-        background: transparent;
-        border: 1px solid #d1d5db;
-        color: #6b7280;
-        border-radius: 6px;
-        padding: 6px 12px;
-        font-size: 12px;
-        margin-top: 12px;
-        transition: all 0.2s;
+    /* Conversation chips */
+    .chat-conversations {
+        margin-top: 10px;
     }
-    .chat-end-btn:hover {
-        border-color: #9ca3af;
-        color: #374151;
-        background: #fff;
+    .chat-conversations-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        max-height: 56px;
+        overflow: hidden;
+        transition: max-height 0.3s;
+        align-items: center;
+    }
+    .chat-conversations-list.expanded {
+        max-height: none;
+    }
+    .chat-conversation-chip {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        padding: 4px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .chat-conversation-chip:hover {
+        background: rgba(255, 255, 255, 0.25);
+    }
+    .chat-conversation-chip.active {
+        background: #EAAA55;
+        border-color: #EAAA55;
+        color: #fff;
+    }
+    .chat-new-btn {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        padding: 0;
+    }
+    .chat-new-btn:hover {
+        background: rgba(255, 255, 255, 0.25);
+    }
+    .chat-show-more {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 11px;
+        padding: 4px 0;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+        margin-top: 4px;
+    }
+    .chat-show-more:hover {
+        color: rgba(255, 255, 255, 0.9);
     }
 
     /* Chat Modal Footer - Dark background */
@@ -363,10 +464,10 @@
 
     /* Responsive */
     @media (max-width: 576px) {
-        .chat-modal-header .chat-character {
-            width: 90px;
-            right: 50px;
-            top: 0;
+        .chat-character {
+            width: 100px;
+            right: 40px;
+            top: -6px;
         }
         .chat-modal-header .chat-title {
             font-size: 1.4rem;
@@ -378,75 +479,280 @@
             max-width: 85%;
         }
     }
+
+    /* Config Button - text-like, positioned after title */
+    .chat-config-btn {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.6);
+        padding: 4px 8px;
+        margin-left: 8px;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .chat-config-btn:hover { color: #fff; }
+
+    /* Avatar Selection View */
+    .chat-avatar-selection { padding: 40px 20px; text-align: center; }
+    .avatar-selection-title { margin: 0 0 24px; font-size: 1.1rem; color: #354169; }
+    .avatar-options { display: flex; justify-content: center; gap: 16px; align-items: flex-end; margin-bottom: 32px; }
+    .avatar-option {
+        background: none;
+        border: none;
+        padding: 8px;
+        cursor: pointer;
+        transition: transform 0.2s, opacity 0.2s;
+        opacity: 0.7;
+        max-width: 25%;
+    }
+    .avatar-option:hover { transform: scale(1.05); opacity: 1; }
+    .avatar-option.selected { opacity: 1; transform: scale(1.1); }
+    .avatar-option img { width: 100%; height: auto; }
+    .avatar-selection-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+        font-size: 14px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+    }
+    .avatar-selection-back:hover {
+        background: #e2e8f0;
+        color: #1e293b;
+    }
+
+    /* Feedback Button & Form */
+    .chat-bubble-assistant {
+        position: relative;
+    }
+    .chat-feedback-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: none;
+        border: none;
+        color: #9ca3af;
+        padding: 4px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s, color 0.2s;
+        border-radius: 4px;
+    }
+    .chat-bubble-assistant:hover .chat-feedback-btn {
+        opacity: 1;
+    }
+    .chat-feedback-btn:hover {
+        color: #ef4444;
+        background: rgba(239, 68, 68, 0.1);
+    }
+    .chat-feedback-btn.feedback-given {
+        opacity: 1;
+        color: #22c55e;
+        cursor: default;
+    }
+    .chat-feedback-btn.feedback-given:hover {
+        background: none;
+        color: #22c55e;
+    }
+    .chat-feedback-form {
+        margin-top: 12px;
+        padding: 12px;
+        background: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+    }
+    .chat-feedback-form label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: #475569;
+        margin-bottom: 8px;
+    }
+    .chat-feedback-form textarea {
+        width: 100%;
+        min-height: 60px;
+        padding: 8px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 13px;
+        resize: vertical;
+        margin-bottom: 8px;
+    }
+    .chat-feedback-form textarea:focus {
+        outline: none;
+        border-color: #3b5998;
+        box-shadow: 0 0 0 2px rgba(59, 89, 152, 0.15);
+    }
+    .chat-feedback-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+    }
+    .chat-feedback-cancel {
+        background: none;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+    .chat-feedback-cancel:hover {
+        background: #f1f5f9;
+    }
+    .chat-feedback-submit {
+        background: #3b5998;
+        border: none;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+    .chat-feedback-submit:hover {
+        background: #2d4373;
+    }
+    .chat-feedback-submit:disabled {
+        background: #9ca3af;
+        cursor: not-allowed;
+    }
+    .chat-feedback-thanks {
+        padding: 10px 12px;
+        background: #dcfce7;
+        border-radius: 8px;
+        color: #166534;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 </style>
 
 {# AI Chatbot Widget #}
-<div data-controller="chat" data-chat-avatar-url-value="{{ asset('images/chat-icon.png') }}">
+{% set avatarUrls = {
+    '1': { 'icon': asset('images/ai-assistant-1.png'), 'face': asset('images/ai-assistant-1.png') },
+    '2': { 'icon': asset('images/ai-assistant-2.png'), 'face': asset('images/ai-assistant-2.png') },
+    '3': { 'icon': asset('images/ai-assistant-3.png'), 'face': asset('images/ai-assistant-3.png') }
+} %}
+<div data-controller="chat"
+     data-chat-avatar-urls-value="{{ avatarUrls|json_encode|e('html_attr') }}"
+     data-chat-default-avatar-key-value="1">
     {# Floating Chat Button #}
     <button
         type="button"
-        class="btn p-0 border-0 position-fixed end-0 bottom-0 m-4 shadow-lg rounded-circle"
-        style="width: 70px; height: 70px; z-index: 1040; overflow: hidden;"
+        class="chat-floating-btn"
         data-action="click->chat#open"
         data-bs-toggle="modal"
         data-bs-target="#aiChatModal"
         title="AI Asistentka Terka"
     >
-        <img src="{{ asset('images/chat-icon.png') }}" alt="AI Asistentka" style="width: 100%; height: 100%; object-fit: cover;">
+        <img src="{{ asset('images/ai-assistant-1.png') }}" alt="AI Asistentka" data-chat-target="floatingButtonAvatar">
     </button>
 
     {# Chat Modal #}
     <div class="modal fade" id="aiChatModal" tabindex="-1" data-chat-target="modal">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
+            <div class="chat-modal-wrapper">
+                {# Character image outside modal-content to allow overflow #}
+                <img src="{{ asset('images/ai-assistant-1.png') }}" alt="Terka" class="chat-character" data-chat-target="headerAvatar">
+                <div class="modal-content">
                 {# Modal Header #}
                 <div class="chat-modal-header">
-                    <h5 class="chat-title">AI Asistentka Terka</h5>
-                    <img src="{{ asset('images/chat-icon.png') }}" alt="Terka" class="chat-character">
+                    <div class="d-flex align-items-center">
+                        <h5 class="chat-title mb-0">AI Asistentka Terka</h5>
+                        <button type="button" class="chat-config-btn" data-chat-target="configButton" data-action="click->chat#showAvatarSelection" title="Změnit avatara">
+                            <i class="bi bi-gear"></i>
+                        </button>
+                    </div>
                     <button type="button" class="chat-close-btn" data-action="click->chat#close" data-bs-dismiss="modal" aria-label="Zavřít">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                         </svg>
                     </button>
+
+                    {# Conversation chips #}
+                    <div class="chat-conversations" data-chat-target="conversationsContainer">
+                        <div class="chat-conversations-list" data-chat-target="conversationsList">
+                            {# JS renders: clickable chips for each conversation #}
+                            {# New conversation button (plus icon) - hidden when no conversations #}
+                            <button type="button" class="chat-new-btn d-none" data-chat-target="newConversationBtn" data-action="click->chat#newConversation" title="Nová konverzace">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        {# Show more button (hidden if ≤2 lines) #}
+                        <button type="button" class="chat-show-more d-none" data-action="click->chat#toggleShowMore" data-chat-target="showMoreBtn">
+                            <span class="show-more-text">Zobrazit více</span>
+                            <span class="show-less-text d-none">Zobrazit méně</span>
+                        </button>
+                    </div>
                 </div>
 
                 {# Modal Body - Messages #}
                 <div class="chat-modal-body">
-                    {# Welcome Message #}
-                    <div class="chat-welcome" data-chat-target="welcome">
-                        <img src="{{ asset('images/chat-icon.png') }}" alt="Terka" class="chat-welcome-avatar">
-                        <p>Dobrý den! Jsem AI asistentka Terka.</p>
-                        <p class="small">Zeptejte se mě na cokoliv ohledně služeb obce Těrlicko.</p>
-                    </div>
-
-                    {# Messages Container #}
-                    <div data-chat-target="messages"></div>
-
-                    {# Loading Indicator #}
-                    <div class="chat-loading d-none" data-chat-target="loading">
-                        <div class="chat-avatar">
-                            <img src="{{ asset('images/chat-icon.png') }}" alt="Terka">
+                    {# Main chat content #}
+                    <div data-chat-target="chatContent">
+                        {# Welcome Message #}
+                        <div class="chat-welcome" data-chat-target="welcome">
+                            <img src="{{ asset('images/ai-assistant-1.png') }}" alt="Terka" class="chat-welcome-avatar" data-chat-target="welcomeAvatar">
+                            <p>Dobrý den! Jsem AI asistentka Terka.</p>
+                            <p class="small">Zeptejte se mě na cokoliv ohledně služeb obce Těrlicko.</p>
                         </div>
-                        <div class="chat-bubble chat-bubble-assistant">
-                            <div class="spinner-grow spinner-grow-sm me-2" role="status"></div>
-                            <span>Přemýšlím...</span>
+
+                        {# Messages Container #}
+                        <div data-chat-target="messages"></div>
+
+                        {# Loading Indicator #}
+                        <div class="chat-loading d-none" data-chat-target="loading">
+                            <div class="chat-avatar">
+                                <img src="{{ asset('images/ai-assistant-1.png') }}" alt="Terka" data-chat-target="loadingAvatar">
+                            </div>
+                            <div class="chat-bubble chat-bubble-assistant">
+                                <div class="spinner-grow spinner-grow-sm me-2" role="status"></div>
+                                <span>Přemýšlím...</span>
+                            </div>
+                        </div>
+
+                        {# Error Message #}
+                        <div class="chat-alert chat-alert-error d-none" data-chat-target="error">
+                            <strong>Chyba:</strong> <span data-chat-target="errorMessage"></span>
+                        </div>
+
+                        {# Rate Limit Message #}
+                        <div class="chat-alert chat-alert-warning d-none" data-chat-target="rateLimit">
+                            <strong>Omezení:</strong> Dosáhli jste limitu zpráv. Zkuste to prosím za <span data-chat-target="rateLimitTime"></span>.
+                        </div>
+
+                        {# Off-topic Feedback Message #}
+                        <div class="chat-alert chat-alert-info d-none" data-chat-target="feedback">
+                            Myslíte si, že je to chyba?
+                            <a href="mailto:info@terlicko.cz?subject=AI%20Chat%20-%20Zpětná%20vazba">Dejte nám vědět</a>
                         </div>
                     </div>
 
-                    {# Error Message #}
-                    <div class="chat-alert chat-alert-error d-none" data-chat-target="error">
-                        <strong>Chyba:</strong> <span data-chat-target="errorMessage"></span>
-                    </div>
-
-                    {# Rate Limit Message #}
-                    <div class="chat-alert chat-alert-warning d-none" data-chat-target="rateLimit">
-                        <strong>Omezení:</strong> Dosáhli jste limitu zpráv. Zkuste to prosím za <span data-chat-target="rateLimitTime"></span>.
-                    </div>
-
-                    {# Off-topic Feedback Message #}
-                    <div class="chat-alert chat-alert-info d-none" data-chat-target="feedback">
-                        Myslíte si, že je to chyba?
-                        <a href="mailto:info@terlicko.cz?subject=AI%20Chat%20-%20Zpětná%20vazba">Dejte nám vědět</a>
+                    {# Avatar selection (hidden by default) #}
+                    <div class="chat-avatar-selection d-none" data-chat-target="avatarSelection">
+                        <h6 class="avatar-selection-title">Vyberte si avatara</h6>
+                        <div class="avatar-options">
+                            {% for key, urls in avatarUrls %}
+                                <button class="avatar-option"
+                                        data-chat-target="avatarOption"
+                                        data-avatar-key="{{ key }}"
+                                        data-action="click->chat#selectAvatar">
+                                    <img src="{{ urls.icon }}" alt="Avatar {{ key }}">
+                                </button>
+                            {% endfor %}
+                        </div>
+                        <button class="avatar-selection-back" data-action="click->chat#hideAvatarSelection">
+                            <i class="bi bi-arrow-left"></i> Zpět do chatu
+                        </button>
                     </div>
                 </div>
 
@@ -473,17 +779,6 @@
                             </button>
                         </div>
                     </form>
-                    <button
-                        type="button"
-                        class="chat-end-btn"
-                        data-action="click->chat#endConversation"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                        </svg>
-                        Ukončit konverzaci
-                    </button>
                 </div>
 
                 {# Footer - Dark background with disclaimer #}
@@ -493,6 +788,7 @@
                         <span>Terka čerpá informace z obsahu webu Terlicko.cz a postupně se učí. Nenašli jste, co hledáte? <a href="mailto:info@terlicko.cz?subject=AI%20Chat%20-%20Zpětná%20vazba">Dejte nám vědět.</a></span>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>

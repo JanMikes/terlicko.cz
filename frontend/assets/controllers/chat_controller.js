@@ -15,11 +15,25 @@ export default class extends Controller {
         'rateLimit',
         'rateLimitTime',
         'welcome',
-        'feedback'
+        'feedback',
+        'conversationsContainer',
+        'conversationsList',
+        'showMoreBtn',
+        'floatingButtonAvatar',
+        'headerAvatar',
+        'welcomeAvatar',
+        'loadingAvatar',
+        'configButton',
+        'avatarSelection',
+        'chatContent',
+        'avatarOption',
+        'messageFeedback',
+        'newConversationBtn'
     ];
 
     static values = {
-        avatarUrl: String
+        avatarUrls: Object,
+        defaultAvatarKey: { type: String, default: '1' }
     };
 
     connect() {
@@ -28,13 +42,14 @@ export default class extends Controller {
         // Configure marked for GitHub-flavored markdown with line breaks
         marked.use({ gfm: true, breaks: true });
 
-        // Restore conversation from localStorage
-        this.conversationId = localStorage.getItem('ai_conversation_id');
+        // Load avatar choice from localStorage
+        this.loadAvatarChoice();
 
-        // Load existing messages if conversation exists
-        if (this.conversationId) {
-            this.loadConversationHistory();
-        }
+        // Migrate from old localStorage format if needed
+        this.migrateOldStorage();
+
+        // Load conversations from storage
+        this.loadConversationsFromStorage();
 
         // Listen for modal show event to handle external triggers
         if (this.hasModalTarget) {
@@ -44,13 +59,330 @@ export default class extends Controller {
         }
     }
 
+    /**
+     * Migrate from old single-conversation storage to new multi-conversation format
+     */
+    migrateOldStorage() {
+        const oldConversationId = localStorage.getItem('ai_conversation_id');
+        if (oldConversationId) {
+            // Check if we already have the new format
+            const existingData = localStorage.getItem('ai_conversations_data');
+            if (!existingData) {
+                // Create new format with old conversation
+                const newData = {
+                    conversations: [{
+                        id: oldConversationId,
+                        title: null,
+                        startedAt: new Date().toISOString()
+                    }],
+                    activeId: oldConversationId
+                };
+                localStorage.setItem('ai_conversations_data', JSON.stringify(newData));
+            }
+            // Remove old format
+            localStorage.removeItem('ai_conversation_id');
+        }
+    }
+
+    /**
+     * Get conversations data from localStorage
+     */
+    getStoredConversations() {
+        try {
+            const data = localStorage.getItem('ai_conversations_data');
+            if (data) {
+                return JSON.parse(data);
+            }
+        } catch (e) {
+            console.error('Error parsing conversations data:', e);
+        }
+        return { conversations: [], activeId: null };
+    }
+
+    /**
+     * Save conversations data to localStorage
+     */
+    saveConversationsToStorage(data) {
+        localStorage.setItem('ai_conversations_data', JSON.stringify(data));
+    }
+
+    /**
+     * Load conversations from storage and set active conversation
+     */
+    loadConversationsFromStorage() {
+        const data = this.getStoredConversations();
+        this.conversations = data.conversations;
+        this.conversationId = data.activeId;
+
+        // Don't load conversation history here - wait until modal is opened
+        // This prevents API calls that might fail before user interacts
+
+        // Render conversation chips
+        this.renderConversationChips();
+    }
+
+    /**
+     * Add a new conversation to storage
+     */
+    addConversationToStorage(id, title = null) {
+        const data = this.getStoredConversations();
+
+        // Check if conversation already exists
+        const exists = data.conversations.some(c => c.id === id);
+        if (!exists) {
+            data.conversations.unshift({
+                id: id,
+                title: title,
+                startedAt: new Date().toISOString()
+            });
+        }
+
+        data.activeId = id;
+        this.saveConversationsToStorage(data);
+        this.conversations = data.conversations;
+        this.conversationId = id;
+    }
+
+    /**
+     * Update conversation title in storage
+     */
+    updateConversationTitle(conversationId, title) {
+        const data = this.getStoredConversations();
+        const conv = data.conversations.find(c => c.id === conversationId);
+        if (conv) {
+            conv.title = title;
+            this.saveConversationsToStorage(data);
+            this.conversations = data.conversations;
+            this.renderConversationChips();
+        }
+    }
+
+    /**
+     * Render conversation chips in header
+     */
+    renderConversationChips() {
+        if (!this.hasConversationsListTarget) return;
+
+        // Find the new conversation button
+        const newBtn = this.conversationsListTarget.querySelector('.chat-new-btn');
+
+        // Remove existing chips (but keep the new button)
+        const existingChips = this.conversationsListTarget.querySelectorAll('.chat-conversation-chip');
+        existingChips.forEach(chip => chip.remove());
+
+        // Show/hide the new conversation button based on whether we have conversations
+        if (this.hasNewConversationBtnTarget) {
+            if (this.conversations && this.conversations.length > 0) {
+                this.newConversationBtnTarget.classList.remove('d-none');
+            } else {
+                this.newConversationBtnTarget.classList.add('d-none');
+            }
+        }
+
+        // Add chips for each conversation
+        this.conversations.forEach(conv => {
+            const chip = document.createElement('button');
+            chip.type = 'button';
+            chip.className = 'chat-conversation-chip';
+            if (conv.id === this.conversationId) {
+                chip.classList.add('active');
+            }
+            chip.textContent = conv.title || 'Konverzace';
+            chip.dataset.conversationId = conv.id;
+            chip.dataset.action = 'click->chat#switchConversation';
+
+            // Insert before the new button
+            this.conversationsListTarget.insertBefore(chip, newBtn);
+        });
+
+        // Check if we need to show "show more" button
+        this.checkShowMoreVisibility();
+    }
+
+    /**
+     * Check if "show more" button should be visible
+     */
+    checkShowMoreVisibility() {
+        if (!this.hasShowMoreBtnTarget || !this.hasConversationsListTarget) return;
+
+        // Check if content overflows (more than 2 lines)
+        const list = this.conversationsListTarget;
+        const isOverflowing = list.scrollHeight > 60; // Slightly more than max-height
+
+        if (isOverflowing && !list.classList.contains('expanded')) {
+            this.showMoreBtnTarget.classList.remove('d-none');
+        } else if (!isOverflowing) {
+            this.showMoreBtnTarget.classList.add('d-none');
+        }
+    }
+
+    /**
+     * Toggle show more/less for conversation list
+     */
+    toggleShowMore() {
+        if (!this.hasConversationsListTarget || !this.hasShowMoreBtnTarget) return;
+
+        const list = this.conversationsListTarget;
+        const isExpanded = list.classList.toggle('expanded');
+
+        const moreText = this.showMoreBtnTarget.querySelector('.show-more-text');
+        const lessText = this.showMoreBtnTarget.querySelector('.show-less-text');
+
+        if (isExpanded) {
+            moreText.classList.add('d-none');
+            lessText.classList.remove('d-none');
+        } else {
+            moreText.classList.remove('d-none');
+            lessText.classList.add('d-none');
+        }
+    }
+
+    /**
+     * Switch to a different conversation
+     */
+    async switchConversation(event) {
+        const newId = event.currentTarget.dataset.conversationId;
+        if (newId === this.conversationId) return;
+
+        // Update active conversation
+        const data = this.getStoredConversations();
+        data.activeId = newId;
+        this.saveConversationsToStorage(data);
+        this.conversationId = newId;
+
+        // Clear current messages
+        this.messagesTarget.innerHTML = '';
+
+        // Show welcome message temporarily
+        if (this.hasWelcomeTarget) {
+            this.welcomeTarget.classList.remove('d-none');
+        }
+
+        // Load the conversation history
+        await this.loadConversationHistory();
+        this.loadedConversationId = newId;
+
+        // Re-render chips to update active state
+        this.renderConversationChips();
+    }
+
+    /**
+     * Start a new conversation (keeps previous conversations active for switching)
+     */
+    newConversation() {
+        // Reset loaded conversation tracking
+        this.loadedConversationId = null;
+
+        // Don't end the previous conversation - user can switch back to it
+
+        // Clear local state
+        this.conversationId = null;
+
+        // Clear messages
+        this.messagesTarget.innerHTML = '';
+
+        // Show welcome message
+        if (this.hasWelcomeTarget) {
+            this.welcomeTarget.classList.remove('d-none');
+        }
+
+        // Update storage - set activeId to null but keep conversations list
+        const data = this.getStoredConversations();
+        data.activeId = null;
+        this.saveConversationsToStorage(data);
+
+        // Re-render chips (none will be active)
+        this.renderConversationChips();
+    }
+
+    /**
+     * Sync conversations with backend on modal open
+     */
+    async syncConversations() {
+        try {
+            const response = await fetch('/chat/conversations', {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                // Don't modify local data on error
+                return;
+            }
+
+            const serverConversations = await response.json();
+
+            // If server returns empty and we have local data, keep local data
+            // (this can happen if guest cookie changed)
+            if (serverConversations.length === 0 && this.conversations && this.conversations.length > 0) {
+                console.log('Server returned no conversations, keeping local data');
+                return;
+            }
+
+            // Merge with local data (server is source of truth for titles)
+            const data = this.getStoredConversations();
+
+            // Create a map of server conversations
+            const serverMap = new Map(serverConversations.map(c => [c.id, c]));
+
+            // Update local conversations with server data (only update titles, don't remove)
+            data.conversations = data.conversations.map(local => {
+                const server = serverMap.get(local.id);
+                if (server) {
+                    return {
+                        ...local,
+                        title: server.title || local.title,
+                        startedAt: server.started_at || local.startedAt
+                    };
+                }
+                // Keep local conversation even if not on server
+                return local;
+            });
+
+            // Add any new conversations from server that we don't have locally
+            serverConversations.forEach(server => {
+                const exists = data.conversations.some(c => c.id === server.id);
+                if (!exists && server.is_active) {
+                    data.conversations.push({
+                        id: server.id,
+                        title: server.title,
+                        startedAt: server.started_at
+                    });
+                }
+            });
+
+            // Sort by startedAt descending
+            data.conversations.sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));
+
+            this.saveConversationsToStorage(data);
+            this.conversations = data.conversations;
+
+            // Re-render chips
+            this.renderConversationChips();
+        } catch (error) {
+            console.error('Error syncing conversations:', error);
+            // Don't modify local data on error
+        }
+    }
+
     open() {
         console.log('Opening chat modal');
 
-        // Start new conversation if none exists
-        if (!this.conversationId) {
-            this.startConversation();
+        // Load conversation history if we have an active conversation that hasn't been loaded yet
+        // This is done here (not in connect) to ensure cookie is properly sent
+        if (this.conversationId && this.loadedConversationId !== this.conversationId) {
+            this.loadConversationHistory();
+            this.loadedConversationId = this.conversationId;
         }
+
+        // Only sync conversations if we already have some locally
+        // (which means we have a guest ID cookie)
+        if (this.conversations && this.conversations.length > 0) {
+            this.syncConversations();
+        }
+
+        // Don't start conversation automatically - wait for user to send first message
+        // The conversation will be started in sendMessage() when needed
     }
 
     close() {
@@ -78,7 +410,12 @@ export default class extends Controller {
 
             const data = await response.json();
             this.conversationId = data.conversation_id;
-            localStorage.setItem('ai_conversation_id', this.conversationId);
+
+            // Add to storage
+            this.addConversationToStorage(this.conversationId, null);
+
+            // Render chips
+            this.renderConversationChips();
 
             console.log('Conversation started:', this.conversationId);
 
@@ -230,6 +567,18 @@ export default class extends Controller {
                             // Append content (don't show sources yet - wait for completion)
                             assistantMessage += data.content;
                             this.updateMessage(messageElement, assistantMessage, [], false);
+                        } else if (currentEventType === 'title_update') {
+                            // Handle title update from server
+                            console.log('Received title update:', data);
+                            if (data.title && data.conversation_id) {
+                                this.updateConversationTitle(data.conversation_id, data.title);
+                            }
+                        } else if (currentEventType === 'message_saved') {
+                            // Store the message ID on the element for feedback
+                            if (messageElement && data.message_id) {
+                                messageElement.dataset.messageId = data.message_id;
+                                console.log('Message ID stored:', data.message_id);
+                            }
                         } else if (currentEventType === 'done') {
                             console.log('Stream complete');
                             this.hideLoading();
@@ -252,7 +601,7 @@ export default class extends Controller {
         }
     }
 
-    addMessage(role, content) {
+    addMessage(role, content, messageId = null) {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('chat-message');
 
@@ -270,11 +619,19 @@ export default class extends Controller {
             `;
         } else {
             messageDiv.classList.add('chat-message-assistant');
+            if (messageId) {
+                messageDiv.dataset.messageId = messageId;
+            }
             messageDiv.innerHTML = `
                 <div class="chat-avatar">
-                    <img src="${this.avatarUrlValue}" alt="Terka">
+                    <img src="${this.getCurrentAvatarUrl()}" alt="Terka">
                 </div>
                 <div class="chat-bubble chat-bubble-assistant">
+                    <button type="button" class="chat-feedback-btn" data-action="click->chat#showFeedbackForm" title="Nahlásit problém">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12 12 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A20 20 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a20 20 0 0 0 1.349-.476l.019-.007.004-.002h.001"/>
+                        </svg>
+                    </button>
                     <div class="message-content">${content ? this.formatContent(content) : ''}</div>
                 </div>
             `;
@@ -571,42 +928,6 @@ export default class extends Controller {
         updateCooldown();
     }
 
-    async endConversation() {
-        if (!this.conversationId) return;
-
-        if (!confirm('Opravdu chcete ukončit konverzaci? Historie bude smazána.')) {
-            return;
-        }
-
-        try {
-            const response = await fetch(`/chat/${this.conversationId}/end`, {
-                method: 'POST',
-                credentials: 'include',
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to end conversation');
-            }
-
-            // Clear local state
-            this.conversationId = null;
-            localStorage.removeItem('ai_conversation_id');
-
-            // Clear messages
-            this.messagesTarget.innerHTML = '';
-
-            // Show welcome message
-            if (this.hasWelcomeTarget) {
-                this.welcomeTarget.classList.remove('d-none');
-            }
-
-            console.log('Conversation ended');
-        } catch (error) {
-            console.error('Error ending conversation:', error);
-            this.showError('Nepodařilo se ukončit konverzaci.');
-        }
-    }
-
     async loadConversationHistory() {
         if (!this.conversationId) return;
 
@@ -618,9 +939,16 @@ export default class extends Controller {
 
             if (!response.ok) {
                 if (response.status === 404) {
-                    // Conversation not found, clear local storage
+                    // Conversation not found, remove from storage
+                    const data = this.getStoredConversations();
+                    data.conversations = data.conversations.filter(c => c.id !== this.conversationId);
+                    if (data.activeId === this.conversationId) {
+                        data.activeId = null;
+                    }
+                    this.saveConversationsToStorage(data);
                     this.conversationId = null;
-                    localStorage.removeItem('ai_conversation_id');
+                    this.conversations = data.conversations;
+                    this.renderConversationChips();
                     return;
                 }
                 throw new Error('Failed to load conversation');
@@ -630,9 +958,22 @@ export default class extends Controller {
 
             // Check if conversation is still active
             if (!data.is_active) {
+                // Remove from local storage
+                const storageData = this.getStoredConversations();
+                storageData.conversations = storageData.conversations.filter(c => c.id !== this.conversationId);
+                if (storageData.activeId === this.conversationId) {
+                    storageData.activeId = null;
+                }
+                this.saveConversationsToStorage(storageData);
                 this.conversationId = null;
-                localStorage.removeItem('ai_conversation_id');
+                this.conversations = storageData.conversations;
+                this.renderConversationChips();
                 return;
+            }
+
+            // Update title if it came from server
+            if (data.title) {
+                this.updateConversationTitle(this.conversationId, data.title);
             }
 
             // Hide welcome message if we have messages
@@ -642,7 +983,7 @@ export default class extends Controller {
 
             // Render messages
             for (const message of data.messages) {
-                const messageElement = this.addMessage(message.role, message.content);
+                const messageElement = this.addMessage(message.role, message.content, message.id);
 
                 // Add citations if present (for assistant messages, check if should show sources)
                 if (message.role === 'assistant') {
@@ -656,9 +997,9 @@ export default class extends Controller {
             console.log('Conversation history loaded:', data.messages.length, 'messages');
         } catch (error) {
             console.error('Error loading conversation history:', error);
-            // Clear invalid conversation
-            this.conversationId = null;
-            localStorage.removeItem('ai_conversation_id');
+            // Don't remove conversation on generic errors (network issues, etc.)
+            // Just show an error message to the user
+            this.showError('Nepodařilo se načíst historii konverzace.');
         }
     }
 
@@ -673,5 +1014,241 @@ export default class extends Controller {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    /**
+     * Load avatar choice from localStorage and apply it
+     */
+    loadAvatarChoice() {
+        const savedKey = localStorage.getItem('ai_avatar_choice') || this.defaultAvatarKeyValue;
+        this.currentAvatarKey = savedKey;
+        this.applyAvatar(savedKey);
+    }
+
+    /**
+     * Apply avatar to all avatar targets
+     */
+    applyAvatar(key) {
+        if (!this.hasAvatarUrlsValue || !this.avatarUrlsValue[key]) {
+            return;
+        }
+
+        const urls = this.avatarUrlsValue[key];
+
+        // Update all avatar image sources
+        if (this.hasFloatingButtonAvatarTarget) {
+            this.floatingButtonAvatarTarget.src = urls.icon;
+        }
+        if (this.hasHeaderAvatarTarget) {
+            this.headerAvatarTarget.src = urls.icon;
+        }
+        if (this.hasWelcomeAvatarTarget) {
+            this.welcomeAvatarTarget.src = urls.icon;
+        }
+        if (this.hasLoadingAvatarTarget) {
+            this.loadingAvatarTarget.src = urls.icon;
+        }
+
+        // Update selected state on avatar options
+        if (this.hasAvatarOptionTarget) {
+            this.avatarOptionTargets.forEach(option => {
+                if (option.dataset.avatarKey === key) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+
+        this.currentAvatarKey = key;
+    }
+
+    /**
+     * Get the current avatar icon URL
+     */
+    getCurrentAvatarUrl() {
+        if (this.hasAvatarUrlsValue && this.avatarUrlsValue[this.currentAvatarKey]) {
+            return this.avatarUrlsValue[this.currentAvatarKey].icon;
+        }
+        return '';
+    }
+
+    /**
+     * Show avatar selection view
+     */
+    showAvatarSelection() {
+        if (this.hasAvatarSelectionTarget && this.hasChatContentTarget) {
+            this.chatContentTarget.classList.add('d-none');
+            this.avatarSelectionTarget.classList.remove('d-none');
+        }
+    }
+
+    /**
+     * Hide avatar selection view (back to chat)
+     */
+    hideAvatarSelection() {
+        if (this.hasAvatarSelectionTarget && this.hasChatContentTarget) {
+            this.avatarSelectionTarget.classList.add('d-none');
+            this.chatContentTarget.classList.remove('d-none');
+        }
+    }
+
+    /**
+     * Handle avatar selection
+     */
+    selectAvatar(event) {
+        const button = event.currentTarget;
+        const key = button.dataset.avatarKey;
+
+        if (!key) return;
+
+        // Save to localStorage
+        localStorage.setItem('ai_avatar_choice', key);
+
+        // Apply avatar
+        this.applyAvatar(key);
+
+        // Dispatch custom event for homepage sync
+        this.dispatchAvatarChange(key);
+
+        // Return to chat view
+        this.hideAvatarSelection();
+    }
+
+    /**
+     * Dispatch custom event when avatar changes (for homepage sync)
+     */
+    dispatchAvatarChange(key) {
+        window.dispatchEvent(new CustomEvent('ai-avatar-changed', {
+            detail: { key: key }
+        }));
+    }
+
+    /**
+     * Show feedback form for an assistant message
+     */
+    showFeedbackForm(event) {
+        const button = event.currentTarget;
+        const bubble = button.closest('.chat-bubble-assistant');
+        const messageDiv = button.closest('.chat-message-assistant');
+
+        // If already has feedback, do nothing
+        if (button.classList.contains('feedback-given')) {
+            return;
+        }
+
+        // Close any existing feedback forms
+        this.closeAllFeedbackForms();
+
+        // Create feedback form
+        const form = document.createElement('div');
+        form.className = 'chat-feedback-form';
+        form.innerHTML = `
+            <label>Pomozte nám zlepšit odpovědi</label>
+            <textarea placeholder="Popište, co bylo špatně..." data-chat-target="feedbackTextarea"></textarea>
+            <div class="chat-feedback-actions">
+                <button type="button" class="chat-feedback-cancel" data-action="click->chat#hideFeedbackForm">Zrušit</button>
+                <button type="button" class="chat-feedback-submit" data-action="click->chat#submitFeedback">Odeslat</button>
+            </div>
+        `;
+
+        // Store reference to the message for submission
+        form.dataset.messageId = messageDiv.dataset.messageId || '';
+
+        bubble.appendChild(form);
+        form.querySelector('textarea').focus();
+        this.scrollToBottom();
+    }
+
+    /**
+     * Hide feedback form
+     */
+    hideFeedbackForm(event) {
+        const form = event.currentTarget.closest('.chat-feedback-form');
+        if (form) {
+            form.remove();
+        }
+    }
+
+    /**
+     * Close all open feedback forms
+     */
+    closeAllFeedbackForms() {
+        const forms = this.messagesTarget.querySelectorAll('.chat-feedback-form');
+        forms.forEach(form => form.remove());
+    }
+
+    /**
+     * Submit feedback for an assistant message
+     */
+    async submitFeedback(event) {
+        const form = event.currentTarget.closest('.chat-feedback-form');
+        const textarea = form.querySelector('textarea');
+        const submitBtn = form.querySelector('.chat-feedback-submit');
+        const messageId = form.dataset.messageId;
+        const feedbackText = textarea.value.trim();
+
+        if (!feedbackText) {
+            textarea.focus();
+            return;
+        }
+
+        if (!messageId) {
+            console.error('No message ID found for feedback');
+            return;
+        }
+
+        // Disable submit button
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Odesílání...';
+
+        try {
+            const response = await fetch(`/chat/messages/${messageId}/feedback`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ feedback: feedbackText }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit feedback');
+            }
+
+            // Replace form with thank you message
+            const thanksDiv = document.createElement('div');
+            thanksDiv.className = 'chat-feedback-thanks mt-2';
+            thanksDiv.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+                Děkujeme za zpětnou vazbu!
+            `;
+            form.replaceWith(thanksDiv);
+
+            // Update the feedback button to show checkmark
+            const bubble = thanksDiv.closest('.chat-bubble-assistant');
+            const feedbackBtn = bubble.querySelector('.chat-feedback-btn');
+            if (feedbackBtn) {
+                feedbackBtn.classList.add('feedback-given');
+                feedbackBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    </svg>
+                `;
+                feedbackBtn.title = 'Zpětná vazba odeslána';
+            }
+
+        } catch (error) {
+            console.error('Error submitting feedback:', error);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Odeslat';
+            // Show error inline
+            const errorSpan = document.createElement('span');
+            errorSpan.className = 'text-danger small';
+            errorSpan.textContent = ' Chyba při odesílání';
+            form.querySelector('.chat-feedback-actions').appendChild(errorSpan);
+        }
     }
 }

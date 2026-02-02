@@ -7,9 +7,9 @@
                         type="button"
                         class="calendar-nav-btn calendar-prev-btn"
                         {{ live_action('previousMonth') }}
-                        aria-label="Previous month"
+                        aria-label="Předchozí měsíc"
                     >
-                        <i class="bi bi-chevron-left"></i>
+                        <i class="bi bi-chevron-left" aria-hidden="true"></i>
                     </button>
 
                     {# Display full month name and year #}
@@ -23,9 +23,9 @@
                         type="button"
                         class="calendar-nav-btn calendar-next-btn"
                         {{ live_action('nextMonth') }}
-                        aria-label="Next month"
+                        aria-label="Následující měsíc"
                     >
-                        <i class="bi bi-chevron-right"></i>
+                        <i class="bi bi-chevron-right" aria-hidden="true"></i>
                     </button>
                 </div>
 
@@ -144,7 +144,7 @@
                                             </div>
 
                                             {% if event.slug and ((event.Dokumenty ?? []) or (event.Galerie ?? []) or event.Popis or event.FotkaDetail) %}
-                                                <span class="event-link">
+                                                <span class="event-link" aria-hidden="true">
                                         <i class="bi bi-caret-right-fill"></i>
                                     </span>
                                             {% endif %}

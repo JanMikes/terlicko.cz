@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prohlášení o přístupnosti{% endblock %}
+
+{% block meta_description %}Prohlášení o přístupnosti webových stránek obce Těrlicko podle zákona č. 99/2019 Sb.{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="mb-4">Prohlášení o přístupnosti</h1>
+
+            <section class="mb-5">
+                <h2>Závazek přístupnosti</h2>
+                <p>
+                    Obec Těrlicko se zavazuje zpřístupnit své webové stránky v souladu se zákonem
+                    č. 99/2019 Sb., o přístupnosti internetových stránek a mobilních aplikací subjektů veřejného sektoru,
+                    který implementuje směrnici Evropského parlamentu a Rady (EU) 2016/2102.
+                </p>
+            </section>
+
+            <section class="mb-5">
+                <h2>Rozsah</h2>
+                <p>
+                    Toto prohlášení o přístupnosti se vztahuje na webové stránky
+                    <a href="https://www.terlicko.cz">www.terlicko.cz</a>.
+                </p>
+            </section>
+
+            <section class="mb-5">
+                <h2>Stav souladu</h2>
+                <p>
+                    Tyto webové stránky jsou <strong>částečně v souladu</strong> s normou EN 301 549 V3.2.1 (2021-03)
+                    a metodikou WCAG 2.1 na úrovni AA, s výjimkami uvedenými níže.
+                </p>
+            </section>
+
+            <section class="mb-5">
+                <h2>Nepřístupný obsah</h2>
+                <p>
+                    Níže uvedený obsah není přístupný z těchto důvodů:
+                </p>
+
+                <h3 class="h5 mt-4">Nesoulad s požadavky zákona č. 99/2019 Sb.</h3>
+                <ul>
+                    <li>
+                        <strong>PDF dokumenty:</strong> Některé starší PDF dokumenty nemusí obsahovat textovou vrstvu
+                        nebo správné značkování pro čtečky obrazovky. Postupně tyto dokumenty aktualizujeme.
+                        V případě potřeby vám rádi poskytneme obsah dokumentu v přístupné formě.
+                    </li>
+                    <li>
+                        <strong>Obrázky nahráné uživateli:</strong> U některých obrázků vložených do systému
+                        správy obsahu může chybět nebo být nedostatečný alternativní text. Průběžně
+                        kontrolujeme a doplňujeme tyto popisy.
+                    </li>
+                </ul>
+
+                <h3 class="h5 mt-4">Nepřiměřená zátěž (§ 7 zákona)</h3>
+                <ul>
+                    <li>
+                        <strong>Historické dokumenty:</strong> U rozsáhlého archivu starších PDF dokumentů
+                        (úřední desky, vyhlášky apod.) by bylo zpětné zpřístupnění nepřiměřenou zátěží.
+                        Na vyžádání poskytujeme obsah těchto dokumentů v alternativní formě.
+                    </li>
+                </ul>
+
+                <h3 class="h5 mt-4">Obsah třetích stran</h3>
+                <ul>
+                    <li>
+                        <strong>Vložený obsah:</strong> Některé vložené prvky (mapy, videa) od externích
+                        poskytovatelů nemusí splňovat všechny požadavky na přístupnost.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-5">
+                <h2>Datum sestavení prohlášení</h2>
+                <p>
+                    Toto prohlášení bylo sestaveno dne <strong>1. února 2026</strong>.
+                </p>
+                <p>
+                    Prohlášení bylo vypracováno na základě vlastního posouzení provedeného provozovatelem webu.
+                </p>
+            </section>
+
+            <section class="mb-5">
+                <h2>Zpětná vazba a kontaktní údaje</h2>
+                <p>
+                    Pokud narazíte na problém s přístupností na těchto webových stránkách nebo potřebujete
+                    informace v alternativním formátu, kontaktujte nás:
+                </p>
+                <address>
+                    <strong>Obec Těrlicko</strong><br>
+                    Obecní úřad Těrlicko<br>
+                    Horní Těrlicko 474<br>
+                    735 42 Těrlicko<br><br>
+                    E-mail: <a href="mailto:podatelna@terlicko.cz">podatelna@terlicko.cz</a><br>
+                    Telefon: <a href="tel:+420595020121">+420 595 020 121</a>
+                </address>
+                <p>
+                    Na vaše podněty odpovíme do 15 dnů.
+                </p>
+            </section>
+
+            <section class="mb-5">
+                <h2>Donucovací postup</h2>
+                <p>
+                    Pokud nebudete spokojeni s vyřízením vašeho podnětu, můžete podat stížnost
+                    k příslušnému orgánu dohledu:
+                </p>
+                <address>
+                    <strong>Ministerstvo vnitra České republiky</strong><br>
+                    Odbor eGovernmentu<br>
+                    náměstí Hrdinů 1634/3<br>
+                    140 21 Praha 4<br><br>
+                    E-mail: <a href="mailto:pristupnost@mvcr.cz">pristupnost@mvcr.cz</a>
+                </address>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

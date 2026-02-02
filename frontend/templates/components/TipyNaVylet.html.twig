@@ -10,11 +10,11 @@
             {% endif %}
 
             {% if karta.Obrazek %}
-                <img class="img-fluid" src="{{ karta.Obrazek.url }}" alt="">
+                <img class="img-fluid" src="{{ karta.Obrazek.url }}" alt="{{ karta.Nadpis|default('') }}">
             {% endif %}
 
             {% if karta.Ikonky %}
-                <div class="card-icons mt-2">
+                <div class="card-icons mt-2" aria-hidden="true">
                     {% for ikonka in karta.Ikonky %}
                         {% if ikonka.Ikonka %}
                             <img src="{{ ikonka.Ikonka.url }}" alt="">

@@ -1,0 +1,31 @@
+<div class="cookie-consent-banner d-none"
+     data-cookie-consent-target="banner"
+     role="dialog"
+     aria-label="Nastavení cookies"
+     aria-hidden="true">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-8 mb-3 mb-md-0">
+                <p class="mb-1">
+                    Tento web používá cookies pro analýzu návštěvnosti.
+                    <strong>Pomáháte nám tím zlepšovat naše stránky.</strong>
+                </p>
+                <p class="mb-0 small opacity-75">
+                    Více informací v <a href="{{ path('cookie_policy') }}" class="text-white text-decoration-underline">zásadách ochrany soukromí</a>.
+                </p>
+            </div>
+            <div class="col-12 col-md-4 text-md-end">
+                <button type="button"
+                        class="btn btn-outline-light me-2"
+                        data-action="cookie-consent#decline">
+                    Odmítnout
+                </button>
+                <button type="button"
+                        class="btn button-style-1"
+                        data-action="cookie-consent#accept">
+                    Přijmout
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

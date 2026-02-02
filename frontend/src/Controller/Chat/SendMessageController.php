@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Terlicko\Web\Services\Ai\CitationFormatter;
 use Terlicko\Web\Services\Ai\ContextBuilder;
 use Terlicko\Web\Services\Ai\ConversationManager;
+use Terlicko\Web\Services\Ai\ConversationTitleGenerator;
 use Terlicko\Web\Services\Ai\ModerationService;
 use Terlicko\Web\Services\Ai\OfftopicService;
 use Terlicko\Web\Services\Ai\OpenAiChatService;
@@ -33,6 +34,7 @@ final class SendMessageController extends AbstractController
         private readonly ContextBuilder $contextBuilder,
         private readonly OpenAiChatService $openAiChatService,
         private readonly CitationFormatter $citationFormatter,
+        private readonly ConversationTitleGenerator $titleGenerator,
         private readonly RateLimiterFactory $aiChatMessagesLimiter,
         private readonly RateLimiterFactory $aiChatDailyLimiter,
     ) {
@@ -157,17 +159,21 @@ final class SendMessageController extends AbstractController
         $openAiChatService = $this->openAiChatService;
         $citationFormatter = $this->citationFormatter;
         $offtopicService = $this->offtopicService;
+        $titleGenerator = $this->titleGenerator;
+        $needsTitle = $conversation->getTitle() === null;
 
         $response->setCallback(function () use (
             $conversationManager,
             $openAiChatService,
             $citationFormatter,
             $offtopicService,
+            $titleGenerator,
             $conversation,
             $history,
             $contextData,
             $guestId,
-            $userMessage
+            $userMessage,
+            $needsTitle
         ) {
             $fullResponse = '';
 
@@ -212,12 +218,35 @@ final class SendMessageController extends AbstractController
                     ? $citationFormatter->formatAsJson($contextData['sources'])
                     : null;
 
-                $conversationManager->addMessage(
+                $assistantMessage = $conversationManager->addMessage(
                     $conversation,
                     'assistant',
                     $fullResponse,
                     $citations
                 );
+
+                // Send message ID for feedback functionality
+                echo "event: message_saved\n";
+                echo 'data: ' . json_encode(['message_id' => $assistantMessage->getId()->toString()]) . "\n\n";
+                if (ob_get_level() > 0) {
+                    ob_flush();
+                }
+                flush();
+
+                // Generate title for first message exchange
+                if ($needsTitle && !$isOfftopic) {
+                    try {
+                        $title = $titleGenerator->generateAndSaveTitle($conversation, $userMessage);
+                        echo "event: title_update\n";
+                        echo 'data: ' . json_encode(['title' => $title, 'conversation_id' => $conversation->getId()->toString()]) . "\n\n";
+                        if (ob_get_level() > 0) {
+                            ob_flush();
+                        }
+                        flush();
+                    } catch (\Throwable $e) {
+                        error_log('Title generation error: ' . $e->getMessage());
+                    }
+                }
 
                 // Send done event
                 echo "event: done\n";

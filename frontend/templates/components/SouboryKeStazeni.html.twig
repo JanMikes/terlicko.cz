@@ -3,11 +3,12 @@
         {% for soubor in data.Soubor %}
             {% if soubor.Soubor %}
                 <div class="{{ data.Pocet_sloupcu == 3 ? 'col-sm-4' : data.Pocet_sloupcu == 2 ? 'col-sm-6' : 'col-sm-12' }}">
-                    <a href="{{ soubor.Soubor.url }}" class="text-decoration-none mt-2" target="_blank">
-                        <i class="bi-file-earmark-image fs-4"></i>
+                    <a href="{{ soubor.Soubor.url }}" class="text-decoration-none mt-2" target="_blank" rel="noopener">
+                        <i class="bi-file-earmark-image fs-4" aria-hidden="true"></i>
                         <strong>{{ soubor.Nadpis }}</strong>
                         <small class="ms-2">({{ soubor.Soubor.size }}kb)</small>
-                        <i class="bi-download"></i>
+                        <i class="bi-download" aria-hidden="true"></i>
+                        <span class="visually-hidden">(otevře se v novém okně)</span>
                     </a>
                 </div>
             {% endif %}

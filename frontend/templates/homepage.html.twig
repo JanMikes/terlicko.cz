@@ -36,7 +36,9 @@
                         data-bs-target="#aiChatModal"
                         title="Zeptejte se Terky"
                     >
-                        <img src="{{ asset('images/chat-input-face.png') }}" alt="Terka" class="hero-chat-face">
+                        <span class="hero-chat-avatar-wrapper">
+                            <img src="{{ asset('images/ai-assistant-1.png') }}" alt="Terka" class="hero-chat-face" id="hero-chat-avatar">
+                        </span>
                         <span class="hero-chat-placeholder">Ahoj, já jsem průvodkyně Terka, napiš mi co hledáš....</span>
                         <span class="hero-chat-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
@@ -45,6 +47,27 @@
                         </span>
                     </button>
                 </div>
+                <script>
+                (function() {
+                    const avatarFaces = {
+                        '1': '{{ asset('images/ai-assistant-1.png') }}',
+                        '2': '{{ asset('images/ai-assistant-2.png') }}',
+                        '3': '{{ asset('images/ai-assistant-3.png') }}'
+                    };
+
+                    const savedChoice = localStorage.getItem('ai_avatar_choice') || '1';
+                    const heroAvatar = document.getElementById('hero-chat-avatar');
+                    if (heroAvatar && avatarFaces[savedChoice]) {
+                        heroAvatar.src = avatarFaces[savedChoice];
+                    }
+
+                    window.addEventListener('ai-avatar-changed', function(e) {
+                        if (heroAvatar && avatarFaces[e.detail.key]) {
+                            heroAvatar.src = avatarFaces[e.detail.key];
+                        }
+                    });
+                })();
+                </script>
             {% endif %}
         </div>
     {% endif %}

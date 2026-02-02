@@ -37,10 +37,10 @@
                     <hr class="hr-dotted my-4">
 
                     {% set collapseId = 'oteviraciDoba-' ~ loop.index ~ '-' ~ random(1000000) %}
-                    <div class="h6 fw-bold mb-0 collapse-toggle d-flex align-items-center justify-content-between collapsed w-100" data-bs-toggle="collapse" data-bs-target="#{{ collapseId }}" aria-expanded="false" aria-controls="{{ collapseId }}" style="cursor: pointer;">
+                    <button type="button" class="h6 fw-bold mb-0 collapse-toggle d-flex align-items-center justify-content-between collapsed w-100 bg-transparent border-0 p-0 text-start" data-bs-toggle="collapse" data-bs-target="#{{ collapseId }}" aria-expanded="false" aria-controls="{{ collapseId }}" style="cursor: pointer;">
                         <span>Provozní doba</span>
-                        <i class="bi bi-chevron-down"></i>
-                    </div>
+                        <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                    </button>
                     <div id="{{ collapseId }}" class="collapse">
                         <div class="pt-2">
                             {{ vizitka.OteviraciDoba|newlines }}

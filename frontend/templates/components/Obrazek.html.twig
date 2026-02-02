@@ -4,10 +4,10 @@
             <div class="col d-flex justify-content-center align-items-center">
                 {% if obrazek.Odkaz %}
                     <twig:Odkaz data="{{ obrazek.Odkaz }}">
-                        <img class="img-fluid" src="{{ obrazek.Obrazek.url }}">
+                        <img class="img-fluid" src="{{ obrazek.Obrazek.url }}" alt="{{ obrazek.Popis|default('') }}">
                     </twig:Odkaz>
                 {% else %}
-                    <img class="img-fluid" src="{{ obrazek.Obrazek.url }}">
+                    <img class="img-fluid" src="{{ obrazek.Obrazek.url }}" alt="{{ obrazek.Popis|default('') }}">
                 {% endif %}
             </div>
         {% endif %}

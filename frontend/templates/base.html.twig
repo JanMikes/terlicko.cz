@@ -31,20 +31,11 @@
         {% endblock %}
 
         {% block custom_styles %}{% endblock %}
-
-        {% if app.environment == 'prod' %}
-            <!-- Google tag (gtag.js) -->
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-YE1K3R5K1R"></script>
-            <script>
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-
-              gtag('config', 'G-YE1K3R5K1R');
-            </script>
-        {% endif %}
     </head>
-    <body class="{% block body_class %}{% endblock %}">
+    <body class="{% block body_class %}{% endblock %}"
+          data-controller="cookie-consent" data-cookie-consent-ga-id-value="{% if app.environment == 'prod' %}G-YE1K3R5K1R{% endif %}">
+
+    <a href="#main-content" class="visually-hidden-focusable skip-link">Přeskočit na hlavní obsah</a>
 
     {% block full_content %}
         <header class="navbar navbar-expand-lg bg-dark p-3 fixed-top">
@@ -64,9 +55,9 @@
                     </ul>
 
                     <div class="d-flex text-center">
-                        <a href="https://www.instagram.com/terlicko.cz/" target="_blank" class="nav-link nav-link-instagram">Instagram</a>
-                        <a href="https://www.facebook.com/terlicko.cz" target="_blank" class="nav-link nav-link-facebook ms-3">Facebook</a>
-                        <a href="https://www.youtube.com/@terlickoofficial" target="_blank" class="nav-link nav-link-youtube ms-3">Youtube</a>
+                        <a href="https://www.instagram.com/terlicko.cz/" target="_blank" rel="noopener" class="nav-link nav-link-instagram">Instagram<span class="visually-hidden"> (otevře se v novém okně)</span></a>
+                        <a href="https://www.facebook.com/terlicko.cz" target="_blank" rel="noopener" class="nav-link nav-link-facebook ms-3">Facebook<span class="visually-hidden"> (otevře se v novém okně)</span></a>
+                        <a href="https://www.youtube.com/@terlickoofficial" target="_blank" rel="noopener" class="nav-link nav-link-youtube ms-3">Youtube<span class="visually-hidden"> (otevře se v novém okně)</span></a>
                     </div>
                 </div>
             </div>
@@ -74,7 +65,9 @@
 
         {{ include('_flashes.html.twig') }}
 
-        {% block content %}{% endblock %}
+        <main id="main-content">
+            {% block content %}{% endblock %}
+        </main>
     {% endblock %}
 
 
@@ -84,6 +77,8 @@
     {% if app.request.query.has('ai-test') %}
         <twig:ChatWidget />
     {% endif %}
+
+    {% include 'components/CookieBanner.html.twig' %}
 
     </body>
 </html>
