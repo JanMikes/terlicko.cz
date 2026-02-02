@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Terlicko\Web\Services\Ai\ConversationManager;
 
-#[Route('/chat/{conversationId}', name: 'chat_get_conversation', methods: ['GET'])]
+#[Route('/chat/{conversationId}', name: 'chat_get_conversation', methods: ['GET'], requirements: ['conversationId' => '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'])]
 final class GetConversationController extends AbstractController
 {
     public function __construct(
