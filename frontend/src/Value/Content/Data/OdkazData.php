@@ -7,7 +7,7 @@ namespace Terlicko\Web\Value\Content\Data;
 /**
  * @phpstan-import-type FileDataArray from FileData
  * @phpstan-type OdkazDataArray array{
- *     sekce: null|array{slug: string},
+ *     sekce?: null|array{slug: string},
  *     URL: null|string,
  *     Kotva: null|string,
  *     Soubor: null|FileDataArray
@@ -39,7 +39,7 @@ readonly final class OdkazData
             }
         }
 
-        if (isset($data['sekce']) && $data['sekce'] !== null) {
+        if (isset($data['sekce'])) {
             $slug = $data['sekce']['slug'];
         }
 

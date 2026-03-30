@@ -18,6 +18,7 @@ FROM dev AS prod
 ENV NODE_ENV=production
 
 COPY ./package.json ./package-lock.json ./
+COPY ./patches ./patches
 
 RUN npm ci
 
