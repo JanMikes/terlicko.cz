@@ -39,7 +39,7 @@ readonly final class OdkazData
             }
         }
 
-        if ($data['sekce'] !== null) {
+        if (isset($data['sekce']) && $data['sekce'] !== null) {
             $slug = $data['sekce']['slug'];
         }
 

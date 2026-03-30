@@ -1,0 +1,16 @@
+diff --git a/node_modules/strapi-v5-plugin-populate-deep/server/helpers/index.js b/node_modules/strapi-v5-plugin-populate-deep/server/helpers/index.js
+index 2dca138..b5e9707 100644
+--- a/node_modules/strapi-v5-plugin-populate-deep/server/helpers/index.js
++++ b/node_modules/strapi-v5-plugin-populate-deep/server/helpers/index.js
+@@ -65,7 +65,10 @@ const getFullPopulateObject = (modelUid, maxDepth = 20, ignore) => {
+         if (key === "localizations") {
+           populate[key] = true;
+         } else {
+-          if (ignore?.includes(strapi.getModel(value.target).collectionName)) continue;
++          if (ignore?.includes(strapi.getModel(value.target).collectionName)) {
++            populate[key] = true;
++            continue;
++          }
+           const relationPopulate = getFullPopulateObject(
+             value.target,
+             maxDepth - 1,
