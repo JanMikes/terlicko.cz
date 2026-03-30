@@ -28,6 +28,7 @@ final class EventDetailController extends AbstractController
                 && ($event->Galerie ?? []) === []
                 && $event->Popis === null
                 && $event->FotkaDetail === null
+                && $event->VideoYoutube === null
             ) {
                 return $this->redirectToRoute('kalendar_akci');
             }

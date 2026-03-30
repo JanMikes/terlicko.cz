@@ -43,6 +43,15 @@
 
             {{ aktualita.Popis|markdown_to_html }}
 
+            {% if aktualita.Video_youtube %}
+                {% set embedUrl = aktualita.Video_youtube|youtube_embed_url %}
+                {% if embedUrl %}
+                    <div class="ratio ratio-16x9 my-3">
+                        <iframe src="{{ embedUrl }}" title="YouTube video" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                {% endif %}
+            {% endif %}
+
             {% if aktualita.Soubory %}
                 <ul class="files-list list-unstyled">
                     {% for file in aktualita.Soubory %}

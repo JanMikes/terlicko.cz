@@ -51,6 +51,15 @@
                     </div>
                 {% endif %}
 
+                {% if event.VideoYoutube %}
+                    {% set embedUrl = event.VideoYoutube|youtube_embed_url %}
+                    {% if embedUrl %}
+                        <div class="ratio ratio-16x9 my-3">
+                            <iframe src="{{ embedUrl }}" title="YouTube video" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
                 {% if event.Dokumenty %}
                     {{ component('SouboryKeStazeni', {
                         data: event.Dokumenty,
