@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>{{REPORT_TITLE}}</title>
+<style>
+  /* =====================================================================
+     Corporate palette (from terlicko.cz):
+       #1E2648  – primary deep navy
+       #21294C  – navy (hero bg)
+       #32416C  – mid navy
+       #8CADD5  – soft blue (secondary accent)
+       #D3E5F7  – light blue (backgrounds / callouts)
+       #c5761f  – warm ochre (warning / highlight accent)
+     ===================================================================== */
+
+  @page {
+    size: A4;
+    margin: 18mm 16mm 20mm 16mm;
+    @bottom-left {
+      content: "Obec Těrlicko · AI asistent";
+      font-family: "Helvetica", sans-serif;
+      font-size: 8pt;
+      color: #8CADD5;
+    }
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      font-family: "Helvetica", sans-serif;
+      font-size: 8pt;
+      color: #8CADD5;
+    }
+  }
+  @page cover {
+    margin: 0;
+    @bottom-left  { content: ""; }
+    @bottom-right { content: ""; }
+  }
+  .cover { page: cover; }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Helvetica", "Arial", sans-serif;
+    color: #1E2648;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+
+  /* ========================= COVER ========================= */
+  .cover {
+    page-break-after: always;
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    background:
+      radial-gradient(circle at 15% 120%, rgba(140,173,213,0.18), transparent 55%),
+      radial-gradient(circle at 95% -10%, rgba(211,229,247,0.12), transparent 50%),
+      linear-gradient(155deg, #1E2648 0%, #21294C 45%, #32416C 100%);
+    color: #fff;
+    padding: 22mm 20mm;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .cover::after {
+    /* subtle decorative curve (silhouette inspired by logo) */
+    content: "";
+    position: absolute;
+    right: -60mm;
+    top: -20mm;
+    width: 180mm;
+    height: 180mm;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(140,173,213,0.10), transparent 60%);
+    z-index: 0;
+  }
+  .cover > * { position: relative; z-index: 1; }
+
+  .cover .brand {
+    display: flex;
+    align-items: center;
+    gap: 5mm;
+  }
+  .cover .brand .logo { width: 42mm; }
+  .cover .brand .logo svg { width: 100%; height: auto; display: block; }
+  .cover .brand .divider {
+    width: 1px;
+    height: 14mm;
+    background: rgba(255,255,255,0.2);
+  }
+  .cover .brand .ident {
+    font-size: 8.5pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #8CADD5;
+  }
+  .cover .brand .ident strong {
+    display: block;
+    color: #fff;
+    letter-spacing: 0.14em;
+    margin-top: 1.2mm;
+    font-size: 9pt;
+  }
+
+  .cover h1 {
+    margin: 48mm 0 5mm 0;
+    font-size: 44pt;
+    line-height: 1.02;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .cover h1 span { color: #8CADD5; }
+  .cover .subtitle {
+    color: #D3E5F7;
+    font-size: 13pt;
+    font-weight: 300;
+    max-width: 140mm;
+    margin: 0 0 14mm 0;
+  }
+  .cover .month-badge {
+    align-self: flex-start;
+    background: rgba(211,229,247,0.12);
+    border: 1px solid rgba(211,229,247,0.35);
+    padding: 4mm 7mm;
+    border-radius: 1.2mm;
+    font-size: 11pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .cover .hero-stats {
+    margin-top: 6mm;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5mm;
+  }
+  .cover .spacer { flex: 1; }
+  .cover .hero-stat {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(211,229,247,0.2);
+    border-left: 3px solid #8CADD5;
+    padding: 6mm 6mm 5mm 6mm;
+  }
+  .cover .hero-stat .num {
+    font-size: 30pt;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .cover .hero-stat .lbl {
+    font-size: 8.5pt;
+    color: #8CADD5;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-top: 3mm;
+    font-weight: 600;
+  }
+
+  .cover .footer-bar {
+    margin-top: 9mm;
+    padding-top: 4mm;
+    border-top: 1px solid rgba(211,229,247,0.2);
+    display: flex;
+    justify-content: space-between;
+    font-size: 8.5pt;
+    color: #8CADD5;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ========================= CONTENT ========================= */
+  section.page { page-break-before: always; }
+
+  .page-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 2px solid #D3E5F7;
+    padding-bottom: 3mm;
+    margin-bottom: 7mm;
+  }
+  .page-head h2 {
+    font-size: 20pt;
+    margin: 0;
+    font-weight: 700;
+    color: #1E2648;
+    letter-spacing: -0.015em;
+    white-space: nowrap;
+    flex: 1;
+  }
+  .page-head .month-pill {
+    font-size: 8pt;
+    color: #32416C;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    background: #D3E5F7;
+    padding: 1.5mm 3mm;
+    border-radius: 1mm;
+    margin-bottom: 1mm;
+  }
+
+  .section-sub {
+    color: #5a6b8c;
+    margin: -4mm 0 7mm 0;
+    font-size: 10pt;
+  }
+  h3 {
+    font-size: 12pt;
+    margin: 9mm 0 3mm 0;
+    color: #1E2648;
+    font-weight: 700;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4mm;
+    margin-bottom: 7mm;
+  }
+  .kpi {
+    border: 1px solid #D3E5F7;
+    border-radius: 2mm;
+    padding: 5mm;
+    background: #fafcff;
+    page-break-inside: avoid;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 3px; height: 100%;
+    background: #8CADD5;
+  }
+  .kpi .num {
+    font-size: 24pt;
+    font-weight: 700;
+    color: #1E2648;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  .kpi .lbl {
+    font-size: 8.5pt;
+    color: #5a6b8c;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2mm;
+    font-weight: 600;
+  }
+  .kpi .hint {
+    font-size: 9pt;
+    color: #32416C;
+    margin-top: 2mm;
+  }
+  .kpi.accent {
+    background: linear-gradient(135deg, #1E2648 0%, #32416C 100%);
+    color: #fff;
+    border-color: #1E2648;
+  }
+  .kpi.accent::before { background: #c5761f; }
+  .kpi.accent .num { color: #fff; }
+  .kpi.accent .lbl { color: #8CADD5; }
+  .kpi.accent .hint { color: #D3E5F7; }
+  .kpi.warm::before { background: #c5761f; }
+  .kpi.warm .num { color: #c5761f; }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4mm;
+    margin-bottom: 6mm;
+    page-break-inside: avoid;
+  }
+
+  .card {
+    border: 1px solid #D3E5F7;
+    border-radius: 2mm;
+    padding: 5mm;
+    background: #fff;
+    page-break-inside: avoid;
+  }
+  .card h4 {
+    margin: 0 0 3mm 0;
+    font-size: 9.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #5a6b8c;
+    font-weight: 600;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
+  th, td {
+    text-align: left;
+    padding: 2mm 3mm;
+    border-bottom: 1px solid #eef3fa;
+  }
+  th {
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #5a6b8c;
+    font-weight: 600;
+  }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .chart { width: 100%; }
+  .chart svg { width: 100%; height: auto; display: block; }
+
+  .callout {
+    background: linear-gradient(135deg, #D3E5F7 0%, #eaf3fc 100%);
+    border-left: 4px solid #32416C;
+    padding: 4mm 5mm;
+    font-size: 9.5pt;
+    color: #1E2648;
+    border-radius: 0 1mm 1mm 0;
+    margin-top: 4mm;
+  }
+  .callout strong { color: #1E2648; }
+
+  .narrative {
+    background: #fafcff;
+    border: 1px solid #D3E5F7;
+    border-radius: 2mm;
+    padding: 6mm 7mm;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    margin-top: 4mm;
+  }
+
+  .footer-meta {
+    margin-top: 10mm;
+    font-size: 8.5pt;
+    color: #5a6b8c;
+    border-top: 1px solid #D3E5F7;
+    padding-top: 3mm;
+  }
+
+  /* topic bar list */
+  .topic-row {
+    display: grid;
+    grid-template-columns: 52mm 1fr 14mm;
+    align-items: center;
+    gap: 4mm;
+    margin-bottom: 2.5mm;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+  .topic-row .label {
+    color: #1E2648;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .topic-row .bar-track {
+    background: #eaf3fc;
+    height: 5mm;
+    border-radius: 1mm;
+    overflow: hidden;
+  }
+  .topic-row .bar-fill {
+    background: linear-gradient(90deg, #8CADD5, #32416C 70%, #1E2648);
+    height: 100%;
+  }
+  .topic-row .val {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: #32416C;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================== COVER =========================== -->
+<section class="cover">
+  <div class="brand">
+    <div class="logo">{{LOGO_WHITE_SVG}}</div>
+    <div class="divider"></div>
+    <div class="ident">
+      <span>Obec Těrlicko</span>
+      <strong>AI ASISTENT</strong>
+    </div>
+  </div>
+
+  <h1>Měsíční<br>report<br><span>AI asistenta</span></h1>
+  <p class="subtitle">Jak občané využívají chatbota na oficiálním webu obce Těrlicko.</p>
+
+  <div class="spacer"></div>
+
+  <div class="month-badge">{{MONTH_LABEL}}</div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="num">{{T_CONVERSATIONS}}</div>
+      <div class="lbl">Konverzací</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">{{T_UNIQUE_VISITORS}}</div>
+      <div class="lbl">Návštěvníků</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">{{T_MESSAGES}}</div>
+      <div class="lbl">Zpráv</div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span>terlicko.cz</span>
+    <span>Měsíční report</span>
+  </div>
+</section>
+
+<!-- =========================== OVERVIEW =========================== -->
+<section class="page">
+  <div class="page-head">
+    <h2>Přehled měsíce</h2>
+    <div class="month-pill">{{MONTH_LABEL}}</div>
+  </div>
+
+  <p class="section-sub">Souhrnná čísla za {{MONTH_LABEL_GEN}} na jednom místě.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi accent">
+      <div class="num">{{T_CONVERSATIONS}}</div>
+      <div class="lbl">Konverzací</div>
+      <div class="hint">{{T_SUBSTANTIVE}} z toho bylo plnohodnotných (4+ zprávy)</div>
+    </div>
+    <div class="kpi">
+      <div class="num">{{T_UNIQUE_VISITORS}}</div>
+      <div class="lbl">Unikátních návštěvníků</div>
+      <div class="hint">{{T_NEW_GUESTS}} nových · {{T_RETURNING_GUESTS}} vracejících se</div>
+    </div>
+    <div class="kpi">
+      <div class="num">{{T_MESSAGES}}</div>
+      <div class="lbl">Zpráv celkem</div>
+      <div class="hint">{{T_USER_MESSAGES}} dotazů · {{T_ASSISTANT_MESSAGES}} odpovědí</div>
+    </div>
+    <div class="kpi">
+      <div class="num">{{T_WORDS}}</div>
+      <div class="lbl">Slov v konverzacích</div>
+      <div class="hint">{{T_USER_WORDS}} od občanů · {{T_ASSISTANT_WORDS}} od asistenta</div>
+    </div>
+    <div class="kpi">
+      <div class="num">{{T_CHARS}}</div>
+      <div class="lbl">Znaků v konverzacích</div>
+      <div class="hint">Asistent napsal {{T_ASSISTANT_CHARS_PCT}} % veškerého textu</div>
+    </div>
+    <div class="kpi">
+      <div class="num">{{T_AVG_MSGS}}</div>
+      <div class="lbl">Ø zpráv na konverzaci</div>
+      <div class="hint">Nejdelší konverzace měla {{T_MAX_MSGS}} zpráv</div>
+    </div>
+  </div>
+
+  <div class="narrative">
+    <strong style="display:block; margin-bottom:2mm; color:#32416C; letter-spacing:0.05em; font-size:10pt;">CO TO ZNAMENÁ</strong>
+    Asistent za {{MONTH_LABEL_GEN}} odbavil <strong>{{T_CONVERSATIONS}} konverzací</strong>
+    od <strong>{{T_UNIQUE_VISITORS}} unikátních návštěvníků</strong>.
+    Průměrný dotaz občana je krátký ({{T_AVG_USER_LEN}} znaků),
+    odpověď asistenta naopak obsáhlá ({{T_AVG_ASSISTANT_LEN}} znaků) –
+    jde typicky o faktické informace z městských zdrojů.
+    <strong>{{T_SUBSTANTIVE}}&nbsp;konverzací</strong> se rozrostlo na plnohodnotný
+    dialog (4+&nbsp;zprávy), což ukazuje, že občané asistenta aktivně používají
+    k dotazování.
+  </div>
+</section>
+
+<!-- =========================== AKTIVITA V ČASE =========================== -->
+<section class="page">
+  <div class="page-head">
+    <h2>Aktivita v čase</h2>
+    <div class="month-pill">{{MONTH_LABEL}}</div>
+  </div>
+  <p class="section-sub">Kdy občané s asistentem komunikují nejčastěji.</p>
+
+  <div class="card">
+    <h4>Denní aktivita v průběhu měsíce</h4>
+    <div class="chart">{{CHART_DAILY}}</div>
+  </div>
+
+  <div class="split" style="margin-top:5mm;">
+    <div class="card">
+      <h4>Podle dne v týdnu</h4>
+      <div class="chart">{{CHART_WEEKDAY}}</div>
+    </div>
+    <div class="card">
+      <h4>Podle hodiny dne</h4>
+      <div class="chart">{{CHART_HOURLY}}</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Špička:</strong> {{PEAK_DAY_LABEL}} s {{PEAK_DAY_COUNT}} konverzacemi &nbsp;·&nbsp;
+    <strong>Nejaktivnější hodina:</strong> {{PEAK_HOUR}}:00 ({{PEAK_HOUR_COUNT}} konverzací) &nbsp;·&nbsp;
+    <strong>Nejaktivnější den v týdnu:</strong> {{PEAK_DOW}} ({{PEAK_DOW_COUNT}} konverzací)
+  </div>
+</section>
+
+<!-- =========================== TÉMATA =========================== -->
+<section class="page">
+  <div class="page-head">
+    <h2>O čem se mluvilo</h2>
+    <div class="month-pill">{{MONTH_LABEL}}</div>
+  </div>
+  <p class="section-sub">Nejčastější témata konverzací (automaticky generované titulky).</p>
+
+  <div class="card">
+    {{TOPICS_BLOCK}}
+  </div>
+
+  <h3 style="margin-top:9mm;">Obsahové charakteristiky</h3>
+  <div class="split">
+    <div class="card">
+      <h4>Dotazy občanů</h4>
+      <table>
+        <tr><td>Počet zpráv</td><td class="num">{{T_USER_MESSAGES}}</td></tr>
+        <tr><td>Počet slov</td><td class="num">{{T_USER_WORDS}}</td></tr>
+        <tr><td>Počet znaků</td><td class="num">{{T_USER_CHARS}}</td></tr>
+        <tr><td>Ø délka dotazu</td><td class="num">{{T_AVG_USER_LEN}} znaků</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4>Odpovědi asistenta</h4>
+      <table>
+        <tr><td>Počet zpráv</td><td class="num">{{T_ASSISTANT_MESSAGES}}</td></tr>
+        <tr><td>Počet slov</td><td class="num">{{T_ASSISTANT_WORDS}}</td></tr>
+        <tr><td>Počet znaků</td><td class="num">{{T_ASSISTANT_CHARS}}</td></tr>
+        <tr><td>Ø délka odpovědi</td><td class="num">{{T_AVG_ASSISTANT_LEN}} znaků</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- =========================== KVALITA =========================== -->
+<section class="page">
+  <div class="page-head">
+    <h2>Kvalita a moderace</h2>
+    <div class="month-pill">{{MONTH_LABEL}}</div>
+  </div>
+  <p class="section-sub">Jak spolehlivě asistent zůstává u tématu obce a jak mu občané dávají zpětnou vazbu.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi warm">
+      <div class="num">{{T_OFFTOPIC}}</div>
+      <div class="lbl">Off-topic pokusů</div>
+      <div class="hint">Dotazy mimo téma obce zachycené moderací</div>
+    </div>
+    <div class="kpi">
+      <div class="num">{{T_FEEDBACK}}</div>
+      <div class="lbl">Zpětných vazeb</div>
+      <div class="hint">Občané reportovali problém s odpovědí</div>
+    </div>
+    <div class="kpi">
+      <div class="num">{{T_NEW_GUESTS_PCT}} %</div>
+      <div class="lbl">Noví návštěvníci</div>
+      <div class="hint">Podíl nově příchozích guestů tento měsíc</div>
+    </div>
+  </div>
+
+  <h3>Vývoj v čase</h3>
+  <div class="card">
+    <h4>Konverzace za posledních 12 měsíců</h4>
+    <div class="chart">{{CHART_HISTORY}}</div>
+  </div>
+
+  <div class="footer-meta">
+    Report sestaven na základě dat z produkční databáze obce Těrlicko
+    (tabulky <code>ai_conversations</code>, <code>ai_messages</code>,
+    <code>ai_message_feedback</code>, <code>ai_offtopic_violations</code>).
+    Zahrnuté období: {{PERIOD_START}} – {{PERIOD_END}}.
+  </div>
+</section>
+
+</body>
+</html>
