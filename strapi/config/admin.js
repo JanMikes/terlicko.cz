@@ -10,4 +10,10 @@ module.exports = ({ env }) => ({
       salt: env('TRANSFER_TOKEN_SALT', 'anotherRandomLongString'),
     }
   },
+  // Required since Strapi 5.44 - used to encrypt sensitive values Strapi stores
+  // for the admin panel. Must stay stable, or already-encrypted values become
+  // unreadable.
+  secrets: {
+    encryptionKey: env('ENCRYPTION_KEY'),
+  },
 });

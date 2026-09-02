@@ -11,9 +11,9 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@strapi/plugin-color-picker": "^5.40",
-    "@strapi/plugin-users-permissions": "^5.40",
-    "@strapi/strapi": "^5.40",
+    "@strapi/plugin-color-picker": "^5.52",
+    "@strapi/plugin-users-permissions": "^5.52",
+    "@strapi/strapi": "^5.52",
     "pg": "^8.6.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
