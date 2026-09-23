@@ -24,4 +24,9 @@ RUN npm ci
 
 COPY . .
 
+# Bake the admin panel into the image (it used to be built on the server at
+# every deploy). Domain-agnostic: Strapi bakes a relative backend URL ("/")
+# that the browser resolves against its own origin.
+RUN npm run build
+
 CMD ["npm", "run", "start"]
