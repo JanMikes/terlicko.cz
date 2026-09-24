@@ -1,74 +1,40 @@
-# https://github.com/docker/build-push-action/blob/master/docs/advanced/tags-labels.md
+# Frontend Release — build the Symfony frontend image and deploy it to lily via the
+# shared reusable workflow (TheDevs-cz/ci). Replaces the old build + root-SSH
+# deploy to spare.srv: the box now PULLS, and this repo holds no SSH key — only a
+# per-app HMAC secret whose worst-case leak is "re-trigger this app's deploy".
+#
+# Still gated on `Frontend Tests`: runs only after that workflow succeeds on main.
+#
+# ONE HOOK, TWO WORKFLOWS: this and strapi.yml both pass `app: terlicko` — on lily
+# the frontend and Strapi are one compose project (shared uploads volume). The path
+# filters keep builds independent. See lily.srv D66.
+#
+# await_deploy is false: no commit-status token for this app on the box, and await
+# is fail-closed (it would time out red).
 
 name: Frontend Release
 
-permissions:
-    contents: read
-    deployments: write
-    packages: write
-
 on:
-    workflow_run:
-        workflows: [Frontend Tests]
-        types:
-            - completed
-        branches:
-            - main
+  workflow_run:
+    workflows: [Frontend Tests]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
-    docker:
-        name: "Docker images"
-        runs-on: ubuntu-latest
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v4
-
-            -   name: Docker meta
-                id: meta
-                uses: docker/metadata-action@v5
-                with:
-                    # list of Docker images to use as base name for tags
-                    images: ghcr.io/janmikes/terlicko.cz
-                    # generate Docker tags based on the following events/attributes
-                    tags: |
-                        type=ref,event=branch
-                        type=sha
-
-            -   name: Set up Docker Buildx
-                uses: docker/setup-buildx-action@v3
-
-            -   name: Login to GHCR
-                if: github.event_name != 'pull_request'
-                uses: docker/login-action@v3
-                with:
-                    registry: ghcr.io
-                    username: ${{ github.repository_owner }}
-                    password: ${{ secrets.GITHUB_TOKEN }}
-
-            -   name: Build and push
-                uses: docker/build-push-action@v5
-                with:
-                    context: ./frontend
-                    push: ${{ github.event_name != 'pull_request' }}
-                    tags: ${{ steps.meta.outputs.tags }}
-                    labels: ${{ steps.meta.outputs.labels }}
-                    cache-from: type=gha, scope=${{ github.workflow }}
-                    cache-to: type=gha, scope=${{ github.workflow }}
-                    build-args: APP_VERSION=${{ github.sha }}
-
-    deploy:
-        runs-on: ubuntu-latest
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        needs:
-            - docker
-        environment:
-            name: production
-            url: https://terlicko.thedevs.cz
-        steps:
-            -   uses: appleboy/ssh-action@master
-                with:
-                    host: terlicko.thedevs.cz
-                    username: ${{ secrets.DEPLOY_USERNAME }}
-                    key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
-                    script: cd /deployment/terlicko && ./deploy.sh
+  ship:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    uses: TheDevs-cz/ci/.github/workflows/_ship.yml@v1
+    secrets:
+      DEPLOY_WEBHOOK_SECRET: ${{ secrets.DEPLOY_WEBHOOK_SECRET }}
+    with:
+      app: terlicko                                  # hook id == /srv/<app> == compose project
+      image: ghcr.io/janmikes/terlicko.cz            # image name != app slug -> explicit
+      context: ./frontend
+      build_args: |
+        APP_VERSION=${{ github.event.workflow_run.head_sha }}
+      deploy_host: lily.srv.thedevs.cz
+      await_deploy: false
