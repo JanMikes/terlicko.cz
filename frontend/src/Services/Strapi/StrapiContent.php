@@ -94,7 +94,9 @@ readonly final class StrapiContent
             filters: $filters,
             pagination: $pagination,
             sort: [
-                'Datum_zverejneni:desc'
+                'Datum_zverejneni:desc',
+                'createdAt:desc',
+                'id:desc',
             ]);
 
         return AktualitaData::createManyFromStrapiResponse($strapiResponse['data']);
