@@ -1,4 +1,4 @@
-FROM node:20 AS dev
+FROM node:22 AS dev
 
 RUN mkdir /app && chown 1000:1000 -R /app
 
